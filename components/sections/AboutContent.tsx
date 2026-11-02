@@ -76,6 +76,9 @@ const engagementTypes = [
   { icon: Handshake, label: "Looking for a long-term technology partner" },
 ];
 
+// Leadership team section is hidden for now; flip to true to bring it back.
+const SHOW_LEADERSHIP_TEAM = false;
+
 const leadershipTeam = [
   { name: "Joshua Zaporzan", title: "President", image: "/team/joshua-zaporzan.avif" },
   { name: "Manoj Manghnani", title: "Director of Technology & AI", image: "/team/manoj-manghnani.png" },
@@ -485,46 +488,48 @@ export default function AboutContent() {
         </div>
       </section>
 
-      {/* ── Leadership Team ── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-14 max-w-2xl"
-          >
-            <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Our Team</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
-              Meet the Leadership Team
-            </h2>
-          </motion.div>
+      {/* ── Leadership Team (hidden for now) ── */}
+      {SHOW_LEADERSHIP_TEAM && (
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-14 max-w-2xl"
+            >
+              <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Our Team</p>
+              <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
+                Meet the Leadership Team
+              </h2>
+            </motion.div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-x-4 gap-y-10 text-center">
-            {leadershipTeam.map((m, i) => (
-              <motion.div
-                key={m.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
-              >
-                <div className="relative rounded-full overflow-hidden w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-4 bg-[#F8F9FA]">
-                  <Image
-                    src={m.image}
-                    alt={m.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 80px, 112px"
-                  />
-                </div>
-                <h3 className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-sm leading-snug">{m.name}</h3>
-                <p className="text-[#374151] text-xs">{m.title}</p>
-              </motion.div>
-            ))}
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-x-4 gap-y-10 text-center">
+              {leadershipTeam.map((m, i) => (
+                <motion.div
+                  key={m.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.06 }}
+                >
+                  <div className="relative rounded-full overflow-hidden w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-4 bg-[#F8F9FA]">
+                    <Image
+                      src={m.image}
+                      alt={m.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 80px, 112px"
+                    />
+                  </div>
+                  <h3 className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-sm leading-snug">{m.name}</h3>
+                  <p className="text-[#374151] text-xs">{m.title}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
     </div>
   );
