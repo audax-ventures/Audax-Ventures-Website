@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,6 +8,9 @@ import {
   CheckCircle2, ArrowRight, Calendar, Mail, MapPin, Check,
   Lightbulb, Code2, TrendingUp, Clock, DollarSign, Send, ShieldCheck,
 } from "lucide-react";
+import Turnstile, { type TurnstileHandle } from "@/components/ui/Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -65,6 +68,8 @@ export default function ContactContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState(initialForm);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   const set = (field: "name" | "email" | "company" | "phone" | "message") =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -81,6 +86,12 @@ export default function ContactContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!turnstileToken) {
+      setError("Please complete the verification challenge.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -88,7 +99,7 @@ export default function ContactContent() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken }),
       });
 
       if (!res.ok) {
@@ -99,6 +110,8 @@ export default function ContactContent() {
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
     } finally {
       setLoading(false);
     }
@@ -294,7 +307,11 @@ export default function ContactContent() {
                         <Calendar size={14} /> Also book a call
                       </Link>
                       <button
-                        onClick={() => { setSubmitted(false); setForm(initialForm); }}
+                        onClick={() => {
+                          setSubmitted(false);
+                          setForm(initialForm);
+                          setTurnstileToken(null);
+                        }}
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-200 text-[#374151] font-bold text-sm hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
                       >
                         Send another message
@@ -395,6 +412,18 @@ export default function ContactContent() {
                         />
                       </div>
 
+                      {/* Spam protection */}
+                      {TURNSTILE_SITE_KEY && (
+                        <div className="flex justify-center">
+                          <Turnstile
+                            ref={turnstileRef}
+                            siteKey={TURNSTILE_SITE_KEY}
+                            onVerify={setTurnstileToken}
+                            onExpire={() => setTurnstileToken(null)}
+                          />
+                        </div>
+                      )}
+
                       {error && (
                         <p className="text-sm text-red-500 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
                           {error}
@@ -404,7 +433,7 @@ export default function ContactContent() {
                       {/* Submit */}
                       <button
                         type="submit"
-                        disabled={loading}
+                        disabled={loading || (!!TURNSTILE_SITE_KEY && !turnstileToken)}
                         className="w-full py-4 rounded-full bg-[#0B1220] text-white font-bold hover:bg-[#1E293B] transition-colors disabled:opacity-60 flex items-center justify-center gap-2 text-sm"
                       >
                         {loading ? (

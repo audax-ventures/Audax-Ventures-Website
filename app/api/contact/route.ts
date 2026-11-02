@@ -10,6 +10,7 @@ interface ContactPayload {
   phone?: string;
   services: string[];
   message: string;
+  turnstileToken?: string;
 }
 
 function escapeHtml(value: string): string {
@@ -19,6 +20,30 @@ function escapeHtml(value: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+async function verifyTurnstileToken(token: string, remoteIp: string | null): Promise<boolean> {
+  const secretKey = process.env.TURNSTILE_SECRET_KEY;
+  if (!secretKey) {
+    console.error("Contact form: TURNSTILE_SECRET_KEY is not configured.");
+    return false;
+  }
+
+  const body = new URLSearchParams({ secret: secretKey, response: token });
+  if (remoteIp) body.set("remoteip", remoteIp);
+
+  try {
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+    });
+    const data = await res.json();
+    return data.success === true;
+  } catch (err) {
+    console.error("Turnstile verification request failed:", err);
+    return false;
+  }
 }
 
 export async function POST(request: Request) {
@@ -38,10 +63,23 @@ export async function POST(request: Request) {
     return Response.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { name, email, company, phone, services, message } = payload;
+  const { name, email, company, phone, services, message, turnstileToken } = payload;
 
   if (!name?.trim() || !email?.trim() || !message?.trim()) {
     return Response.json({ error: "Name, email, and message are required." }, { status: 400 });
+  }
+
+  if (!turnstileToken) {
+    return Response.json({ error: "Please complete the verification challenge." }, { status: 400 });
+  }
+
+  const remoteIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
+  const verified = await verifyTurnstileToken(turnstileToken, remoteIp);
+  if (!verified) {
+    return Response.json(
+      { error: "Verification failed. Please try the challenge again." },
+      { status: 400 }
+    );
   }
 
   const servicesLine = services?.length ? services.join(", ") : "Not specified";
