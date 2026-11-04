@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ServiceLandingContent from "@/components/sections/ServiceLandingContent";
 import { getServicePageBySlug } from "@/lib/service-pages-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 const service = getServicePageBySlug("digital-operations")!;
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
   description: service.metaDescription,
   alternates: { canonical: "https://audaxventures.ca/services/digital-operations" },
   openGraph: {
+    images: [defaultOgImage],
     title: service.metaTitle,
     description: service.metaDescription,
     url: "https://audaxventures.ca/services/digital-operations",

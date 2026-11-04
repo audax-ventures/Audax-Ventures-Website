@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Building2, Zap, ShieldCheck, Link2 } from "lucide-react";
 import CTABanner from "@/components/layout/CTABanner";
 import { mainIndustries, otherIndustries } from "@/lib/industries-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 export const metadata: Metadata = {
   title: "Industries We Serve | Audax Ventures",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     "Custom software development for healthcare, manufacturing, real estate, fintech, retail, education, hospitality, legal, logistics, non-profit, and SaaS companies across Canada.",
   alternates: { canonical: "https://audaxventures.ca/industries" },
   openGraph: {
+    images: [defaultOgImage],
     title: "Industries We Serve | Audax Ventures",
     description:
       "Custom software development across 11 industries in Canada. From healthcare compliance to logistics visibility — we build software that fits your industry's specific constraints.",

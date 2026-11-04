@@ -7,6 +7,7 @@ import {
   getAllIndustrySlugs,
   industriesData,
 } from "@/lib/industries-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: industry.metaDescription,
     alternates: { canonical: `https://audaxventures.ca/industries/${slug}` },
     openGraph: {
+      images: [defaultOgImage],
       title: industry.metaTitle,
       description: industry.metaDescription,
       url: `https://audaxventures.ca/industries/${slug}`,

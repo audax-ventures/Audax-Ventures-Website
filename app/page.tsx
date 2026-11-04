@@ -7,12 +7,14 @@ import DifferentiatorStatement from "@/components/sections/DifferentiatorStateme
 import HomeProcessSection from "@/components/sections/HomeProcessSection";
 import ImpactHighlights from "@/components/sections/ImpactHighlights";
 import FractionalCaioSpotlight from "@/components/sections/FractionalCaioSpotlight";
+import { defaultOgImage } from "@/lib/og-image";
 
 export const metadata: Metadata = {
   title: "Audax Ventures — The AI Strategy Partner That Actually Builds",
   description:
     "Fractional CAIO leadership and custom AI software that help organizations operate smarter, move faster, and create measurable impact. Book a free strategy call today.",
   openGraph: {
+    images: [defaultOgImage],
     title: "Audax Ventures — The AI Strategy Partner That Actually Builds",
     description:
       "Fractional CAIO leadership and custom AI software that help organizations operate smarter, move faster, and create measurable impact.",

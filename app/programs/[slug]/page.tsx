@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import CTABanner from "@/components/layout/CTABanner";
 import { getSolutionBySlug, getAllSolutionSlugs } from "@/lib/solutions-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: program.metaDescription,
     alternates: { canonical: `https://audaxventures.ca/programs/${slug}` },
     openGraph: {
+      images: [defaultOgImage],
       title: program.metaTitle,
       description: program.metaDescription,
       url: `https://audaxventures.ca/programs/${slug}`,

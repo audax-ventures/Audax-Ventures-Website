@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Clock, Zap } from "lucide-react";
 import CTABanner from "@/components/layout/CTABanner";
 import { solutionsData } from "@/lib/solutions-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 export const metadata: Metadata = {
   title: "Programs | Audax Ventures",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     "The Founder Prototype Program — a structured program built for early-stage founders who need to validate before they build.",
   alternates: { canonical: "https://audaxventures.ca/programs" },
   openGraph: {
+    images: [defaultOgImage],
     title: "Programs | Audax Ventures",
     description:
       "A structured, phased program for founders building prototypes. Beyond a typical development agency.",
