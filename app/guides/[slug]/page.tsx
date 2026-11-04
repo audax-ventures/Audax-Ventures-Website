@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import CTABanner from "@/components/layout/CTABanner";
 import { getGuideBySlug, getAllGuideSlugs } from "@/lib/guides-data";
 import { servicePagesData } from "@/lib/service-pages-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: guide.metaTitle,
     description: guide.metaDescription,
     alternates: { canonical: `https://audaxventures.ca/guides/${slug}` },
-    openGraph: { title: guide.metaTitle, description: guide.metaDescription },
+    openGraph: { images: [defaultOgImage], title: guide.metaTitle, description: guide.metaDescription },
   };
 }
 

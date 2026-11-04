@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CareersContent from "@/components/sections/CareersContent";
 import { getCareerBySlug, getAllCareerSlugs } from "@/lib/careers-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -20,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: job.metaDescription,
     alternates: { canonical: `https://audaxventures.ca/careers/${slug}` },
     openGraph: {
+      images: [defaultOgImage],
       title: job.metaTitle,
       description: job.metaDescription,
       url: `https://audaxventures.ca/careers/${slug}`,

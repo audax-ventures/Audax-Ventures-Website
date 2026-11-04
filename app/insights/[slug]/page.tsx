@@ -6,6 +6,7 @@ import { marked } from "marked";
 import { ArrowLeft } from "lucide-react";
 import CTABanner from "@/components/layout/CTABanner";
 import { getBlogPostBySlug, getAllBlogSlugs, blogPosts } from "@/lib/insights-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: post.metaDescription,
     alternates: { canonical: `https://audaxventures.ca/insights/${slug}` },
     openGraph: {
+      images: [defaultOgImage],
       title: post.metaTitle,
       description: post.metaDescription,
       type: "article",

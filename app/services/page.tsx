@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Lightbulb, Code2, TrendingUp, Check } from "lucide-react";
 import { servicePagesData } from "@/lib/service-pages-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 export const metadata: Metadata = {
   title: "Services | Audax Ventures",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
     "AI Leadership, Custom Software Development, and Digital Operations — the three ways Audax helps organizations think bigger, build better, and scale smarter.",
   alternates: { canonical: "https://audaxventures.ca/services" },
   openGraph: {
+    images: [defaultOgImage],
     title: "Services | Audax Ventures",
     description:
       "AI Leadership, Custom Software Development, and Digital Operations — the three ways Audax helps organizations think bigger, build better, and scale smarter.",

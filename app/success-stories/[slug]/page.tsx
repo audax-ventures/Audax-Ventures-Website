@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import CTABanner from "@/components/layout/CTABanner";
 import CaseStudyContent from "@/components/sections/CaseStudyContent";
 import { caseStudiesData, getCaseStudyBySlug, getAllCaseStudySlugs } from "@/lib/case-studies-data";
+import { defaultOgImage } from "@/lib/og-image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: study.metaDescription,
     alternates: { canonical: `https://audaxventures.ca/success-stories/${slug}` },
     openGraph: {
+      images: [defaultOgImage],
       title: study.metaTitle,
       description: study.metaDescription,
       url: `https://audaxventures.ca/success-stories/${slug}`,
