@@ -4,5 +4,5 @@ export const defaultOgImage = {
   url: "/opengraph-image.png",
   width: 1200,
   height: 630,
-  alt: "Audax Ventures — The AI Strategy Partner That Actually Builds",
+  alt: "Audax Ventures — AI Strategy & Custom Software Development",
 };

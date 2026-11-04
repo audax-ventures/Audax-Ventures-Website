@@ -10,9 +10,9 @@ import FractionalCaioSpotlight from "@/components/sections/FractionalCaioSpotlig
 import { defaultOgImage } from "@/lib/og-image";
 
 export const metadata: Metadata = {
-  title: "Audax Ventures — The AI Strategy Partner That Actually Builds",
+  title: "Audax Ventures — AI Strategy & Custom Software Development",
   description:
-    "Fractional CAIO leadership and custom AI software that help organizations operate smarter, move faster, and create measurable impact. Book a free strategy call today.",
+    "Fractional CAIO leadership and custom software solutions that help organizations operate smarter, move faster, and create measurable impact. Book a free strategy call today.",
   openGraph: {
     images: [defaultOgImage],
     title: "Audax Ventures — AI Strategy & Custom Software Development",
