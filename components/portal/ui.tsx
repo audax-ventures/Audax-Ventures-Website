@@ -92,13 +92,17 @@ export function CardHeader({
   );
 }
 
-export function IconBadge({ icon: Icon, tone = "blue", size = "md" }: { icon: LucideIcon; tone?: "blue" | "amber" | "green" | "slate" | "sky"; size?: "sm" | "md" | "lg" }) {
+export type IconTone = "blue" | "amber" | "green" | "slate" | "sky" | "violet" | "red";
+
+export function IconBadge({ icon: Icon, tone = "blue", size = "md" }: { icon: LucideIcon; tone?: IconTone; size?: "sm" | "md" | "lg" }) {
   const tones = {
     blue: "bg-gradient-to-br from-[#E6EFFA] to-[#D6E4F5] text-[#1F5A99] ring-1 ring-inset ring-[#C6D8EE]",
     amber: "bg-gradient-to-br from-amber-50 to-amber-100 text-amber-600 ring-1 ring-inset ring-amber-200/70",
     green: "bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-600 ring-1 ring-inset ring-emerald-200/70",
     slate: "bg-gradient-to-br from-slate-50 to-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200",
     sky: "bg-gradient-to-br from-sky-50 to-sky-100 text-sky-600 ring-1 ring-inset ring-sky-200/70",
+    violet: "bg-gradient-to-br from-violet-50 to-violet-100 text-violet-600 ring-1 ring-inset ring-violet-200/70",
+    red: "bg-gradient-to-br from-red-50 to-red-100 text-red-600 ring-1 ring-inset ring-red-200/70",
   };
   const sizes = { sm: "h-7 w-7 rounded-lg", md: "h-9 w-9 rounded-xl", lg: "h-11 w-11 rounded-xl" };
   const iconSizes = { sm: "h-3.5 w-3.5", md: "h-[18px] w-[18px]", lg: "h-5 w-5" };

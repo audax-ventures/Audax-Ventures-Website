@@ -41,6 +41,7 @@ export default async function ReportPage({ params }: PageProps<"/portal/reports/
         cadence={template.cadence}
         clientName={client.name}
         clientLogo={client.logo_data}
+        clientColor={client.brand_color}
         history={history}
         activity={activity.map((a) => ({
           id: a.id,

@@ -115,9 +115,19 @@ export default function WorkflowPanel({
 
   return (
     <>
-      <Card>
+      <Card className="overflow-hidden">
+        <div
+          aria-hidden
+          className={cn(
+            "h-1.5 bg-gradient-to-r",
+            status === "draft" && "from-slate-300 to-slate-400",
+            status === "in_review" && "from-amber-300 to-amber-500",
+            status === "approved" && "from-emerald-400 to-emerald-600",
+            status === "sent" && "from-sky-400 to-sky-600",
+          )}
+        />
         <div className="px-4 pb-4 pt-4">
-          <h3 className="text-sm font-semibold text-[#0F2341]">Review &amp; approval</h3>
+          <h3 className="font-heading text-[1.05rem] font-semibold text-[#0B1B33]">Review &amp; approval</h3>
           {/* Progress */}
           <ol className="mt-4 grid grid-cols-4" aria-label="Report progress">
             {STEPS.map((st, i) => {
@@ -231,7 +241,7 @@ export default function WorkflowPanel({
 
       <Card>
         <div className="border-b border-[#EEF1F5] px-4 py-3.5">
-          <h3 className="text-sm font-semibold text-[#0F2341]">History</h3>
+          <h3 className="font-heading text-[1.05rem] font-semibold text-[#0B1B33]">History</h3>
         </div>
         <ol className="max-h-[420px] overflow-y-auto p-4">
           {activity.length === 0 ? <li className="text-xs text-slate-500">Nothing yet.</li> : null}
