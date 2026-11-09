@@ -32,11 +32,23 @@ export async function getClient(db: DB, id: string) {
 
 // ----- Templates -----
 
+const CADENCE_RANK = { weekly: 1, monthly: 2, custom: 3 } as const;
+
+/** List order: your chosen order first, then weekly before monthly, then A–Z. */
+export function compareTemplates(a: ReportTemplate, b: ReportTemplate) {
+  return (
+    (a.sort_order ?? 100) - (b.sort_order ?? 100) ||
+    (CADENCE_RANK[a.cadence] ?? 9) - (CADENCE_RANK[b.cadence] ?? 9) ||
+    a.name.localeCompare(b.name)
+  );
+}
+
 export async function listTemplates(db: DB, opts: { clientId?: string; includeArchived?: boolean } = {}) {
-  let q = db.from("portal_templates").select("*").order("name");
+  // Sorted here rather than in the database, so lists still work before migration 003 has been run.
+  let q = db.from("portal_templates").select("*");
   if (opts.clientId) q = q.eq("client_id", opts.clientId);
   if (!opts.includeArchived) q = q.eq("archived", false);
-  return check<ReportTemplate[]>(await q);
+  return check<ReportTemplate[]>(await q).sort(compareTemplates);
 }
 
 export async function getTemplate(db: DB, id: string) {

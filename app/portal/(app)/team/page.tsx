@@ -17,7 +17,8 @@ export default async function TeamPage() {
   const clientNames = new Map(clients.map((c) => [c.id, c.name]));
   const reportTypes = templates
     .filter((t) => clientNames.has(t.client_id))
-    .map((t) => ({ id: t.id, name: t.name, cadence: t.cadence, clientName: clientNames.get(t.client_id)! }));
+    .map((t) => ({ id: t.id, name: t.name, cadence: t.cadence, clientName: clientNames.get(t.client_id)! }))
+    .sort((a, b) => a.clientName.localeCompare(b.clientName)); // stable: keeps each client's template order
   // If the reminders table hasn't been created yet, the page still works and explains what to do.
   const remindersReady = !remindersRes.error;
   const active = people.filter((p) => p.active).length;

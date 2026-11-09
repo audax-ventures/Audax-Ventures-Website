@@ -204,6 +204,8 @@ export interface ReportTemplate {
   cadence: Cadence;
   schema: TemplateSchema;
   archived: boolean;
+  /** Position in lists (lower first). Missing until migration 003 has been run. */
+  sort_order?: number;
   created_at: string;
   updated_at: string;
 }

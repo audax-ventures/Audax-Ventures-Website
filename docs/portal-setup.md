@@ -68,3 +68,11 @@ report still needs work: not started after its period ended, or a draft not yet 
 **Send test email** on the Team page to check it. To see who would be emailed today without
 sending anything, open `/api/portal/reminders?dry=1` (with the `Authorization: Bearer <CRON_SECRET>`
 header if you set one).
+
+## Report order (set up once)
+
+Run `supabase/portal-migration-003-template-order.sql` in the Supabase SQL Editor (already included
+in `portal-setup.sql` for new projects). Then use the arrows next to each report on a client's page
+to set the order reports appear in across the portal: the New Report dropdown, the dashboard,
+the templates page and reminders. Until the update is run, reports list weekly first, then monthly,
+then A–Z.

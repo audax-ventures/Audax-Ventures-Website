@@ -37,7 +37,7 @@ export default async function NewReportPage({ searchParams }: PageProps<"/portal
   const initial =
     (typeof template === "string" && options.find((o) => o.id === template)) ||
     (typeof client === "string" && options.find((o) => o.clientId === client)) ||
-    options[0];
+    [...options].sort((a, b) => a.clientName.localeCompare(b.clientName))[0];
 
   return (
     <>

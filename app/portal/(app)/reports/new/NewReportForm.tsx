@@ -36,7 +36,9 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
 export default function NewReportForm({ options, initialId }: { options: TemplateOption[]; initialId: string }) {
   const [templateId, setTemplateId] = useState(initialId);
   const selected = options.find((o) => o.id === templateId) ?? options[0];
-  const clients = [...new Map(options.map((o) => [o.clientId, { id: o.clientId, name: o.clientName, logo: o.clientLogo }])).values()];
+  const clients = [...new Map(options.map((o) => [o.clientId, { id: o.clientId, name: o.clientName, logo: o.clientLogo }])).values()].sort((a, b) =>
+    a.name.localeCompare(b.name),
+  );
   const clientReports = options.filter((o) => o.clientId === selected.clientId);
   const [start, setStart] = useState(selected.suggestedStart);
   const [end, setEnd] = useState(selected.suggestedEnd);

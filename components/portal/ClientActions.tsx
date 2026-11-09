@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Archive, ArchiveRestore, Plus } from "lucide-react";
-import { createTemplate, setClientArchived } from "@/lib/portal/actions";
+import { Archive, ArchiveRestore, ChevronDown, ChevronUp, Plus } from "lucide-react";
+import { createTemplate, moveTemplate, setClientArchived } from "@/lib/portal/actions";
 import { Button, ErrorNote } from "./ui";
 
 export function NewTemplateButton({
@@ -66,5 +66,40 @@ export function ArchiveClientButton({ clientId, archived }: { clientId: string; 
       {archived ? <ArchiveRestore className="h-3.5 w-3.5" /> : <Archive className="h-3.5 w-3.5" />}
       {archived ? "Restore client" : "Archive client"}
     </Button>
+  );
+}
+
+export function TemplateOrderButtons({ templateId, isFirst, isLast, name }: { templateId: string; isFirst: boolean; isLast: boolean; name: string }) {
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const move = (dir: -1 | 1) =>
+    startTransition(async () => {
+      const res = await moveTemplate(templateId, dir);
+      if (!res.ok) alert(res.error);
+      router.refresh();
+    });
+  return (
+    <span className="flex flex-col">
+      <button
+        type="button"
+        onClick={() => move(-1)}
+        disabled={isFirst || pending}
+        aria-label={`Move ${name} up`}
+        title="Move up"
+        className="rounded-md p-0.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-[#0B1B33] disabled:opacity-25"
+      >
+        <ChevronUp className="h-4 w-4" />
+      </button>
+      <button
+        type="button"
+        onClick={() => move(1)}
+        disabled={isLast || pending}
+        aria-label={`Move ${name} down`}
+        title="Move down"
+        className="rounded-md p-0.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-[#0B1B33] disabled:opacity-25"
+      >
+        <ChevronDown className="h-4 w-4" />
+      </button>
+    </span>
   );
 }
