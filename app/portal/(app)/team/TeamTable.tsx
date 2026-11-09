@@ -3,7 +3,7 @@
 import { Fragment, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { BellRing, ChevronDown, Mail } from "lucide-react";
-import { saveReminder, sendTestReminder, updateMember } from "@/lib/portal/actions";
+import { saveReminder, sendTestReminder, sendTestReviewEmail, updateMember } from "@/lib/portal/actions";
 import type { Cadence, Profile, Role } from "@/lib/portal/types";
 import { cn } from "@/lib/utils";
 import { Avatar, Button, ErrorNote, thClass } from "@/components/portal/ui";
@@ -156,10 +156,21 @@ export default function TeamTable({
 }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
-  function change(id: string, changes: { role?: Role; active?: boolean }) {
+  function sendReviewTest(id: string) {
+    setError(null);
+    setNotice(null);
+    startTransition(async () => {
+      const res = await sendTestReviewEmail(id);
+      if (res.ok) setNotice(`Test review email sent to ${res.to}.`);
+      else setError(res.error);
+    });
+  }
+
+  function change(id: string, changes: { role?: Role; active?: boolean; notify_on_submit?: boolean }) {
     setError(null);
     startTransition(async () => {
       const res = await updateMember(id, changes);
@@ -171,18 +182,20 @@ export default function TeamTable({
   return (
     <div>
       {error ? <div className="p-4"><ErrorNote message={error} /></div> : null}
+      {notice ? <p className="mx-4 mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5 text-sm text-emerald-800">{notice}</p> : null}
       {!remindersReady ? (
         <p className="m-4 rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-2.5 text-sm text-amber-900">
           Email reminders need one more database step. Run <code>supabase/portal-migration-002-reminders.sql</code> in the Supabase SQL Editor.
         </p>
       ) : null}
       <div className="relative overflow-x-auto">
-        <table className="w-full min-w-[640px] text-sm">
+        <table className="w-full min-w-[760px] text-sm">
           <thead className="border-b border-[#EEF1F5] bg-[#F8FAFC]">
             <tr>
               <th className={`${thClass} pl-5`}>Person</th>
               <th className={thClass}>Role</th>
               <th className={thClass}>Access</th>
+              <th className={thClass} title="Admins: email me when a report is submitted for review">Review emails</th>
               <th className={`${thClass} pr-5`}>Reminders</th>
             </tr>
           </thead>
@@ -235,6 +248,37 @@ export default function TeamTable({
                         <span className={cn("whitespace-nowrap text-sm", p.active ? "text-emerald-700" : "text-slate-500")}>{p.active ? "Can sign in" : "No access"}</span>
                       </button>
                     </td>
+                    <td className="px-4 py-3.5">
+                      {p.role === "admin" ? (
+                        <span className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            role="switch"
+                            aria-checked={p.notify_on_submit !== false}
+                            aria-label={`Email ${name} when a report is submitted for review`}
+                            disabled={pending || !p.active}
+                            onClick={() => change(p.id, { notify_on_submit: p.notify_on_submit === false })}
+                            className="disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            <span className={cn("relative block h-6 w-11 rounded-full transition-colors", p.notify_on_submit !== false ? "bg-[#2E6FB8]" : "bg-slate-300")}>
+                              <span className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all", p.notify_on_submit !== false ? "left-[22px]" : "left-0.5")} />
+                            </span>
+                          </button>
+                          {p.notify_on_submit !== false && p.active ? (
+                            <button
+                              type="button"
+                              onClick={() => sendReviewTest(p.id)}
+                              disabled={pending}
+                              className="whitespace-nowrap text-xs font-medium text-[#1F5A99] hover:underline disabled:opacity-50"
+                            >
+                              Send test
+                            </button>
+                          ) : null}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-slate-400" title="Only admins review reports">—</span>
+                      )}
+                    </td>
                     <td className="py-3.5 pl-4 pr-5">
                       <button
                         type="button"
@@ -253,7 +297,7 @@ export default function TeamTable({
                   </tr>
                   {isOpen ? (
                     <tr>
-                      <td colSpan={4} className="p-0">
+                      <td colSpan={5} className="p-0">
                         <ReminderPanel person={p} reportTypes={reportTypes} reminders={mine} />
                       </td>
                     </tr>
