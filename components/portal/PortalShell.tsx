@@ -148,6 +148,7 @@ export default function PortalShell({ isAdmin, reviewCount, signOutAction, child
             </Link>
           );
         })}
+        <div className="mx-3 !my-2.5 h-px bg-white/15" aria-hidden />
         <form action={signOutAction}>
           <button
             type="submit"
