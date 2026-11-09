@@ -1,6 +1,7 @@
 import { requireMember } from "@/lib/portal/auth";
 import { listClients, listTemplates, latestReportForTemplate } from "@/lib/portal/data";
 import { formatPeriod, suggestPeriod } from "@/lib/portal/compute";
+import { LayoutTemplate } from "lucide-react";
 import { Card, EmptyState, LinkButton, PageHeader } from "@/components/portal/ui";
 import NewReportForm, { type TemplateOption } from "./NewReportForm";
 
@@ -23,6 +24,7 @@ export default async function NewReportPage({ searchParams }: PageProps<"/portal
           name: t.name,
           clientId: t.client_id,
           clientName: clientMap.get(t.client_id)!.name,
+          clientLogo: clientMap.get(t.client_id)!.logo_data,
           cadence: t.cadence,
           suggestedStart: suggestion.start,
           suggestedEnd: suggestion.end,
@@ -38,18 +40,23 @@ export default async function NewReportPage({ searchParams }: PageProps<"/portal
 
   return (
     <>
-      <PageHeader title="New report" back={{ href: "/portal/reports", label: "Reports" }} />
-      <Card className="max-w-2xl">
-        {options.length === 0 ? (
+      <PageHeader
+        title="New report"
+        description="Choose the report, check the dates, and you're ready to fill it in."
+        back={{ href: "/portal/reports", label: "Reports" }}
+      />
+      {options.length === 0 ? (
+        <Card className="max-w-2xl">
           <EmptyState
+            icon={LayoutTemplate}
             title="No report templates yet"
             description="Each client needs at least one report template first."
             action={<LinkButton href="/portal/clients">Go to clients</LinkButton>}
           />
-        ) : (
-          <NewReportForm options={options} initialId={initial.id} />
-        )}
-      </Card>
+        </Card>
+      ) : (
+        <NewReportForm options={options} initialId={initial.id} />
+      )}
     </>
   );
 }

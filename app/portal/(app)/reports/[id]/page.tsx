@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { displayName, requireMember } from "@/lib/portal/auth";
 import { getClient, getReport, getTemplate, listActivity, profileMap, reportHistory } from "@/lib/portal/data";
-import { PageHeader } from "@/components/portal/ui";
+import Link from "next/link";
 import ReportEditor from "@/components/portal/editor/ReportEditor";
 
 export const metadata = { title: "Report" };
@@ -22,7 +22,9 @@ export default async function ReportPage({ params }: PageProps<"/portal/reports/
 
   return (
     <>
-      <PageHeader title={client.name} back={{ href: "/portal/reports", label: "Reports" }} />
+      <Link href="/portal/reports" className="mb-4 inline-flex items-center gap-1 text-xs font-medium text-slate-500 transition-colors hover:text-[#0F2341]">
+        <span aria-hidden>←</span> All reports
+      </Link>
       <ReportEditor
         report={{
           id: report.id,
@@ -38,6 +40,7 @@ export default async function ReportPage({ params }: PageProps<"/portal/reports/
         }}
         cadence={template.cadence}
         clientName={client.name}
+        clientLogo={client.logo_data}
         history={history}
         activity={activity.map((a) => ({
           id: a.id,

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Archive, ArchiveRestore, ArrowDown, ArrowUp, ChevronDown, ChevronRight, Copy, Plus, Trash2 } from "lucide-react";
+import { AlignLeft, Archive, ArchiveRestore, ArrowDown, ArrowUp, ChevronDown, ChevronRight, Copy, Hash, Megaphone, Plus, Table2, Trash2, Wallet, type LucideIcon } from "lucide-react";
 import { duplicateTemplate, saveTemplate, setTemplateArchived } from "@/lib/portal/actions";
 import { newId } from "@/lib/portal/compute";
 import {
@@ -20,10 +20,12 @@ import {
   type ValueFormat,
 } from "@/lib/portal/types";
 import { cn } from "@/lib/utils";
-import { Button, Card, ErrorNote, Field, inputClass } from "./ui";
+import { Button, Card, ErrorNote, Field, IconBadge, inputClass } from "./ui";
+
+const TYPE_ICONS: Record<SectionType, LucideIcon> = { stats: Hash, table: Table2, ads: Megaphone, budget: Wallet, text: AlignLeft };
 
 const small =
-  "block w-full rounded-md border border-slate-200 bg-white px-2 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#2E5F8A] focus:outline-none focus:ring-2 focus:ring-[#2E5F8A]/15";
+  "block w-full rounded-lg border border-[#D5DCE6] bg-white px-2.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#2E5F8A] focus:outline-none focus:ring-4 focus:ring-[#2E5F8A]/10";
 
 function move<T>(list: T[], i: number, dir: -1 | 1): T[] {
   const j = i + dir;
@@ -347,8 +349,8 @@ export default function TemplateBuilder({
           </Field>
         </div>
         {reportCount > 0 ? (
-          <p className="mt-4 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600">
-            {reportCount} report{reportCount === 1 ? "" : "s"} already use this template. They keep the layout they were made with, so editing
+          <p className="mt-5 rounded-xl border border-[#E4E9F0] bg-[#F8FAFC] px-3.5 py-2.5 text-xs text-slate-600">
+            {reportCount === 1 ? "1 report already uses" : `${reportCount} reports already use`} this template. They keep the layout they were made with, so editing
             here is safe. Drafts can switch to the new layout from the report page.
           </p>
         ) : null}
@@ -359,17 +361,18 @@ export default function TemplateBuilder({
         const typeInfo = SECTION_TYPES.find((t) => t.type === section.type);
         return (
           <Card key={section.id}>
-            <div className="flex items-center gap-2 px-4 py-3">
+            <div className="flex items-center gap-2.5 px-4 py-3.5">
               <button type="button" onClick={() => setOpen({ ...open, [section.id]: !isOpen })} className="rounded p-1 text-slate-500 hover:bg-slate-100" aria-label={isOpen ? "Collapse" : "Expand"}>
                 {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
               </button>
+              <IconBadge icon={TYPE_ICONS[section.type]} size="sm" />
               <input
                 value={section.title}
                 onChange={(e) => updateSection({ ...section, title: e.target.value } as Section)}
-                className="min-w-0 flex-1 rounded-md border border-transparent px-2 py-1 text-sm font-semibold hover:border-slate-200 focus:border-[#2E5F8A] focus:outline-none"
+                className="min-w-0 flex-1 rounded-lg border border-transparent px-2 py-1.5 text-sm font-semibold text-[#0F2341] transition-colors hover:border-[#E4E9F0] focus:border-[#2E5F8A] focus:outline-none focus:ring-4 focus:ring-[#2E5F8A]/10"
                 aria-label="Section title"
               />
-              <span className="hidden rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600 sm:inline">{typeInfo?.label}</span>
+              <span className="hidden rounded-full bg-[#F1F5FA] px-2.5 py-0.5 text-xs font-medium text-[#2E5F8A] sm:inline">{typeInfo?.label}</span>
               <button
                 type="button"
                 title="Duplicate section"
@@ -397,14 +400,14 @@ export default function TemplateBuilder({
               />
             </div>
             {isOpen ? (
-              <div className="space-y-4 border-t border-slate-100 p-4">
+              <div className="space-y-4 border-t border-[#EEF1F5] bg-[#FBFCFE] p-5">
                 {section.type === "stats" ? <StatsSettings section={section} onChange={updateSection} /> : null}
                 {section.type === "table" ? <TableSettings section={section} onChange={updateSection} /> : null}
                 {section.type === "ads" ? <AdsSettings section={section} onChange={updateSection} /> : null}
                 {section.type === "budget" ? <BudgetSettings section={section} onChange={updateSection} adsSections={adsSections} /> : null}
                 {section.type === "text" ? <TextSettings section={section} onChange={updateSection} /> : null}
                 {section.type !== "budget" ? (
-                  <label className="flex items-center gap-2 border-t border-slate-100 pt-3 text-sm text-slate-700">
+                  <label className="flex items-center gap-2 border-t border-[#EEF1F5] pt-4 text-sm text-slate-700">
                     <input type="checkbox" checked={Boolean(section.carryOver)} onChange={(e) => updateSection({ ...section, carryOver: e.target.checked } as Section)} />
                     Copy this section from the last report when starting a new one
                   </label>
@@ -418,7 +421,7 @@ export default function TemplateBuilder({
       <div>
         {adding ? (
           <Card className="p-3">
-            <p className="px-2 pb-2 text-xs font-medium text-slate-500">Choose a section type</p>
+            <p className="px-1 pb-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-400">Choose a section type</p>
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {SECTION_TYPES.map((t) => (
                 <button
@@ -430,10 +433,13 @@ export default function TemplateBuilder({
                     setOpen({ ...open, [s.id]: true });
                     setAdding(false);
                   }}
-                  className="rounded-lg border border-slate-200 p-3 text-left hover:border-[#2E5F8A] hover:bg-slate-50"
+                  className="flex items-start gap-3 rounded-xl border border-[#E4E9F0] p-3.5 text-left transition-all hover:border-[#2E5F8A] hover:bg-[#F8FAFC]"
                 >
-                  <span className="block text-sm font-medium text-slate-900">{t.label}</span>
-                  <span className="block text-xs text-slate-500">{t.description}</span>
+                  <IconBadge icon={TYPE_ICONS[t.type]} size="sm" />
+                  <span>
+                    <span className="block text-sm font-semibold text-[#0F2341]">{t.label}</span>
+                    <span className="block text-xs text-slate-500">{t.description}</span>
+                  </span>
                 </button>
               ))}
             </div>
@@ -449,7 +455,7 @@ export default function TemplateBuilder({
       </div>
 
       <Card className="p-4">
-        <h3 className="text-sm font-semibold">More</h3>
+        <h3 className="text-sm font-semibold text-[#0F2341]">More options</h3>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <select value={copyTarget} onChange={(e) => setCopyTarget(e.target.value)} className={cn(inputClass, "w-auto")}>
             {clients.map((c) => (
@@ -491,7 +497,7 @@ export default function TemplateBuilder({
       </Card>
 
       {/* Sticky save bar */}
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-slate-200 bg-white/95 backdrop-blur lg:left-60">
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[#E4E9F0] bg-white/90 backdrop-blur-md lg:left-64">
         <div className="mx-auto flex max-w-7xl items-center justify-end gap-3 px-4 py-3 sm:px-6 lg:px-8">
           {message ? (
             message.ok ? <span className="text-sm text-emerald-700">{message.text}</span> : <ErrorNote message={message.text} />

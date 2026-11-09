@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, Download, MessageSquare, RotateCcw, Send, Trash2, Undo2 } from "lucide-react";
+import { Check, CheckCircle2, Download, MessageSquare, RotateCcw, Send, Trash2, Undo2 } from "lucide-react";
 import {
   addComment,
   approveReport,
@@ -14,7 +14,8 @@ import {
   type ActionResult,
 } from "@/lib/portal/actions";
 import type { ReportStatus } from "@/lib/portal/types";
-import { Button, Card, ErrorNote, inputClass } from "../ui";
+import { cn } from "@/lib/utils";
+import { Avatar, Button, Card, ErrorNote, buttonClass, inputClass } from "../ui";
 
 export interface ActivityItem {
   id: string;
@@ -35,6 +36,13 @@ const ACTION_TEXT: Record<string, string> = {
   comment: "commented",
   template_updated: "updated it to the latest template",
 };
+
+const STEPS: { key: ReportStatus; label: string }[] = [
+  { key: "draft", label: "Draft" },
+  { key: "in_review", label: "Review" },
+  { key: "approved", label: "Approved" },
+  { key: "sent", label: "Sent" },
+];
 
 const STATUS_HELP: Record<ReportStatus, { member: string; admin: string }> = {
   draft: {
@@ -63,6 +71,7 @@ export default function WorkflowPanel({
   activity,
   flush,
   pdfUrl,
+  contents,
 }: {
   reportId: string;
   status: ReportStatus;
@@ -71,6 +80,7 @@ export default function WorkflowPanel({
   activity: ActivityItem[];
   flush: () => Promise<boolean>;
   pdfUrl: string;
+  contents?: React.ReactNode;
 }) {
   const router = useRouter();
   const [note, setNote] = useState("");
@@ -101,19 +111,50 @@ export default function WorkflowPanel({
   }
 
   const help = STATUS_HELP[status][isAdmin ? "admin" : "member"];
+  const currentStep = STEPS.findIndex((st) => st.key === status);
 
   return (
     <>
       <Card>
-        <div className="border-b border-slate-100 px-4 py-3">
-          <h3 className="text-sm font-semibold">Review &amp; approval</h3>
-          <p className="mt-0.5 text-xs text-slate-500">{help}</p>
+        <div className="px-4 pb-4 pt-4">
+          <h3 className="text-sm font-semibold text-[#0F2341]">Review &amp; approval</h3>
+          {/* Progress */}
+          <ol className="mt-4 grid grid-cols-4" aria-label="Report progress">
+            {STEPS.map((st, i) => {
+              const done = i < currentStep;
+              const current = i === currentStep;
+              return (
+                <li key={st.key} className="relative flex flex-col items-center text-center">
+                  {i > 0 ? (
+                    <span
+                      aria-hidden
+                      className={cn("absolute right-1/2 top-3 h-0.5 w-full -translate-y-1/2", i <= currentStep ? "bg-[#2E5F8A]" : "bg-[#E4E9F0]")}
+                    />
+                  ) : null}
+                  <span
+                    className={cn(
+                      "relative z-10 flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold",
+                      done && "bg-[#2E5F8A] text-white",
+                      current && "bg-[#0F2341] text-white ring-4 ring-[#2E5F8A]/15",
+                      !done && !current && "border-2 border-[#E4E9F0] bg-white text-slate-400",
+                    )}
+                    aria-current={current ? "step" : undefined}
+                  >
+                    {done ? <Check className="h-3.5 w-3.5" /> : i + 1}
+                  </span>
+                  <span className={cn("mt-1.5 text-[11px] font-medium", current ? "text-[#0F2341]" : "text-slate-400")}>{st.label}</span>
+                </li>
+              );
+            })}
+          </ol>
+          <p className="mt-4 rounded-xl bg-[#F6F8FB] px-3 py-2.5 text-xs leading-relaxed text-slate-600">{help}</p>
         </div>
-        <div className="space-y-2.5 p-4">
+        <div className="space-y-2.5 border-t border-[#EEF1F5] p-4">
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={2}
+            aria-label="Note"
             placeholder={status === "in_review" && isAdmin ? "Note for the team (needed when asking for changes)" : "Add a note (optional)"}
             className={inputClass}
           />
@@ -150,7 +191,7 @@ export default function WorkflowPanel({
           ) : null}
 
           {status === "approved" || status === "sent" ? (
-            <a href={`${pdfUrl}?download=1`} className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#2E5F8A] px-3.5 py-2 text-sm font-medium text-white hover:bg-[#1A3A5C]">
+            <a href={`${pdfUrl}?download=1`} className={cn(buttonClass("primary"), "w-full")}>
               <Download className="h-4 w-4" /> Download final PDF
             </a>
           ) : null}
@@ -186,21 +227,27 @@ export default function WorkflowPanel({
         </div>
       </Card>
 
+      {contents}
+
       <Card>
-        <div className="border-b border-slate-100 px-4 py-3">
-          <h3 className="text-sm font-semibold">History</h3>
+        <div className="border-b border-[#EEF1F5] px-4 py-3.5">
+          <h3 className="text-sm font-semibold text-[#0F2341]">History</h3>
         </div>
-        <ol className="max-h-[420px] space-y-3 overflow-y-auto p-4">
+        <ol className="max-h-[420px] overflow-y-auto p-4">
           {activity.length === 0 ? <li className="text-xs text-slate-500">Nothing yet.</li> : null}
-          {activity.map((a) => (
-            <li key={a.id} className="text-xs">
-              <p className="text-slate-700">
-                <strong className="font-medium text-slate-900">{a.who}</strong> {ACTION_TEXT[a.action] ?? a.action}
-              </p>
-              {a.note ? <p className="mt-1 whitespace-pre-wrap rounded-md bg-slate-50 px-2 py-1.5 text-slate-700">{a.note}</p> : null}
-              <p className="mt-0.5 text-slate-400">
-                {new Date(a.at).toLocaleString("en-CA", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
-              </p>
+          {activity.map((a, i) => (
+            <li key={a.id} className="relative flex gap-3 pb-4 last:pb-0">
+              {i < activity.length - 1 ? <span aria-hidden className="absolute bottom-0 left-[13px] top-8 w-px bg-[#E4E9F0]" /> : null}
+              <Avatar name={a.who} size={27} />
+              <div className="min-w-0 text-xs">
+                <p className="text-slate-600">
+                  <strong className="font-semibold text-[#0F2341]">{a.who}</strong> {ACTION_TEXT[a.action] ?? a.action}
+                </p>
+                {a.note ? <p className="mt-1.5 whitespace-pre-wrap rounded-lg border border-[#EEF1F5] bg-[#F8FAFC] px-2.5 py-2 text-slate-700">{a.note}</p> : null}
+                <p className="mt-1 text-slate-400">
+                  {new Date(a.at).toLocaleString("en-CA", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+                </p>
+              </div>
             </li>
           ))}
         </ol>

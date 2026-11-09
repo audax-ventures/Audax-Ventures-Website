@@ -35,7 +35,7 @@ import { cn } from "@/lib/utils";
 import { Button, inputClass } from "../ui";
 
 const cellInput =
-  "block w-full rounded-md border border-slate-200 bg-white px-2 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#2E5F8A] focus:outline-none focus:ring-2 focus:ring-[#2E5F8A]/15 disabled:bg-slate-50";
+  "block w-full rounded-lg border border-[#D5DCE6] bg-white px-2.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#2E5F8A] focus:outline-none focus:ring-4 focus:ring-[#2E5F8A]/10 disabled:border-transparent disabled:bg-[#F6F8FB]";
 
 function placeholderFor(format: ValueFormat): string {
   switch (format) {
@@ -118,7 +118,7 @@ export function StatsEditor({
         const shown = raw.trim() && isNumericFormat(f.format) ? formatValue(raw, f.format) : null;
         return (
           <div key={f.id}>
-            <label htmlFor={`${section.id}-${f.id}`} className="mb-1 block text-xs font-medium text-slate-600">{f.label}</label>
+            <label htmlFor={`${section.id}-${f.id}`} className="mb-1.5 block text-[0.8rem] font-semibold text-slate-700">{f.label}</label>
             <input
               id={`${section.id}-${f.id}`}
               type={f.format === "date" ? "date" : "text"}
@@ -154,7 +154,7 @@ export function StatsEditor({
 function PasteBox({ onPaste, onClose, columns }: { onPaste: (text: string) => void; onClose: () => void; columns: string[] }) {
   const [text, setText] = useState("");
   return (
-    <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+    <div className="mt-3 rounded-xl border border-[#E4E9F0] bg-[#F8FAFC] p-4">
       <p className="mb-2 text-xs text-slate-600">
         Copy rows from Excel or Google Sheets and paste them here. Columns should be in this order:{" "}
         <strong>{columns.join(" · ")}</strong>
@@ -205,7 +205,7 @@ export function TableEditor({
       <div className="-mx-1 overflow-x-auto px-1">
         <table className="w-full min-w-[560px] text-sm">
           <thead>
-            <tr className="text-left text-xs font-medium text-slate-500">
+            <tr className="text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
               {section.numberLabel ? <th className="w-16 pb-2 pr-2 font-medium">#</th> : null}
               {section.columns.map((c) => (
                 <th key={c.id} className={cn("pb-2 pr-2 font-medium", isNumericFormat(c.format) && "text-right")}>
@@ -329,7 +329,7 @@ export function AdsEditor({
         return (
           <div key={c.id}>
             <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
-              <h4 className="text-sm font-semibold text-slate-800">{c.name}</h4>
+              <h4 className="text-sm font-semibold text-[#0F2341]">{c.name}</h4>
               <span className="text-xs text-slate-500">
                 {formatCurrency(totals.spend)} spent · {formatCompact(totals.impressions)} impressions ·{" "}
                 {formatCompact(totals.metric)} {c.metricLabel.toLowerCase()}
@@ -338,7 +338,7 @@ export function AdsEditor({
             <div className="-mx-1 overflow-x-auto px-1">
               <table className="w-full min-w-[720px] text-sm">
                 <thead>
-                  <tr className="text-left text-xs font-medium text-slate-500">
+                  <tr className="text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
                     <th className="min-w-[240px] pb-1.5 pr-2 font-medium">Ad</th>
                     <th className="w-[110px] pb-1.5 pr-2 text-right font-medium">Daily budget</th>
                     <th className="w-[110px] pb-1.5 pr-2 text-right font-medium">Spend</th>
@@ -441,7 +441,7 @@ export function BudgetEditor({
         <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {manualLines.map((l) => (
             <label key={l.id} className="block">
-              <span className="mb-1 block text-xs font-medium text-slate-600">{l.label} · spend {periodWord.toLowerCase()}</span>
+              <span className="mb-1.5 block text-[0.8rem] font-semibold text-slate-700">{l.label} · spend {periodWord.toLowerCase()}</span>
               <input
                 inputMode="decimal"
                 value={data.manual[l.id] ?? ""}
@@ -457,7 +457,7 @@ export function BudgetEditor({
       <div className="-mx-1 overflow-x-auto px-1">
         <table className="w-full min-w-[560px] text-sm">
           <thead>
-            <tr className="border-b border-slate-200 text-left text-xs font-medium text-slate-500">
+            <tr className="border-b border-[#E4E9F0] text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
               <th className="pb-2 font-medium" />
               <th className="pb-2 text-right font-medium">{section.year} budget</th>
               <th className="pb-2 text-right font-medium">{periodWord}</th>
@@ -472,7 +472,7 @@ export function BudgetEditor({
                   <div className="font-medium text-slate-800">{r.label}</div>
                   <div className="mt-1 h-1.5 w-full max-w-[160px] rounded-full bg-slate-100">
                     <div
-                      className={cn("h-1.5 rounded-full", r.pctUsed > 1 ? "bg-red-500" : "bg-[#2E5F8A]")}
+                      className={cn("h-1.5 rounded-full", r.pctUsed > 1 ? "bg-red-500" : "bg-[#0F2341]")}
                       style={{ width: `${Math.min(100, r.pctUsed * 100)}%` }}
                     />
                   </div>
