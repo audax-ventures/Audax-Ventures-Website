@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Brand fonts (loaded in app/layout.tsx). `font-heading` = Outfit,
+   the default sans = Inter, `font-mono` = JetBrains Mono. */
+@theme inline {
+  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
 :root {
   --background: #FAFAF8;
   --foreground: #1A1A2E;

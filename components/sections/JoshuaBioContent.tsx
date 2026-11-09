@@ -63,7 +63,7 @@ export default function JoshuaBioContent() {
               <p className="text-xs font-bold tracking-widest uppercase text-[#2563EB] mb-4">
                 Meet Joshua, the Leader of Audax
               </p>
-              <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-3 leading-tight">
+              <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-3 leading-tight">
                 Joshua Zaporzan
               </h1>
               <p className="text-[#374151] text-lg font-medium mb-8">
@@ -132,7 +132,7 @@ export default function JoshuaBioContent() {
       {/* ── CTA ── */}
       <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-4">
+          <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-4">
             Want to Talk AI Strategy or Custom Software?
           </h2>
           <p className="text-[#374151] mb-8 max-w-xl mx-auto">

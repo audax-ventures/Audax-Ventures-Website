@@ -57,7 +57,7 @@ export function AnimatedHero({
         <div className="font-[family-name:var(--font-jetbrains-mono),ui-monospace,SFMono-Regular,Menlo,monospace] text-xs font-medium tracking-[0.12em] uppercase text-[var(--color-fg-muted)] mb-10">
           {eyebrow}
         </div>
-        <h1 className="font-[family-name:var(--font-outfit)] text-[clamp(3rem,7.5vw,7.5rem)] font-bold leading-[0.95] tracking-tight text-[var(--color-fg)] max-w-[16ch] mb-10">
+        <h1 className="font-heading text-[clamp(3rem,7.5vw,7.5rem)] font-bold leading-[0.95] tracking-tight text-[var(--color-fg)] max-w-[16ch] mb-10">
           {headline.map((chunk, i) => (
             <span key={i}>
               {chunk}
@@ -89,7 +89,7 @@ export function AnimatedHero({
         animate="visible"
         variants={wordContainer}
         transition={{ delayChildren: 0.15 }}
-        className="font-[family-name:var(--font-outfit)] text-[clamp(3rem,7.5vw,7.5rem)] font-bold leading-[0.95] tracking-tight text-[var(--color-fg)] max-w-[16ch] mb-10"
+        className="font-heading text-[clamp(3rem,7.5vw,7.5rem)] font-bold leading-[0.95] tracking-tight text-[var(--color-fg)] max-w-[16ch] mb-10"
       >
         {headline.map((chunk, i) => (
           <span key={i} className="inline-block overflow-hidden align-baseline pb-[0.05em]">

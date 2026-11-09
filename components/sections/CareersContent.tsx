@@ -15,7 +15,7 @@ const inputClass =
 const labelClass = "block text-xs font-semibold text-[#0F172A] mb-1.5 tracking-wide";
 const bodyTextClass = "text-[#374151] leading-relaxed";
 const listClass = "list-disc pl-5 space-y-1.5 text-[#374151] leading-relaxed marker:text-[#9CA3AF]";
-const sectionHeadingClass = "font-[var(--font-outfit)] font-bold text-xl text-[#0F172A] mb-3";
+const sectionHeadingClass = "font-heading font-bold text-xl text-[#0F172A] mb-3";
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024;
 const ALLOWED_DOC_TYPES = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
@@ -185,7 +185,7 @@ export default function CareersContent({ job }: { job: CareerJob }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.08 }}
-            className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A] mb-8 leading-tight"
+            className="font-heading font-extrabold text-3xl sm:text-4xl text-[#0F172A] mb-8 leading-tight"
           >
             {job.title}
           </motion.h1>
@@ -271,7 +271,7 @@ export default function CareersContent({ job }: { job: CareerJob }) {
                   <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-6">
                     <CheckCircle2 size={32} className="text-green-500" />
                   </div>
-                  <h3 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#0F172A] mb-3">
+                  <h3 className="font-heading font-extrabold text-2xl text-[#0F172A] mb-3">
                     Application submitted!
                   </h3>
                   <p className="text-[#374151] max-w-sm leading-relaxed">
@@ -287,7 +287,7 @@ export default function CareersContent({ job }: { job: CareerJob }) {
                   className="p-8 sm:p-10"
                 >
                   <div className="mb-8">
-                    <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#0F172A] mb-2">
+                    <h2 className="font-heading font-extrabold text-2xl text-[#0F172A] mb-2">
                       {applyLabel}
                     </h2>
                     <p className="text-[#374151] text-sm">

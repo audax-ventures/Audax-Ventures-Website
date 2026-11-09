@@ -66,7 +66,7 @@ export default function IndustriesPage() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#2E5F8A]/10 text-[#2E5F8A] text-xs font-semibold mb-6 uppercase tracking-widest">
             Industries We Serve
           </div>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#1A1A2E] mb-6 leading-tight">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#1A1A2E] mb-6 leading-tight">
             Software Built for{" "}
             <span className="text-[#2E5F8A]">Your Industry</span>
           </h1>
@@ -97,7 +97,7 @@ export default function IndustriesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="text-[10px] font-bold tracking-widest uppercase text-[#2E5F8A] mb-3">Primary Focus</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
               Our Main Industries
             </h2>
             <p className="text-[#374151] mt-4 max-w-xl mx-auto">
@@ -113,12 +113,12 @@ export default function IndustriesPage() {
                 className="group relative bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#2E5F8A] hover:shadow-xl hover:shadow-[#2E5F8A]/8 transition-all duration-300"
               >
                 {/* Number */}
-                <span className="absolute top-6 right-8 text-5xl font-extrabold text-[#F0F4F8] font-[var(--font-outfit)] select-none group-hover:text-[#2E5F8A]/10 transition-colors">
+                <span className="absolute top-6 right-8 text-5xl font-extrabold text-[#F0F4F8] font-heading select-none group-hover:text-[#2E5F8A]/10 transition-colors">
                   0{i + 1}
                 </span>
 
                 <div className="text-4xl mb-5">{industry.icon}</div>
-                <h3 className="font-[var(--font-outfit)] font-extrabold text-xl text-[#1A1A2E] mb-3 group-hover:text-[#2E5F8A] transition-colors">
+                <h3 className="font-heading font-extrabold text-xl text-[#1A1A2E] mb-3 group-hover:text-[#2E5F8A] transition-colors">
                   {industry.title}
                 </h3>
                 <p className="text-[#374151] text-sm leading-relaxed mb-6">{industry.tagline}</p>
@@ -152,7 +152,7 @@ export default function IndustriesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="text-[10px] font-bold tracking-widest uppercase text-[#374151] mb-3">Full Coverage</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
               All Industries
             </h2>
             <p className="text-[#374151] mt-4 max-w-xl mx-auto">
@@ -168,7 +168,7 @@ export default function IndustriesPage() {
                 className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-[#2E5F8A] hover:shadow-lg hover:shadow-[#2E5F8A]/6 transition-all duration-300"
               >
                 <div className="text-3xl mb-4">{industry.icon}</div>
-                <h3 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mb-2 group-hover:text-[#2E5F8A] transition-colors text-sm leading-snug">
+                <h3 className="font-heading font-bold text-[#1A1A2E] mb-2 group-hover:text-[#2E5F8A] transition-colors text-sm leading-snug">
                   {industry.title}
                 </h3>
                 <p className="text-[#374151] text-xs leading-relaxed mb-4 line-clamp-2">{industry.tagline}</p>
@@ -186,7 +186,7 @@ export default function IndustriesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="text-[10px] font-bold tracking-widest uppercase text-[#2E5F8A] mb-3">What Sets Us Apart</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
               Why Industry Leaders Choose Audax
             </h2>
           </div>
@@ -194,7 +194,7 @@ export default function IndustriesPage() {
             {whyAudax.map((item) => (
               <div key={item.title} className="text-center">
                 <item.icon size={32} className="mx-auto mb-4 text-[#2E5F8A]" strokeWidth={1.75} />
-                <h3 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mb-3 text-base">{item.title}</h3>
+                <h3 className="font-heading font-bold text-[#1A1A2E] mb-3 text-base">{item.title}</h3>
                 <p className="text-[#374151] text-sm leading-relaxed">{item.description}</p>
               </div>
             ))}
@@ -213,7 +213,7 @@ export default function IndustriesPage() {
               { stat: "98%", label: "Client Satisfaction" },
             ].map((s) => (
               <div key={s.label}>
-                <div className="font-[var(--font-outfit)] font-extrabold text-4xl text-white mb-2">{s.stat}</div>
+                <div className="font-heading font-extrabold text-4xl text-white mb-2">{s.stat}</div>
                 <div className="text-blue-200 text-sm font-medium">{s.label}</div>
               </div>
             ))}

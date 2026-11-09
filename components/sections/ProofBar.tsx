@@ -23,7 +23,7 @@ export default function ProofBar() {
               transition={{ duration: 0.4, delay: i * 0.08 }}
               className="text-center"
             >
-              <div className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#2E5F8A] mb-1 tabular-nums">
+              <div className="font-heading font-extrabold text-3xl sm:text-4xl text-[#2E5F8A] mb-1 tabular-nums">
                 {s.value}
               </div>
               <div className="text-[#374151] text-sm font-medium">{s.label}</div>

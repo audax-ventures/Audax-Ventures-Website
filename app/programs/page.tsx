@@ -48,7 +48,7 @@ export default function ProgramsPage() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#2E5F8A]/10 text-[#2E5F8A] text-xs font-semibold mb-6 uppercase tracking-widest">
             Structured Programs
           </div>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#1A1A2E] mb-6 leading-tight">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#1A1A2E] mb-6 leading-tight">
             Beyond a Dev Agency —{" "}
             <span className="text-[#2E5F8A]">A Program Partner</span>
           </h1>
@@ -83,7 +83,7 @@ export default function ProgramsPage() {
                 <program.icon size={12} />
                 {program.badge}
               </div>
-              <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl mb-4">
+              <h2 className="font-heading font-extrabold text-3xl sm:text-4xl mb-4">
                 {program.heroTitle}
               </h2>
               <p className="text-blue-100 text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
@@ -134,7 +134,7 @@ export default function ProgramsPage() {
           {/* ── Phases ── */}
           <section className={idx % 2 === 0 ? "py-16 bg-[#F8F9FA]" : "py-16 bg-white"}>
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h3 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#1A1A2E] mb-10 text-center">
+              <h3 className="font-heading font-extrabold text-2xl text-[#1A1A2E] mb-10 text-center">
                 The {program.title} Phases
               </h3>
               <div className="grid md:grid-cols-3 gap-6">
@@ -146,7 +146,7 @@ export default function ProgramsPage() {
                     <div className="flex items-center gap-3 mb-4">
                       <span className="text-2xl">{phase.icon}</span>
                       <div>
-                        <p className="font-[var(--font-outfit)] font-extrabold text-[#1A1A2E] text-base">
+                        <p className="font-heading font-extrabold text-[#1A1A2E] text-base">
                           Phase {phase.number}: {phase.name}
                         </p>
                         <div className="flex items-center gap-1 text-xs text-[#374151] mt-0.5">
@@ -188,7 +188,7 @@ export default function ProgramsPage() {
       {/* ── Comparison CTA ── */}
       <section className="py-20 bg-[#1A1A2E]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-white mb-4">
+          <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-white mb-4">
             Not Sure Which Program Fits?
           </h2>
           <p className="text-gray-400 leading-relaxed mb-8">

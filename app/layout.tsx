@@ -100,7 +100,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="min-h-screen flex flex-col font-[var(--font-inter)] bg-white text-[#1A1A2E]">
+      <body className="min-h-screen flex flex-col font-sans bg-white text-[#1A1A2E]">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

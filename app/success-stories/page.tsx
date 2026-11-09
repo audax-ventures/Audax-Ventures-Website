@@ -15,7 +15,7 @@ export default function WorkPage() {
       <section className="pt-32 pb-14 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Client Success Stories</p>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4">
             Client Success Stories
           </h1>
           <p className="text-[#374151] text-lg">
@@ -27,7 +27,7 @@ export default function WorkPage() {
       <section className="pb-10 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-3xl border border-gray-100 bg-[#F8F9FA] p-8 sm:p-10 text-center">
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-xl sm:text-2xl text-[#0F172A] mb-3">
+            <h2 className="font-heading font-extrabold text-xl sm:text-2xl text-[#0F172A] mb-3">
               Real Results. Confidential by Design.
             </h2>
             <p className="text-[#374151] leading-relaxed max-w-2xl mx-auto">

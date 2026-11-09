@@ -229,7 +229,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] text-[#0F172A] leading-[1.1] mb-6"
+              className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-[3.4rem] xl:text-[3.8rem] text-[#0F172A] leading-[1.1] mb-6"
             >
               The AI Strategy Partner That Actually{" "}
               <span className="bg-gradient-to-r from-[#2563EB] to-[#7C3AED] bg-clip-text text-transparent">

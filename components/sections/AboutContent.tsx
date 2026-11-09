@@ -114,7 +114,7 @@ export default function AboutContent() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.1 }}
-                className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-6 leading-tight"
+                className="font-heading font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-6 leading-tight"
               >
                 AI Strategy. Custom Software.{" "}
                 <span className="bg-gradient-to-r from-[#2563EB] to-[#7C3AED] bg-clip-text text-transparent">
@@ -176,7 +176,7 @@ export default function AboutContent() {
                       <s.icon size={16} className="text-[#2563EB]" />
                     </div>
                     <div>
-                      <p className="font-[var(--font-outfit)] font-extrabold text-sm text-[#0F172A] leading-none">{s.value}</p>
+                      <p className="font-heading font-extrabold text-sm text-[#0F172A] leading-none">{s.value}</p>
                       <p className="text-[#9CA3AF] text-[10px] mt-0.5">{s.label}</p>
                     </div>
                   </div>
@@ -201,7 +201,7 @@ export default function AboutContent() {
               <div className="w-10 h-10 rounded-xl bg-[#2563EB]/10 flex items-center justify-center mb-4">
                 <Target size={18} className="text-[#2563EB]" />
               </div>
-              <h3 className="font-[var(--font-outfit)] font-bold text-lg text-[#0F172A] mb-2">Our Mission</h3>
+              <h3 className="font-heading font-bold text-lg text-[#0F172A] mb-2">Our Mission</h3>
               <p className="text-[#374151] text-sm leading-relaxed">
                 To empower organizations with AI leadership and software solutions that drive efficiency, accelerate growth, and create measurable impact.
               </p>
@@ -217,7 +217,7 @@ export default function AboutContent() {
               <div className="w-10 h-10 rounded-xl bg-[#2563EB]/10 flex items-center justify-center mb-4">
                 <Eye size={18} className="text-[#2563EB]" />
               </div>
-              <h3 className="font-[var(--font-outfit)] font-bold text-lg text-[#0F172A] mb-2">Our Vision</h3>
+              <h3 className="font-heading font-bold text-lg text-[#0F172A] mb-2">Our Vision</h3>
               <p className="text-[#374151] text-sm leading-relaxed">
                 A future where every organization—regardless of size—has access to world-class AI leadership and custom technology that transforms how they operate.
               </p>
@@ -233,7 +233,7 @@ export default function AboutContent() {
               <div className="w-10 h-10 rounded-xl bg-[#2563EB]/10 flex items-center justify-center mb-4">
                 <Gem size={18} className="text-[#2563EB]" />
               </div>
-              <h3 className="font-[var(--font-outfit)] font-bold text-lg text-[#0F172A] mb-4">Our Values</h3>
+              <h3 className="font-heading font-bold text-lg text-[#0F172A] mb-4">Our Values</h3>
               <div className="space-y-2">
                 {values.map((v) => (
                   <div key={v} className="flex items-center gap-2">
@@ -257,7 +257,7 @@ export default function AboutContent() {
             className="mb-12"
           >
             <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Why We Do What We Do</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
               Executive Leadership. Without the Full-Time Cost.
             </h2>
           </motion.div>
@@ -287,7 +287,7 @@ export default function AboutContent() {
                     <p.icon size={17} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-sm mb-1">{p.title}</h3>
+                    <h3 className="font-heading font-bold text-[#0F172A] text-sm mb-1">{p.title}</h3>
                     <p className="text-[#374151] text-xs leading-relaxed">{p.description}</p>
                   </div>
                 </motion.div>
@@ -307,7 +307,7 @@ export default function AboutContent() {
             className="mb-12 max-w-2xl"
           >
             <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Who We Work With</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A] mb-4">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#0F172A] mb-4">
               Built for Founders, Growing Teams &amp; Established Organizations
             </h2>
             <p className="text-[#374151] leading-relaxed">
@@ -328,7 +328,7 @@ export default function AboutContent() {
                 <div className="w-12 h-12 rounded-2xl bg-[#2563EB]/10 flex items-center justify-center mb-5 group-hover:bg-[#2563EB] transition-colors duration-300">
                   <a.icon size={20} className="text-[#2563EB] group-hover:text-white transition-colors duration-300" />
                 </div>
-                <h3 className="font-[var(--font-outfit)] font-bold text-lg text-[#0F172A] mb-2">{a.title}</h3>
+                <h3 className="font-heading font-bold text-lg text-[#0F172A] mb-2">{a.title}</h3>
                 <p className="text-[#374151] text-sm leading-relaxed">{a.description}</p>
               </motion.div>
             ))}
@@ -346,7 +346,7 @@ export default function AboutContent() {
             />
             <div className="relative">
               <p className="text-xs tracking-widest uppercase text-[#60A5FA] font-semibold mb-3">Types of Engagements</p>
-              <h3 className="font-[var(--font-outfit)] font-bold text-xl sm:text-2xl text-white mb-8 max-w-lg">
+              <h3 className="font-heading font-bold text-xl sm:text-2xl text-white mb-8 max-w-lg">
                 Whether You&apos;re...
               </h3>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
@@ -386,7 +386,7 @@ export default function AboutContent() {
             <div className="relative grid lg:grid-cols-2 gap-10 lg:gap-14">
               <div>
                 <p className="text-xs tracking-widest uppercase text-[#60A5FA] font-semibold mb-3">How We&apos;re Different</p>
-                <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-white mb-8 leading-snug">
+                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-white mb-8 leading-snug">
                   We Don&apos;t Just Advise. We Build. We Stay. We Deliver.
                 </h2>
                 <div className="space-y-6">
@@ -441,7 +441,7 @@ export default function AboutContent() {
             className="mb-14"
           >
             <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Our Story</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
               Built by Entrepreneurs. Driven by Results.
             </h2>
           </motion.div>
@@ -462,7 +462,7 @@ export default function AboutContent() {
                     <t.icon size={18} className="text-[#2563EB]" />
                   </div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-[#2563EB] mb-1.5">{t.year}</p>
-                  <h3 className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-sm mb-2">{t.title}</h3>
+                  <h3 className="font-heading font-bold text-[#0F172A] text-sm mb-2">{t.title}</h3>
                   <p className="text-[#374151] text-xs leading-relaxed">{t.description}</p>
                 </motion.div>
               ))}
@@ -480,7 +480,7 @@ export default function AboutContent() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
             {trustedStats.map((s) => (
               <div key={s.label}>
-                <p className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#2563EB] mb-1">{s.value}</p>
+                <p className="font-heading font-extrabold text-2xl sm:text-3xl text-[#2563EB] mb-1">{s.value}</p>
                 <p className="text-[#374151] text-xs">{s.label}</p>
               </div>
             ))}
@@ -499,7 +499,7 @@ export default function AboutContent() {
               className="mb-14 max-w-2xl"
             >
               <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Our Team</p>
-              <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
+              <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
                 Meet the Leadership Team
               </h2>
             </motion.div>
@@ -522,7 +522,7 @@ export default function AboutContent() {
                       sizes="(max-width: 640px) 80px, 112px"
                     />
                   </div>
-                  <h3 className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-sm leading-snug">{m.name}</h3>
+                  <h3 className="font-heading font-bold text-[#0F172A] text-sm leading-snug">{m.name}</h3>
                   <p className="text-[#374151] text-xs">{m.title}</p>
                 </motion.div>
               ))}

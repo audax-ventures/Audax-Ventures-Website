@@ -88,7 +88,7 @@ export default async function GuidePage({ params }: Props) {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2E5F8A]/10 text-[#2E5F8A] text-xs font-semibold mb-5 uppercase tracking-widest">
             Guide
           </div>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#1A1A2E] mb-6 leading-tight">
+          <h1 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A1A2E] mb-6 leading-tight">
             {guide.title}
           </h1>
           <div className="flex flex-wrap items-center gap-3 pb-8 border-b border-gray-100">
@@ -104,18 +104,18 @@ export default async function GuidePage({ params }: Props) {
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
-            className="prose prose-lg prose-headings:font-[var(--font-outfit)] prose-headings:font-bold prose-headings:text-[#1A1A2E] prose-p:text-[#374151] prose-p:leading-relaxed prose-a:text-[#2E5F8A] prose-strong:text-[#1A1A2E] prose-li:text-[#374151] max-w-none"
+            className="prose prose-lg prose-headings:font-heading prose-headings:font-bold prose-headings:text-[#1A1A2E] prose-p:text-[#374151] prose-p:leading-relaxed prose-a:text-[#2E5F8A] prose-strong:text-[#1A1A2E] prose-li:text-[#374151] max-w-none"
             dangerouslySetInnerHTML={{ __html: markdownToHtml(guide.content) }}
           />
         </div>
 
         {/* FAQ */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#1A1A2E] mb-8">Frequently Asked Questions</h2>
+          <h2 className="font-heading font-extrabold text-2xl text-[#1A1A2E] mb-8">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {guide.faq.map((f) => (
               <div key={f.q} className="bg-[#F8F9FA] rounded-2xl p-6">
-                <h3 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mb-2">{f.q}</h3>
+                <h3 className="font-heading font-bold text-[#1A1A2E] mb-2">{f.q}</h3>
                 <p className="text-[#374151] text-sm leading-relaxed">{f.a}</p>
               </div>
             ))}
@@ -125,7 +125,7 @@ export default async function GuidePage({ params }: Props) {
         {/* Related Services */}
         {relatedServicesData.length > 0 && (
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-            <h2 className="font-[var(--font-outfit)] font-bold text-xl text-[#1A1A2E] mb-4">Related Services</h2>
+            <h2 className="font-heading font-bold text-xl text-[#1A1A2E] mb-4">Related Services</h2>
             <div className="flex flex-wrap gap-3">
               {relatedServicesData.map((s) => s && (
                 <Link

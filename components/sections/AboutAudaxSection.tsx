@@ -24,7 +24,7 @@ export default function AboutAudaxSection() {
           className="text-center mb-14"
         >
           <p className="text-xs tracking-widest uppercase text-[#2E5F8A] font-semibold mb-4">About Audax</p>
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
             Strategy That Ships
           </h2>
         </motion.div>

@@ -43,7 +43,7 @@ export function PageHeader({
           {eyebrow ? (
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#2E5F8A]">{eyebrow}</p>
           ) : null}
-          <h1 className="font-[var(--font-outfit)] text-[1.65rem] font-semibold leading-tight tracking-tight text-[#0F2341]">
+          <h1 className="font-heading text-[1.65rem] font-semibold leading-tight tracking-tight text-[#0F2341]">
             {title}
           </h1>
           {description ? <p className="mt-1.5 max-w-2xl text-sm text-slate-500">{description}</p> : null}
@@ -314,7 +314,7 @@ export function StatTile({
         <p className="text-[0.8rem] font-medium text-slate-500">{label}</p>
         <IconBadge icon={icon} tone={tone} size="sm" />
       </div>
-      <p className="mt-3 font-[var(--font-outfit)] text-3xl font-semibold tabular-nums tracking-tight text-[#0F2341]">{value}</p>
+      <p className="mt-3 font-heading text-3xl font-semibold tabular-nums tracking-tight text-[#0F2341]">{value}</p>
       {caption ? <p className="mt-1 text-xs text-slate-500">{caption}</p> : null}
     </Card>
   );

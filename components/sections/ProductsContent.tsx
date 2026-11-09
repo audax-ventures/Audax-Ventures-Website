@@ -115,7 +115,7 @@ function ProductScreenshotFrame({ product }: { product: ProductData }) {
       </div>
       <div className="absolute inset-0 top-9 flex flex-col items-center justify-center gap-2">
         <div
-          className="w-14 h-14 rounded-2xl flex items-center justify-center font-[var(--font-outfit)] font-extrabold text-2xl text-white"
+          className="w-14 h-14 rounded-2xl flex items-center justify-center font-heading font-extrabold text-2xl text-white"
           style={{ backgroundColor: product.accentColor }}
         >
           {product.name.charAt(0)}
@@ -149,7 +149,7 @@ export default function ProductsContent() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.08 }}
-                className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-6 leading-tight"
+                className="font-heading font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-6 leading-tight"
               >
                 Software Products You Can{" "}
                 <span className="bg-gradient-to-r from-[#2563EB] to-[#7C3AED] bg-clip-text text-transparent">
@@ -186,7 +186,7 @@ export default function ProductsContent() {
                     <div className="w-9 h-9 rounded-lg bg-[#2563EB]/10 flex items-center justify-center mb-3">
                       <v.icon size={16} className="text-[#2563EB]" />
                     </div>
-                    <p className="font-[var(--font-outfit)] font-bold text-sm text-[#0F172A] mb-1 leading-snug">{v.title}</p>
+                    <p className="font-heading font-bold text-sm text-[#0F172A] mb-1 leading-snug">{v.title}</p>
                     <p className="text-[#374151] text-xs leading-relaxed">{v.desc}</p>
                   </div>
                 ))}
@@ -243,7 +243,7 @@ export default function ProductsContent() {
                       >
                         <Icon size={16} style={{ color: light ? "#fff" : product.accentColor }} />
                       </div>
-                      <h3 className={`font-[var(--font-outfit)] font-extrabold text-xl ${light ? "text-white" : "text-[#0F172A]"}`}>
+                      <h3 className={`font-heading font-extrabold text-xl ${light ? "text-white" : "text-[#0F172A]"}`}>
                         {product.name}
                       </h3>
                     </div>
@@ -253,7 +253,7 @@ export default function ProductsContent() {
                     >
                       {product.category}
                     </p>
-                    <h4 className={`font-[var(--font-outfit)] font-extrabold text-2xl leading-snug mb-3 ${light ? "text-white" : "text-[#0F172A]"}`}>
+                    <h4 className={`font-heading font-extrabold text-2xl leading-snug mb-3 ${light ? "text-white" : "text-[#0F172A]"}`}>
                       {product.headline}
                     </h4>
                     <p className={`text-base leading-relaxed mb-3 ${light ? "text-white/70" : "text-[#374151]"}`}>
@@ -305,7 +305,7 @@ export default function ProductsContent() {
                 <Briefcase size={16} className="text-[#2563EB]" />
               </div>
               <div>
-                <p className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-sm">Want to see how we build these?</p>
+                <p className="font-heading font-bold text-[#0F172A] text-sm">Want to see how we build these?</p>
                 <p className="text-[#374151] text-sm">Explore our client work and success stories.</p>
               </div>
             </div>

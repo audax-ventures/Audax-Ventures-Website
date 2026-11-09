@@ -110,7 +110,7 @@ export default function ServiceResultsSection({ phase, accent }: { phase: Servic
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeIn className="max-w-2xl mb-14">
           <SectionEyebrow icon={TrendingUp} label="Real Results" accent={accent} />
-          <h2 className={`font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-5 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
+          <h2 className={`font-heading font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-5 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
             What Working With Audax Looks Like
           </h2>
           <p className="text-[#374151] leading-relaxed">
@@ -126,7 +126,7 @@ export default function ServiceResultsSection({ phase, accent }: { phase: Servic
                 <div className="flex items-end justify-between gap-4 pt-5 border-t border-gray-100">
                   <div>
                     {stat?.stat && (
-                      <p className="font-[var(--font-outfit)] font-extrabold text-2xl leading-none mb-1" style={{ color: accent }}>
+                      <p className="font-heading font-extrabold text-2xl leading-none mb-1" style={{ color: accent }}>
                         {stat.stat}
                       </p>
                     )}

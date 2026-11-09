@@ -34,7 +34,7 @@ export default function CTABanner({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.05 }}
-          className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl md:text-5xl text-white mb-4"
+          className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-white mb-4"
         >
           {heading}
         </motion.h2>

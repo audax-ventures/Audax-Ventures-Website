@@ -78,7 +78,7 @@ function BigCard({
         {phase && (
           <p className="text-[10px] tracking-widest uppercase text-[#2563EB] font-bold mb-1">{phase}</p>
         )}
-        <p className="font-[var(--font-outfit)] font-extrabold text-[#0F172A] text-base mb-1 leading-snug">{label}</p>
+        <p className="font-heading font-extrabold text-[#0F172A] text-base mb-1 leading-snug">{label}</p>
         <p className="text-[#374151] text-sm leading-snug">{desc}</p>
       </div>
       <div className="inline-flex items-center self-start px-2.5 py-1 rounded-full bg-[#2563EB]/8 text-[#2563EB] text-xs font-bold mt-1">

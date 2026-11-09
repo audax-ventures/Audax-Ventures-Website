@@ -30,7 +30,7 @@ export default function StatsBar() {
                 <Image src={co.logo} alt={co.name} fill className="object-contain" sizes="(max-width: 640px) 56px, (max-width: 1024px) 96px, 128px" />
               </div>
               {!co.logoOnly && (
-                <span className="text-[#374151] font-[var(--font-outfit)] font-bold text-sm tracking-tight select-none">
+                <span className="text-[#374151] font-heading font-bold text-sm tracking-tight select-none">
                   {co.name}
                 </span>
               )}
