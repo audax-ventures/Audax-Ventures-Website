@@ -29,7 +29,7 @@ export interface DueItem {
   href: string;
 }
 
-const FROM_ADDRESS = "Audax Portal <portal@audaxventures.ca>";
+const FROM_ADDRESS = "Audax Ventures Portal <portal@audaxventures.ca>";
 
 export function portalBaseUrl(): string {
   return (process.env.PORTAL_BASE_URL || "https://audaxventures.ca").replace(/\/$/, "");
@@ -91,9 +91,7 @@ function escapeHtml(v: string) {
 export function buildReminderEmail(firstName: string, items: DueItem[], opts: { test?: boolean } = {}) {
   const base = portalBaseUrl();
   const one = items.length === 1;
-  const subject = one
-    ? `Reminder: ${items[0].clientName} ${items[0].templateName.toLowerCase()} (${items[0].periodLabel})`
-    : `Reminder: ${items.length} reports are due`;
+  const subject = "Reminder: A New Report is Due";
   const preheader = one
     ? `${items[0].clientName} · ${items[0].templateName} for ${items[0].periodLabel} is ready to complete.`
     : `${items.length} reports are ready to complete.`;
