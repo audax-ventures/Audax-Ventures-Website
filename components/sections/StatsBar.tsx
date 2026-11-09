@@ -16,7 +16,7 @@ export default function StatsBar() {
         <p className="text-center text-[10px] tracking-widest uppercase text-[#9CA3AF] font-semibold mb-8">
           Trusted by Innovative Organizations
         </p>
-        <div className="flex flex-nowrap items-center justify-center gap-x-3 sm:gap-x-8 lg:gap-x-14">
+        <div className="flex flex-wrap sm:flex-nowrap items-center justify-center gap-x-6 gap-y-5 sm:gap-x-8 lg:gap-x-14">
           {trustedBy.map((co) => (
             <a
               key={co.name}
