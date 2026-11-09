@@ -471,3 +471,52 @@ export async function deleteReport(id: string): Promise<ActionResult> {
   revalidatePath("/portal", "layout");
   redirect("/portal/reports");
 }
+
+// ============================================================
+// Email reminders (admin)
+// ============================================================
+
+export async function saveReminder(
+  profileId: string,
+  templateId: string,
+  input: { enabled: boolean; weekday: number | null; monthDay: number | null },
+): Promise<ActionResult> {
+  try {
+    const { supabase } = await adminOrThrow();
+    if (!input.enabled) {
+      const { error } = await supabase.from("portal_reminders").delete().eq("profile_id", profileId).eq("template_id", templateId);
+      if (error) throw new Error(error.message);
+    } else {
+      if (input.weekday === null && input.monthDay === null) throw new Error("Choose a day for the reminder.");
+      const { error } = await supabase.from("portal_reminders").upsert(
+        { profile_id: profileId, template_id: templateId, weekday: input.weekday, month_day: input.monthDay, enabled: true },
+        { onConflict: "profile_id,template_id" },
+      );
+      if (error) throw new Error(error.message);
+    }
+    revalidatePath("/portal/team");
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function sendTestReminder(profileId: string): Promise<ActionResult<{ to: string }>> {
+  try {
+    const { supabase } = await adminOrThrow();
+    const { buildReminderEmail, dueItemsForTemplates, firstName, sendEmail } = await import("./reminders");
+    const { todayInWinnipeg } = await import("./compute");
+    const { data: person } = await supabase.from("portal_profiles").select("email, full_name").eq("id", profileId).single();
+    if (!person) throw new Error("Team member not found.");
+    const { data: reminders } = await supabase.from("portal_reminders").select("template_id").eq("profile_id", profileId);
+    const templateIds = (reminders ?? []).map((r) => r.template_id as string);
+    if (!templateIds.length) throw new Error("Turn on at least one reminder first.");
+    // Show what's due now; if nothing is, preview their next reports instead.
+    let items = await dueItemsForTemplates(supabase, templateIds, todayInWinnipeg());
+    if (!items.length) items = await dueItemsForTemplates(supabase, templateIds, todayInWinnipeg(), { includeNotDue: true });
+    await sendEmail(person.email, buildReminderEmail(firstName(person.full_name, person.email), items, { test: true }));
+    return { ok: true, to: person.email };
+  } catch (e) {
+    return fail(e);
+  }
+}

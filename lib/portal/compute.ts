@@ -423,3 +423,30 @@ export function computeBudget(section: BudgetSection, ctx: ReportContext) {
   );
   return { rows, totals };
 }
+
+// ----- What's next for a report template -----
+
+export type NextState = "due" | "progress" | "upcoming";
+
+/**
+ * The next report for a template: one already in progress (draft or in review),
+ * one that's due (its period has ended), or one whose period isn't over yet.
+ * Used by the dashboard and the reminder emails so they always agree.
+ */
+export function nextReportState<R extends { status: string; period_start: string; period_end: string }>(
+  cadence: Cadence,
+  lastReport: R | null | undefined,
+  today: string,
+): { state: NextState; period: { start: string; end: string }; inProgress: R | null } {
+  const inProgress = lastReport && (lastReport.status === "draft" || lastReport.status === "in_review") ? lastReport : null;
+  const period = inProgress
+    ? { start: inProgress.period_start, end: inProgress.period_end }
+    : suggestPeriod(cadence, lastReport?.period_end ?? null);
+  const state: NextState = inProgress ? "progress" : period.end < today ? "due" : "upcoming";
+  return { state, period, inProgress };
+}
+
+/** Today's date in Winnipeg (YYYY-MM-DD), where the team works. */
+export function todayInWinnipeg(): string {
+  return new Date().toLocaleDateString("en-CA", { timeZone: "America/Winnipeg" });
+}

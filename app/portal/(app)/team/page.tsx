@@ -1,6 +1,6 @@
 import { ShieldCheck, UserPlus, Users } from "lucide-react";
 import { requireAdmin } from "@/lib/portal/auth";
-import { listProfiles } from "@/lib/portal/data";
+import { listClients, listProfiles, listTemplates } from "@/lib/portal/data";
 import { Card, CardHeader, PageHeader } from "@/components/portal/ui";
 import TeamTable from "./TeamTable";
 
@@ -8,15 +8,32 @@ export const metadata = { title: "Team" };
 
 export default async function TeamPage() {
   const { supabase, user } = await requireAdmin();
-  const people = await listProfiles(supabase);
+  const [people, templates, clients, remindersRes] = await Promise.all([
+    listProfiles(supabase),
+    listTemplates(supabase),
+    listClients(supabase),
+    supabase.from("portal_reminders").select("id, profile_id, template_id, weekday, month_day, enabled, last_sent_on"),
+  ]);
+  const clientNames = new Map(clients.map((c) => [c.id, c.name]));
+  const reportTypes = templates
+    .filter((t) => clientNames.has(t.client_id))
+    .map((t) => ({ id: t.id, name: t.name, cadence: t.cadence, clientName: clientNames.get(t.client_id)! }));
+  // If the reminders table hasn't been created yet, the page still works and explains what to do.
+  const remindersReady = !remindersRes.error;
   const active = people.filter((p) => p.active).length;
   return (
     <>
-      <PageHeader title="Team" description="Who can sign in to the portal, and who can approve reports." />
+      <PageHeader title="Team" description="Who can sign in, who can approve reports, and who gets email reminders." />
       <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_340px] [&>*]:min-w-0">
         <Card>
           <CardHeader icon={Users} title="People" description={`${active} of ${people.length} can sign in`} />
-          <TeamTable people={people} currentUserId={user.id} />
+          <TeamTable
+            people={people}
+            currentUserId={user.id}
+            reportTypes={reportTypes}
+            reminders={remindersRes.data ?? []}
+            remindersReady={remindersReady}
+          />
         </Card>
         <div className="space-y-6">
           <Card>

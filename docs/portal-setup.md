@@ -25,7 +25,7 @@ In Supabase, open **Project Settings → API Keys** (or **Connect**) and copy th
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_…` (the older `anon` key also works, under `NEXT_PUBLIC_SUPABASE_ANON_KEY`) |
 | `CRON_SECRET` | optional: any long random text. Protects the daily keep-alive call. |
 
-Then redeploy. Never use the `secret` / `service_role` key here; the portal doesn't need it.
+Then redeploy. The publishable key is the only Supabase key the browser ever sees.
 
 ### 4. Add yourself first, then your team
 1. **Authentication → Users → Add user → Create new user**: your email, a password, tick **Auto Confirm User**.
@@ -46,3 +46,25 @@ Then redeploy. Never use the `secret` / `service_role` key here; the portal does
   use Supabase → Authentication → Users → the user → Reset password / set a new one.
 - To rebuild the Elkhorn seed file (e.g. after changing the starter templates):
   `npx tsx scripts/portal/build-elkhorn-seed.ts`
+
+## Email reminders (set up once)
+
+Team members can get an email when a report they're responsible for is due
+(Team page → Reminders). The daily check runs on the server, so it needs:
+
+1. **Database table:** run `supabase/portal-migration-002-reminders.sql` in the Supabase SQL Editor
+   (already included in `portal-setup.sql` for new projects).
+2. **`SUPABASE_SECRET_KEY`** in Vercel: Supabase → Project Settings → API Keys → **Secret keys** →
+   create/copy a key (starts with `sb_secret_`). In Vercel add it as `SUPABASE_SECRET_KEY`, tick
+   **Sensitive**, Production only. It lets the scheduled job read reports without anyone signed in.
+   It is only used on the server and never sent to browsers. Never share it or put it anywhere else.
+3. **`CRON_SECRET`** in Vercel (recommended): any long random text, marked Sensitive. Vercel sends it
+   with each scheduled call, so nobody else can trigger the reminder job.
+4. **`RESEND_API_KEY`** is already set for the contact form. Reminders are sent from
+   `portal@audaxventures.ca`, which works because the audaxventures.ca domain is verified in Resend.
+
+Reminders go out once a day (8 a.m. Winnipeg time in winter, 9 a.m. in summer) and only when the
+report still needs work: not started after its period ended, or a draft not yet submitted. Use
+**Send test email** on the Team page to check it. To see who would be emailed today without
+sending anything, open `/api/portal/reminders?dry=1` (with the `Authorization: Bearer <CRON_SECRET>`
+header if you set one).
