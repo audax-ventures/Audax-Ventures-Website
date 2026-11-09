@@ -106,7 +106,9 @@ export default function WorkflowPanel({
         return;
       }
       setNote("");
-      router.refresh();
+      // After submitting, go back to the reports list (with a confirmation banner).
+      if (action === submitForReview) router.push("/portal/reports?submitted=1");
+      else router.refresh();
     });
   }
 

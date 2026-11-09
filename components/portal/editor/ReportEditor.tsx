@@ -280,6 +280,8 @@ export default function ReportEditor(props: Props) {
       }
       const res = await primary.run(report.id, "");
       if (res && !res.ok) setActionError(res.error);
+      // After submitting, go back to the reports list (with a confirmation banner).
+      else if (primary.run === submitForReview) router.push("/portal/reports?submitted=1");
       else router.refresh();
     });
   }
