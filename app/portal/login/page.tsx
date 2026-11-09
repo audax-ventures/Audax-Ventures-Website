@@ -21,14 +21,14 @@ function Swooshes() {
           <stop offset="1" stopColor="#FFFFFF" stopOpacity="0.1" />
         </linearGradient>
         <linearGradient id="band-b" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor="#C9D5E6" stopOpacity="0.7" />
-          <stop offset="1" stopColor="#C9D5E6" stopOpacity="0.05" />
+          <stop offset="0" stopColor="#B8C8DD" stopOpacity="0.7" />
+          <stop offset="1" stopColor="#B8C8DD" stopOpacity="0.05" />
         </linearGradient>
       </defs>
       <path d="M-80 1000 C 40 620, 260 260, 520 -40 L 430 -40 C 190 240, -10 600, -160 1000 Z" fill="url(#band-a)" />
-      <path d="M40 -40 C 160 140, 210 320, 120 560 C 70 690, -20 780, -80 840 L -80 -40 Z" fill="#DCE4EF" opacity="0.55" />
+      <path d="M40 -40 C 160 140, 210 320, 120 560 C 70 690, -20 780, -80 840 L -80 -40 Z" fill="#CCD8E7" opacity="0.55" />
       <path d="M620 560 C 470 700, 360 860, 300 1040 L 620 1040 Z" fill="url(#band-b)" />
-      <path d="M-40 1040 C 120 880, 330 830, 620 840 L 620 1040 Z" fill="#E3EAF3" opacity="0.8" />
+      <path d="M-40 1040 C 120 880, 330 830, 620 840 L 620 1040 Z" fill="#D2DDEA" opacity="0.8" />
       <path d="M-40 1040 C 140 900, 340 860, 620 870" stroke="#FFFFFF" strokeOpacity="0.9" strokeWidth="1.5" fill="none" />
     </svg>
   );
@@ -45,7 +45,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/portal/log
   return (
     <div className="flex min-h-screen flex-col bg-white lg:flex-row">
       {/* Brand panel */}
-      <div className="relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#F4F7FB] via-[#EDF2F8] to-[#DFE7F1] px-6 py-12 lg:w-[44%] lg:py-0">
+      <div className="relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#E4EBF4] via-[#DAE3EE] to-[#C9D6E6] px-6 py-12 lg:w-[44%] lg:py-0">
         <Swooshes />
         <div className="relative flex flex-col items-center text-center">
           <Image
