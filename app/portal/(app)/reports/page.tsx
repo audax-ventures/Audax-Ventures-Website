@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileText, SearchX } from "lucide-react";
+import { CheckCircle2, FileText, SearchX } from "lucide-react";
 import { requireMember } from "@/lib/portal/auth";
 import { listClients, listReports, listTemplates, profileMap } from "@/lib/portal/data";
 import { STATUS_LABELS, type ReportStatus } from "@/lib/portal/types";
@@ -69,6 +69,16 @@ export default async function ReportsPage({ searchParams }: PageProps<"/portal/r
         title="Reports"
         description="Create & view all of your client reports"
       />
+
+      {sp.submitted ? (
+        <div role="status" className="mb-5 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-white px-4 py-3.5 shadow-sm">
+          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+          <div className="text-sm">
+            <p className="font-semibold text-emerald-900">Report submitted for review</p>
+            <p className="text-emerald-800/80">An admin will review it. If anything needs changing, it comes back to you as a draft with a note.</p>
+          </div>
+        </div>
+      ) : null}
 
       <Card>
         {/* Status tabs */}
