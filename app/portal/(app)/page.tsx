@@ -16,6 +16,7 @@ import type { ReportActivity } from "@/lib/portal/types";
 import {
   Avatar,
   Card,
+  CardDivider,
   CardHeader,
   ClientLogo,
   EmptyState,
@@ -143,6 +144,7 @@ export default async function DashboardPage() {
                       </div>
                       <Pill>{u.template.cadence === "custom" ? "Custom" : u.template.cadence}</Pill>
                     </div>
+                    <CardDivider className="mt-3.5" />
                     <span className={`mt-3.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${pill.cls}`}>
                       <span className={`h-1.5 w-1.5 rounded-full ${pill.dot}`} aria-hidden /> {pill.text}
                     </span>

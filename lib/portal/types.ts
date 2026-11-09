@@ -181,6 +181,8 @@ export interface Profile {
   full_name: string | null;
   role: Role;
   active: boolean;
+  /** Admins: email me when a report is submitted for review. Missing until migration 004 is run (treated as on). */
+  notify_on_submit?: boolean;
   created_at: string;
 }
 

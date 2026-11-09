@@ -15,7 +15,7 @@ import {
 import { renderReportPdf } from "./pdf/render";
 import { starterTemplates } from "./starter-templates";
 import { validateSchema } from "./validate";
-import type { Cadence, Report, ReportData, ReportStatus, Role, TemplateSchema } from "./types";
+import type { Cadence, Profile, Report, ReportData, ReportStatus, Role, TemplateSchema } from "./types";
 
 export type ActionResult<T = object> = ({ ok: true } & T) | { ok: false; error: string };
 
@@ -58,11 +58,14 @@ export async function updateMyName(fullName: string): Promise<ActionResult> {
 
 export async function updateMember(
   id: string,
-  changes: { role?: Role; active?: boolean },
+  changes: { role?: Role; active?: boolean; notify_on_submit?: boolean },
 ): Promise<ActionResult> {
   try {
     const { supabase } = await adminOrThrow();
     const { error } = await supabase.from("portal_profiles").update(changes).eq("id", id);
+    if (error?.message.includes("notify_on_submit")) {
+      throw new Error("Review email settings need one database update first: run supabase/portal-migration-004-review-emails.sql in Supabase.");
+    }
     if (error) throw new Error(error.message);
     revalidatePath("/portal/team");
     return { ok: true };
@@ -352,6 +355,7 @@ export async function submitForReview(id: string, note?: string): Promise<Action
   try {
     await setStatus(id, ["draft"], "in_review", { submitted_at: new Date().toISOString() });
     await logActivity(id, "submitted", note);
+    await emailAdminsAboutSubmission(id, note ?? null);
     revalidatePath("/portal", "layout");
     return { ok: true };
   } catch (e) {
@@ -545,6 +549,77 @@ export async function moveTemplate(id: string, direction: -1 | 1): Promise<Actio
     }
     revalidatePath("/portal", "layout");
     return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/**
+ * Email each admin (who has review emails on) that a report is ready for review.
+ * Never blocks or fails the submission: problems are only logged.
+ */
+async function emailAdminsAboutSubmission(reportId: string, note: string | null) {
+  try {
+    const { supabase, user, profile } = await memberOrThrow();
+    const { buildReviewEmail, firstName, portalBaseUrl, sendEmail } = await import("./reminders");
+    const { displayName } = await import("./auth");
+    const { formatPeriod } = await import("./compute");
+    const report = await getReport(supabase, reportId);
+    if (!report) return;
+    const [client, template, admins] = await Promise.all([
+      getClient(supabase, report.client_id),
+      getTemplate(supabase, report.template_id),
+      supabase.from("portal_profiles").select("*").eq("role", "admin").eq("active", true),
+    ]);
+    const recipients = ((admins.data ?? []) as Profile[]).filter((a) => a.id !== user.id && a.notify_on_submit !== false && a.email);
+    if (!recipients.length || !client) return;
+    const item = {
+      submitterName: displayName(profile),
+      clientName: client.name,
+      templateName: report.title || template?.name || "Report",
+      periodLabel: formatPeriod(report.period_start, report.period_end),
+      note,
+      href: `${portalBaseUrl()}/portal/reports/${report.id}`,
+    };
+    await Promise.all(
+      recipients.map((a) =>
+        sendEmail(a.email, buildReviewEmail(firstName(a.full_name, a.email), item)).catch((e) =>
+          console.error(`Portal: review email to ${a.email} failed:`, e instanceof Error ? e.message : e),
+        ),
+      ),
+    );
+  } catch (e) {
+    console.error("Portal: review emails failed:", e instanceof Error ? e.message : e);
+  }
+}
+
+/** Send an admin a sample "ready for review" email, using the most recent report. */
+export async function sendTestReviewEmail(profileId: string): Promise<ActionResult<{ to: string }>> {
+  try {
+    const { supabase, profile } = await adminOrThrow();
+    const { buildReviewEmail, firstName, portalBaseUrl, sendEmail } = await import("./reminders");
+    const { displayName } = await import("./auth");
+    const { formatPeriod } = await import("./compute");
+    const { data: person } = await supabase.from("portal_profiles").select("email, full_name").eq("id", profileId).single();
+    if (!person) throw new Error("Team member not found.");
+    const { data: latest } = await supabase.from("portal_reports").select("id, title, period_start, period_end, client_id").order("updated_at", { ascending: false }).limit(1).maybeSingle();
+    const client = latest ? await getClient(supabase, latest.client_id) : null;
+    await sendEmail(
+      person.email,
+      buildReviewEmail(
+        firstName(person.full_name, person.email),
+        {
+          submitterName: displayName(profile),
+          clientName: client?.name ?? "Example Client",
+          templateName: latest?.title ?? "Weekly Marketing Report",
+          periodLabel: latest ? formatPeriod(latest.period_start, latest.period_end) : "November 2 – 8, 2026",
+          note: "Added the email blast from Thursday.",
+          href: latest ? `${portalBaseUrl()}/portal/reports/${latest.id}` : `${portalBaseUrl()}/portal/reports`,
+        },
+        { test: true },
+      ),
+    );
+    return { ok: true, to: person.email };
   } catch (e) {
     return fail(e);
   }

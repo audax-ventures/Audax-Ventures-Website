@@ -67,6 +67,11 @@ export function Card({ className, children }: { className?: string; children: Re
   );
 }
 
+/** A thin grey line that fades out to the right, like the one under the sidebar logo. */
+export function CardDivider({ className }: { className?: string }) {
+  return <div aria-hidden className={cn("h-px bg-gradient-to-r from-slate-300/80 via-slate-200/80 to-transparent", className)} />;
+}
+
 export function CardHeader({
   title,
   actions,
@@ -79,16 +84,19 @@ export function CardHeader({
   icon?: LucideIcon;
 }) {
   return (
-    <div className="flex items-start justify-between gap-3 border-b border-[#EEF1F5] px-5 py-4">
-      <div className="flex min-w-0 items-start gap-3">
-        {Icon ? <IconBadge icon={Icon} /> : null}
-        <div className="min-w-0">
-          <h2 className="font-heading text-[1.05rem] font-semibold text-[#0B1B33]">{title}</h2>
-          {description ? <p className="mt-0.5 text-xs text-slate-500">{description}</p> : null}
+    <>
+      <div className="flex items-start justify-between gap-3 px-5 py-4">
+        <div className="flex min-w-0 items-start gap-3">
+          {Icon ? <IconBadge icon={Icon} /> : null}
+          <div className="min-w-0">
+            <h2 className="font-heading text-[1.05rem] font-semibold text-[#0B1B33]">{title}</h2>
+            {description ? <p className="mt-0.5 text-xs text-slate-500">{description}</p> : null}
+          </div>
         </div>
+        {actions ? <div className="shrink-0">{actions}</div> : null}
       </div>
-      {actions ? <div className="shrink-0">{actions}</div> : null}
-    </div>
+      <CardDivider className="mx-5" />
+    </>
   );
 }
 
@@ -340,6 +348,7 @@ export function StatTile({
         <p className="text-sm font-medium text-slate-600">{label}</p>
         <IconBadge icon={icon} tone={tone} />
       </div>
+      <CardDivider className="relative mt-3" />
       <p className="relative mt-3 font-heading text-[2.4rem] font-bold leading-none tabular-nums tracking-tight text-[#0B1B33]">{value}</p>
       {caption ? <p className="relative mt-2 text-xs text-slate-500">{caption}</p> : null}
     </div>

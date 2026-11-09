@@ -12,8 +12,11 @@ create table if not exists public.portal_profiles (
   role text not null default 'member' check (role in ('admin', 'member')),
   -- New logins start inactive until an admin turns them on.
   active boolean not null default false,
+  notify_on_submit boolean not null default true,  -- admins: email me when a report is submitted
   created_at timestamptz not null default now()
 );
+-- For databases set up before notify_on_submit existed:
+alter table public.portal_profiles add column if not exists notify_on_submit boolean not null default true;
 
 -- Every new login gets a profile. The very first one becomes an active admin.
 create or replace function public.portal_handle_new_user()

@@ -76,3 +76,10 @@ in `portal-setup.sql` for new projects). Then use the arrows next to each report
 to set the order reports appear in across the portal: the New Report dropdown, the dashboard,
 the templates page and reminders. Until the update is run, reports list weekly first, then monthly,
 then A–Z.
+
+## "Ready for review" emails (set up once)
+
+When someone submits a report for review, every admin with **Review emails** switched on (Team page)
+gets a branded email with a button to the report. The person who submitted it isn't emailed.
+Run `supabase/portal-migration-004-review-emails.sql` in the Supabase SQL Editor to be able to switch
+it off per admin (until then, every admin gets them). Uses the same `RESEND_API_KEY` as the contact form.
