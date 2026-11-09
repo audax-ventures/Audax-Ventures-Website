@@ -94,17 +94,12 @@ export default function PortalShell({ isAdmin, reviewCount, userName, userEmail,
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const groups = [
-    {
-      label: "Workspace",
-      items: [
-        { href: "/portal", label: "Dashboard", icon: LayoutDashboard, exact: true },
-        { href: "/portal/reports", label: "Reports", icon: FileText, badge: reviewCount },
-        { href: "/portal/clients", label: "Clients", icon: Building2 },
-        { href: "/portal/templates", label: "Templates", icon: LayoutTemplate },
-      ],
-    },
-    ...(isAdmin ? [{ label: "Admin", items: [{ href: "/portal/team", label: "Team", icon: Users }] }] : []),
+  const items = [
+    { href: "/portal", label: "Dashboard", icon: LayoutDashboard, exact: true, badge: 0 },
+    { href: "/portal/reports", label: "Reports", icon: FileText, exact: false, badge: reviewCount },
+    { href: "/portal/clients", label: "Clients", icon: Building2, exact: false, badge: 0 },
+    { href: "/portal/templates", label: "Templates", icon: LayoutTemplate, exact: false, badge: 0 },
+    ...(isAdmin ? [{ href: "/portal/team", label: "Team", icon: Users, exact: false, badge: 0 }] : []),
   ];
 
   const isActive = (href: string, exact?: boolean) =>
@@ -128,41 +123,33 @@ export default function PortalShell({ isAdmin, reviewCount, userName, userEmail,
         <span className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70">Team Portal</span>
       </Link>
 
-      <nav className="relative flex-1 space-y-7 overflow-y-auto px-4">
-        {groups.map((group) => (
-          <div key={group.label}>
-            <p className="px-3 pb-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">{group.label}</p>
-            <div className="space-y-1">
-              {group.items.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.href, "exact" in item ? item.exact : undefined);
-                const badge = "badge" in item ? item.badge : 0;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileOpen(false)}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
-                      active
-                        ? "bg-gradient-to-r from-white/[0.16] to-white/[0.06] text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.14),0_6px_18px_-8px_rgba(0,0,0,0.5)]"
-                        : "text-white/75 hover:bg-white/[0.07] hover:text-white",
-                    )}
-                  >
-                    <Icon className={cn("h-[18px] w-[18px]", active ? "text-white" : "text-white/60 group-hover:text-white")} />
-                    <span className="flex-1">{item.label}</span>
-                    {badge ? (
-                      <span className="min-w-5 rounded-full bg-amber-400 px-1.5 text-center text-[11px] font-bold leading-5 text-[#0B1B33]" title="Waiting for your review">
-                        {badge}
-                      </span>
-                    ) : null}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+      <nav className="relative flex-1 space-y-1 overflow-y-auto px-4 pt-2">
+        {items.map((item) => {
+          const Icon = item.icon;
+          const active = isActive(item.href, item.exact);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
+                active
+                  ? "bg-gradient-to-r from-white/[0.16] to-white/[0.06] text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.14),0_6px_18px_-8px_rgba(0,0,0,0.5)]"
+                  : "text-white/75 hover:bg-white/[0.07] hover:text-white",
+              )}
+            >
+              <Icon className={cn("h-[18px] w-[18px]", active ? "text-white" : "text-white/60 group-hover:text-white")} />
+              <span className="flex-1">{item.label}</span>
+              {item.badge ? (
+                <span className="min-w-5 rounded-full bg-amber-400 px-1.5 text-center text-[11px] font-bold leading-5 text-[#0B1B33]" title="Waiting for your review">
+                  {item.badge}
+                </span>
+              ) : null}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Account */}

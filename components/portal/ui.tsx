@@ -205,16 +205,16 @@ export function ErrorNote({ message }: { message: string | null | undefined }) {
 // ----- Status & identity -----
 
 const statusStyles: Record<ReportStatus, { pill: string; dot: string }> = {
-  draft: { pill: "bg-slate-100 text-slate-700", dot: "bg-slate-400" },
-  in_review: { pill: "bg-amber-50 text-amber-800", dot: "bg-amber-500" },
-  approved: { pill: "bg-emerald-50 text-emerald-800", dot: "bg-emerald-500" },
-  sent: { pill: "bg-sky-50 text-sky-800", dot: "bg-sky-500" },
+  draft: { pill: "bg-slate-100 text-slate-700 ring-slate-300/70", dot: "bg-slate-500" },
+  in_review: { pill: "bg-amber-100 text-amber-900 ring-amber-300/70", dot: "bg-amber-500" },
+  approved: { pill: "bg-emerald-100 text-emerald-900 ring-emerald-300/70", dot: "bg-emerald-500" },
+  sent: { pill: "bg-sky-100 text-sky-900 ring-sky-300/70", dot: "bg-sky-500" },
 };
 
 export function StatusBadge({ status }: { status: ReportStatus }) {
   const s = statusStyles[status];
   return (
-    <span className={cn("inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium", s.pill)}>
+    <span className={cn("inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset", s.pill)}>
       <span className={cn("h-1.5 w-1.5 rounded-full", s.dot)} aria-hidden />
       {STATUS_LABELS[status]}
     </span>

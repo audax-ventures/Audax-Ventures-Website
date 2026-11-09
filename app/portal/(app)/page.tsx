@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { displayName, requireMember } from "@/lib/portal/auth";
 import { listClients, listReports, listTemplates, profileMap } from "@/lib/portal/data";
-import { formatPeriod, suggestPeriod } from "@/lib/portal/compute";
+import { formatPeriod, formatShortDate, suggestPeriod } from "@/lib/portal/compute";
 import type { ReportActivity } from "@/lib/portal/types";
 import {
   Avatar,
@@ -67,6 +67,21 @@ export default async function DashboardPage() {
   const lastByTemplate = new Map<string, (typeof reports)[number]>();
   for (const r of reports) if (!lastByTemplate.has(r.template_id)) lastByTemplate.set(r.template_id, r);
 
+  // What's next for each report template: a report already in progress, one that's
+  // due (its period has ended), or one whose period hasn't finished yet.
+  const todayIso = new Date().toLocaleDateString("en-CA", { timeZone: "America/Winnipeg" });
+  const order = { due: 0, progress: 1, upcoming: 2 } as const;
+  const upcoming = templates
+    .filter((t) => clientMap.has(t.client_id))
+    .map((t) => {
+      const last = lastByTemplate.get(t.id);
+      const inProgress = last && (last.status === "draft" || last.status === "in_review") ? last : null;
+      const period = inProgress ? { start: inProgress.period_start, end: inProgress.period_end } : suggestPeriod(t.cadence, last?.period_end ?? null);
+      const state: keyof typeof order = inProgress ? "progress" : period.end < todayIso ? "due" : "upcoming";
+      return { template: t, client: clientMap.get(t.client_id)!, inProgress, period, state };
+    })
+    .sort((a, b) => order[a.state] - order[b.state] || a.period.end.localeCompare(b.period.end));
+
   const attention = isAdmin ? [...inReview, ...approvedUnsent] : myDrafts;
   const name = displayName(profile).split(" ")[0];
   const firstName = name.charAt(0).toUpperCase() + name.slice(1);
@@ -94,18 +109,18 @@ export default async function DashboardPage() {
         <StatTile label="Sent this month" value={sentThisMonth} caption={`${count((r) => r.status === "sent")} sent in total`} icon={Send} tone="sky" href="/portal/reports?status=sent" />
       </div>
 
-      {/* Quick start */}
+      {/* Upcoming reports */}
       <section className="mb-8">
         <div className="mb-3 flex items-end justify-between gap-4">
           <div>
-            <h2 className="font-heading text-xl font-bold text-[#0B1B33]">Start a report</h2>
-            <p className="mt-0.5 text-sm text-slate-600">The next period is picked for you, and it pre-fills from the last report.</p>
+            <h2 className="font-heading text-xl font-bold text-[#0B1B33]">Upcoming Reports</h2>
+            <p className="mt-0.5 text-sm text-slate-600">Complete your next upcoming report</p>
           </div>
           <Link href="/portal/templates" className="group inline-flex items-center gap-1 whitespace-nowrap text-sm font-semibold text-[#1F5A99] hover:text-[#0F2341]">
             Manage templates <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
-        {templates.length === 0 ? (
+        {upcoming.length === 0 ? (
           <Card>
             <EmptyState
               icon={LayoutTemplate}
@@ -116,32 +131,33 @@ export default async function DashboardPage() {
           </Card>
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 [&>*]:min-w-0">
-            {templates.map((t) => {
-              const client = clientMap.get(t.client_id);
-              if (!client) return null;
-              const last = lastByTemplate.get(t.id);
-              const next = suggestPeriod(t.cadence, last?.period_end ?? null);
+            {upcoming.map((u) => {
+              const pill = {
+                due: { text: "Due now", cls: "bg-amber-50 text-amber-800 ring-amber-200", dot: "bg-amber-500" },
+                progress: { text: u.inProgress?.status === "in_review" ? "In review" : "Draft in progress", cls: "bg-violet-50 text-violet-800 ring-violet-200", dot: "bg-violet-500" },
+                upcoming: { text: `Upcoming · ends ${formatShortDate(u.period.end)}`, cls: "bg-sky-50 text-sky-800 ring-sky-200", dot: "bg-sky-500" },
+              }[u.state];
+              const href = u.inProgress ? `/portal/reports/${u.inProgress.id}` : `/portal/reports/new?template=${u.template.id}`;
               return (
-                <Link
-                  key={t.id}
-                  href={`/portal/reports/new?template=${t.id}`}
-                  className="group rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2E5F8A]/15"
-                >
+                <Link key={u.template.id} href={href} className="group rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2E5F8A]/15">
                   <Card className="h-full p-5 transition-all group-hover:-translate-y-0.5 group-hover:shadow-[0_1px_2px_rgba(15,35,65,0.05),0_18px_40px_-16px_rgba(15,35,65,0.28)]">
                     <div className="flex items-start gap-3">
-                      <ClientLogo src={client.logo_data} name={client.name} size={44} />
+                      <ClientLogo src={u.client.logo_data} name={u.client.name} size={44} />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-semibold text-[#0F2341]">{t.name}</p>
-                        <p className="truncate text-xs text-slate-500">{client.name}</p>
+                        <p className="truncate text-sm font-semibold text-[#0F2341]">{u.template.name}</p>
+                        <p className="truncate text-xs text-slate-500">{u.client.name}</p>
                       </div>
-                      <Pill>{t.cadence === "custom" ? "Custom" : t.cadence}</Pill>
+                      <Pill>{u.template.cadence === "custom" ? "Custom" : u.template.cadence}</Pill>
                     </div>
-                    <div className="mt-4 flex items-center justify-between border-t border-[#E8EEF5] pt-3.5 text-sm">
-                      <span className="text-slate-500">
-                        Next: <span className="font-semibold text-[#0B1B33]">{formatPeriod(next.start, next.end)}</span>
+                    <span className={`mt-3.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${pill.cls}`}>
+                      <span className={`h-1.5 w-1.5 rounded-full ${pill.dot}`} aria-hidden /> {pill.text}
+                    </span>
+                    <div className="mt-3 flex items-center justify-between border-t border-[#E8EEF5] pt-3.5 text-sm">
+                      <span className="min-w-0 truncate text-slate-500">
+                        {u.inProgress ? "Period" : "Next"}: <span className="font-semibold text-[#0B1B33]">{formatPeriod(u.period.start, u.period.end)}</span>
                       </span>
-                      <span className="flex items-center gap-1 text-sm font-semibold text-[#1F5A99]">
-                        Start <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                      <span className="flex shrink-0 items-center gap-1 pl-2 text-sm font-semibold text-[#1F5A99]">
+                        {u.inProgress ? "Continue" : "Start"} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                       </span>
                     </div>
                   </Card>

@@ -26,6 +26,7 @@ export default async function NewReportPage({ searchParams }: PageProps<"/portal
           clientName: clientMap.get(t.client_id)!.name,
           clientLogo: clientMap.get(t.client_id)!.logo_data,
           cadence: t.cadence,
+          carrySections: t.schema.sections.filter((sec) => sec.carryOver).map((sec) => sec.title),
           suggestedStart: suggestion.start,
           suggestedEnd: suggestion.end,
           lastLabel: last ? `${formatPeriod(last.period_start, last.period_end)}` : null,
@@ -42,7 +43,7 @@ export default async function NewReportPage({ searchParams }: PageProps<"/portal
     <>
       <PageHeader
         title="New report"
-        description="Choose the report, check the dates, and you're ready to fill it in."
+        description="Choose the client and report, check the dates, and you're ready to fill it in."
         back={{ href: "/portal/reports", label: "Reports" }}
       />
       {options.length === 0 ? (

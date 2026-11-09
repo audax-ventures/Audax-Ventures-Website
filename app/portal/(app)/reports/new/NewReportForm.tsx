@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { CalendarRange, Check, Copy, FileText } from "lucide-react";
+import { CalendarRange, Copy, FileText } from "lucide-react";
 import { createReport } from "@/lib/portal/actions";
 import { daysInPeriod, formatPeriod } from "@/lib/portal/compute";
 import type { Cadence } from "@/lib/portal/types";
 import { cn } from "@/lib/utils";
-import { Button, Card, ClientLogo, ErrorNote, Field, Pill, inputClass } from "@/components/portal/ui";
+import { Button, Card, ClientLogo, ErrorNote, Field, inputClass } from "@/components/portal/ui";
 
 export interface TemplateOption {
   id: string;
@@ -18,6 +18,7 @@ export interface TemplateOption {
   suggestedStart: string;
   suggestedEnd: string;
   lastLabel: string | null;
+  carrySections: string[];
 }
 
 function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
@@ -35,6 +36,8 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
 export default function NewReportForm({ options, initialId }: { options: TemplateOption[]; initialId: string }) {
   const [templateId, setTemplateId] = useState(initialId);
   const selected = options.find((o) => o.id === templateId) ?? options[0];
+  const clients = [...new Map(options.map((o) => [o.clientId, { id: o.clientId, name: o.clientName, logo: o.clientLogo }])).values()];
+  const clientReports = options.filter((o) => o.clientId === selected.clientId);
   const [start, setStart] = useState(selected.suggestedStart);
   const [end, setEnd] = useState(selected.suggestedEnd);
   const [fromPrevious, setFromPrevious] = useState(true);
@@ -63,43 +66,39 @@ export default function NewReportForm({ options, initialId }: { options: Templat
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px] [&>*]:min-w-0">
       <Card className="divide-y divide-[#EEF1F5]">
-        <Step n={1} title="Choose the report">
-          <div role="radiogroup" aria-label="Report" className="grid grid-cols-1 gap-3 sm:grid-cols-2 [&>*]:min-w-0">
-            {options.map((o) => {
-              const active = o.id === templateId;
-              return (
-                <button
-                  key={o.id}
-                  type="button"
-                  role="radio"
-                  aria-checked={active}
-                  onClick={() => chooseTemplate(o.id)}
-                  className={cn(
-                    "relative flex items-center gap-3 rounded-xl border p-3.5 text-left transition-all",
-                    active
-                      ? "border-[#2E5F8A] bg-[#F4F8FC] ring-4 ring-[#2E5F8A]/10"
-                      : "border-[#E4E9F0] bg-white hover:border-[#C9D5E6] hover:bg-[#F8FAFC]",
-                  )}
-                >
-                  <ClientLogo src={o.clientLogo} name={o.clientName} size={40} />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-semibold text-[#0F2341]">{o.name}</span>
-                    <span className="block truncate text-xs text-slate-500">{o.clientName}</span>
-                  </span>
-                  {active ? (
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#2E5F8A] text-white">
-                      <Check className="h-3 w-3" />
-                    </span>
-                  ) : (
-                    <Pill>{o.cadence === "custom" ? "Custom" : o.cadence}</Pill>
-                  )}
-                </button>
-              );
-            })}
+        <Step n={1} title="Client">
+          <div className="flex items-center gap-3">
+            <ClientLogo src={selected.clientLogo} name={selected.clientName} size={44} />
+            <select
+              aria-label="Client"
+              value={selected.clientId}
+              onChange={(e) => {
+                const first = options.find((o) => o.clientId === e.target.value);
+                if (first) chooseTemplate(first.id);
+              }}
+              className={inputClass}
+            >
+              {clients.map((c) => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
           </div>
         </Step>
 
-        <Step n={2} title="Reporting period">
+        <Step n={2} title="Report">
+          <select aria-label="Report" value={templateId} onChange={(e) => chooseTemplate(e.target.value)} className={inputClass}>
+            {clientReports.map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.name} ({o.cadence === "custom" ? "custom dates" : o.cadence})
+              </option>
+            ))}
+          </select>
+          <p className="mt-2 text-xs text-slate-500">
+            {selected.lastLabel ? <>Last one covered <span className="font-medium text-slate-700">{selected.lastLabel}</span>.</> : "This will be the first report of this kind."}
+          </p>
+        </Step>
+
+        <Step n={3} title="Reporting period">
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Start date">
               <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className={inputClass} />
@@ -113,7 +112,7 @@ export default function NewReportForm({ options, initialId }: { options: Templat
           </p>
         </Step>
 
-        <Step n={3} title="Starting point">
+        <Step n={4} title="Starting point">
           <label
             className={cn(
               "flex items-start gap-3 rounded-xl border p-4 transition-colors",
@@ -130,10 +129,15 @@ export default function NewReportForm({ options, initialId }: { options: Templat
             <span>
               <span className="block text-sm font-semibold text-slate-800">Start from the last report</span>
               <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
-                {selected.lastLabel
-                  ? "Copies sections set to carry over, such as running ads and upcoming emails. Last period's results are left blank so nothing old slips through."
-                  : "This will be the first report of this kind, so it starts empty."}
+                {!selected.lastLabel
+                  ? "This will be the first report of this kind, so it starts empty."
+                  : selected.carrySections.length
+                    ? <>Copies these sections from the last report: <span className="font-medium text-slate-700">{selected.carrySections.join(", ")}</span>. For ad campaigns, only the ads and daily budgets are copied; results start blank so nothing old slips through.</>
+                    : "This template doesn't copy any sections yet, so the report starts empty."}
               </span>
+              <a href={`/portal/templates/${selected.id}`} className="mt-1.5 inline-block text-xs font-medium text-[#1F5A99] hover:underline">
+                Choose which sections carry over →
+              </a>
             </span>
           </label>
         </Step>
