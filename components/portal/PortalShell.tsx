@@ -19,13 +19,11 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Avatar, buttonClass } from "./ui";
+import { buttonClass } from "./ui";
 
 interface Props {
   isAdmin: boolean;
   reviewCount: number;
-  userName: string;
-  userEmail: string;
   signOutAction: () => Promise<void>;
   children: React.ReactNode;
 }
@@ -74,7 +72,7 @@ function SidebarWaves() {
   );
 }
 
-export default function PortalShell({ isAdmin, reviewCount, userName, userEmail, signOutAction, children }: Props) {
+export default function PortalShell({ isAdmin, reviewCount, signOutAction, children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -100,30 +98,30 @@ export default function PortalShell({ isAdmin, reviewCount, userName, userEmail,
     { href: "/portal/clients", label: "Clients", icon: Building2, exact: false, badge: 0 },
     { href: "/portal/templates", label: "Templates", icon: LayoutTemplate, exact: false, badge: 0 },
     ...(isAdmin ? [{ href: "/portal/team", label: "Team", icon: Users, exact: false, badge: 0 }] : []),
+    { href: "/portal/account", label: "Account settings", icon: Settings, exact: false, badge: 0 },
   ];
 
   const isActive = (href: string, exact?: boolean) =>
     exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
-  const accountActive = pathname.startsWith("/portal/account");
-
   const sidebar = (
-    <div className="relative flex h-full flex-col overflow-hidden bg-gradient-to-b from-[#0B1B33] via-[#0F2747] to-[#123660] text-white">
+    <div className="relative flex h-full flex-col overflow-hidden rounded-[26px] bg-gradient-to-b from-[#0B1B33] via-[#0F2747] to-[#123660] text-white shadow-[0_24px_48px_-20px_rgba(11,27,51,0.65),inset_0_0_0_1px_rgba(255,255,255,0.06)]">
       <SidebarWaves />
 
-      <Link href="/portal" onClick={() => setMobileOpen(false)} className="relative block px-6 pb-7 pt-7">
+      <Link href="/portal" onClick={() => setMobileOpen(false)} className="relative mx-3 mt-3 block rounded-2xl px-4 pb-5 pt-6">
         <Image
           src="/audax-logo.png"
           alt="Audax Ventures"
           width={542}
           height={176}
-          className="h-auto w-[150px] brightness-0 invert"
+          className="h-auto w-[172px] brightness-0 invert"
           priority
         />
-        <span className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70">Team Portal</span>
+        <span className="mt-2.5 block pl-[3px] text-[10.5px] font-semibold uppercase tracking-[0.24em] text-white/60">Team Portal</span>
       </Link>
+      <div className="relative mx-6 mb-4 h-px bg-gradient-to-r from-white/20 via-white/10 to-transparent" aria-hidden />
 
-      <nav className="relative flex-1 space-y-1 overflow-y-auto px-4 pt-2">
+      <nav className="relative flex-1 space-y-1 overflow-y-auto px-3">
         {items.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href, item.exact);
@@ -150,50 +148,31 @@ export default function PortalShell({ isAdmin, reviewCount, userName, userEmail,
             </Link>
           );
         })}
-      </nav>
-
-      {/* Account */}
-      <div className="relative space-y-3 p-4">
-        <div className="rounded-2xl bg-white/[0.06] p-1.5 ring-1 ring-inset ring-white/12 backdrop-blur-sm">
-          <Link
-            href="/portal/account"
-            onClick={() => setMobileOpen(false)}
-            aria-current={accountActive ? "page" : undefined}
-            className={cn(
-              "flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm transition-colors",
-              accountActive ? "bg-white/12 text-white" : "text-white/80 hover:bg-white/[0.08] hover:text-white",
-            )}
+        <form action={signOutAction}>
+          <button
+            type="submit"
+            className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-white/75 transition-all hover:bg-white/[0.07] hover:text-white"
           >
-            <Settings className="h-4 w-4" /> Account settings
-          </Link>
-          <form action={signOutAction}>
-            <button type="submit" className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/[0.08] hover:text-white">
-              <LogOut className="h-4 w-4" /> Sign out
-            </button>
-          </form>
-        </div>
-        <div className="flex items-center gap-3 border-t border-white/10 px-1.5 pt-3.5">
-          <Avatar name={userName} size={36} className="from-[#4C8BD6] to-[#2E5F8A] ring-2 ring-white/20" />
-          <span className="min-w-0 flex-1">
-            <span className="block truncate text-sm font-semibold text-white">{userName}</span>
-            <span className="block truncate text-xs text-white/55">{isAdmin ? "Admin" : "Team member"} · {userEmail}</span>
-          </span>
-        </div>
-      </div>
+            <LogOut className="h-[18px] w-[18px] text-white/60 group-hover:text-white" />
+            <span className="flex-1 text-left">Sign out</span>
+          </button>
+        </form>
+      </nav>
+      <div className="h-4" aria-hidden />
     </div>
   );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F4F8FC] via-[#EEF3F9] to-[#E6EEF8] lg:flex">
       {/* Desktop sidebar */}
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 shadow-[4px_0_24px_-12px_rgba(11,27,51,0.5)] lg:block">{sidebar}</aside>
+      <aside className="sticky top-0 hidden h-screen w-[14rem] shrink-0 py-3 pl-3 lg:block">{sidebar}</aside>
 
       {/* Phone / tablet drawer */}
       {mobileOpen ? (
         <div className="fixed inset-0 z-40 lg:hidden">
           <button className="absolute inset-0 bg-[#0B1B33]/40 backdrop-blur-[2px]" aria-label="Close menu" onClick={() => setMobileOpen(false)} />
-          <aside className="relative h-full w-72 max-w-[85vw] shadow-2xl">
-            <button onClick={() => setMobileOpen(false)} className="absolute right-3 top-6 z-10 rounded-lg p-1.5 text-white/70 hover:bg-white/10 hover:text-white" aria-label="Close menu">
+          <aside className="relative h-full w-[16rem] max-w-[85vw] p-3">
+            <button onClick={() => setMobileOpen(false)} className="absolute right-6 top-8 z-10 rounded-lg p-1.5 text-white/70 hover:bg-white/10 hover:text-white" aria-label="Close menu">
               <X className="h-5 w-5" />
             </button>
             {sidebar}
