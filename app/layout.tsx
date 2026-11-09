@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import HideOnPortal from "@/components/layout/HideOnPortal";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -102,23 +103,29 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        <Navbar />
+        <HideOnPortal>
+          <Navbar />
+        </HideOnPortal>
         <main className="flex-1">{children}</main>
-        <Footer />
+        <HideOnPortal>
+          <Footer />
+        </HideOnPortal>
 
-        <Script id="intuitina-chatbot-loader" strategy="lazyOnload">
-          {`
-            if (!document.getElementById('custom-chatbot-iframe')) {
-              var s = document.createElement('script');
-              s.src = 'https://chat.intuitina.com/widget.js';
-              s.async = true;
-              s.id = 'custom-chatbot-iframe';
-              s.setAttribute('cid', 'MTIwODI1NDU0');
-              s.setAttribute('pod', '4');
-              document.body.appendChild(s);
-            }
-          `}
-        </Script>
+        <HideOnPortal>
+          <Script id="intuitina-chatbot-loader" strategy="lazyOnload">
+            {`
+              if (!document.getElementById('custom-chatbot-iframe')) {
+                var s = document.createElement('script');
+                s.src = 'https://chat.intuitina.com/widget.js';
+                s.async = true;
+                s.id = 'custom-chatbot-iframe';
+                s.setAttribute('cid', 'MTIwODI1NDU0');
+                s.setAttribute('pod', '4');
+                document.body.appendChild(s);
+              }
+            `}
+          </Script>
+        </HideOnPortal>
       </body>
     </html>
   );
