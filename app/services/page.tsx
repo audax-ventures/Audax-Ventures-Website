@@ -30,7 +30,7 @@ export default function ServicesPage() {
           <p className="text-xs font-bold tracking-widest uppercase text-[#2563EB] mb-6">
             Think Bigger. Build Better. Scale Smarter.
           </p>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-6 leading-tight">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-6 leading-tight">
             One Partner From Strategy Through Execution
           </h1>
           <p className="text-[#374151] text-lg leading-relaxed max-w-2xl mx-auto">
@@ -57,7 +57,7 @@ export default function ServicesPage() {
                   </div>
 
                   <p className="text-xs tracking-widest uppercase text-[#2563EB] font-bold mb-2">{s.phase}</p>
-                  <h2 className="font-[var(--font-outfit)] font-extrabold text-xl text-[#0F172A] mb-2">{s.title}</h2>
+                  <h2 className="font-heading font-extrabold text-xl text-[#0F172A] mb-2">{s.title}</h2>
                   <p className="text-[#374151] text-sm leading-relaxed mb-6">{s.hero.body}</p>
 
                   <div className="space-y-2.5 mb-8 flex-1">
@@ -82,7 +82,7 @@ export default function ServicesPage() {
       {/* ── Not sure? CTA ── */}
       <section className="py-20 bg-[#F8F9FA] border-t border-gray-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-4">
+          <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-4">
             Not Sure Which Service You Need?
           </h2>
           <p className="text-[#374151] leading-relaxed mb-8">

@@ -59,7 +59,7 @@ export default function HomeProcessSection() {
           className="mb-14 max-w-2xl"
         >
           <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-4">Our Approach</p>
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A] mb-4">
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#0F172A] mb-4">
             A Clear Path From Strategy to Impact
           </h2>
           <p className="text-[#374151] text-sm leading-relaxed">
@@ -95,7 +95,7 @@ export default function HomeProcessSection() {
                       />
                     </div>
                     <span
-                      className={`font-[var(--font-outfit)] font-bold text-lg transition-colors duration-300 ${
+                      className={`font-heading font-bold text-lg transition-colors duration-300 ${
                         isActive ? "text-[#0F172A]" : "text-[#B0B5BF] group-hover:text-[#374151]"
                       }`}
                     >
@@ -120,7 +120,7 @@ export default function HomeProcessSection() {
               {/* Faint numeral watermark */}
               <span
                 aria-hidden
-                className="pointer-events-none select-none absolute -top-6 right-4 font-[var(--font-outfit)] font-extrabold text-[160px] leading-none"
+                className="pointer-events-none select-none absolute -top-6 right-4 font-heading font-extrabold text-[160px] leading-none"
                 style={{ color: "#0F172A", opacity: 0.035 }}
               >
                 0{active + 1}
@@ -134,7 +134,7 @@ export default function HomeProcessSection() {
                   >
                     <step.icon size={19} style={{ color: step.accent }} />
                   </div>
-                  <h3 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#0F172A]">
+                  <h3 className="font-heading font-extrabold text-2xl text-[#0F172A]">
                     {step.title}
                   </h3>
                 </div>

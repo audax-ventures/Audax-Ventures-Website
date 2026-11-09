@@ -41,7 +41,7 @@ export default function DifferentiatorStatement() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-[var(--font-outfit)] font-medium text-2xl sm:text-3xl lg:text-4xl leading-snug"
+          className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl leading-snug"
         >
           <span className="text-white/45">
             Most firms help you define the strategy or build the technology.{" "}

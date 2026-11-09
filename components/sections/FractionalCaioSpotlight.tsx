@@ -50,7 +50,7 @@ export default function FractionalCaioSpotlight() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl text-[#0F172A] mb-3">
+            <h2 className="font-heading font-extrabold text-3xl text-[#0F172A] mb-3">
               Joshua Zaporzan
             </h2>
             <p className="text-[#374151] leading-relaxed mb-6">

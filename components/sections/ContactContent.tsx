@@ -142,7 +142,7 @@ export default function ContactContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#0F172A] mb-5 leading-tight"
+            className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#0F172A] mb-5 leading-tight"
           >
             Let&apos;s{" "}
             <span className="bg-gradient-to-r from-[#2563EB] to-[#7C3AED] bg-clip-text text-transparent">
@@ -209,7 +209,7 @@ export default function ContactContent() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[10px] font-bold uppercase tracking-widest text-[#9CA3AF] mb-1">{c.label}</p>
-                      <p className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-sm mb-0.5 group-hover:text-[#2563EB] transition-colors truncate">{c.value}</p>
+                      <p className="font-heading font-bold text-[#0F172A] text-sm mb-0.5 group-hover:text-[#2563EB] transition-colors truncate">{c.value}</p>
                       <p className="text-xs text-[#9CA3AF]">{c.sub}</p>
                     </div>
                   </div>
@@ -289,7 +289,7 @@ export default function ContactContent() {
                     <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-6">
                       <CheckCircle2 size={32} className="text-green-500" />
                     </div>
-                    <h3 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#0F172A] mb-3">
+                    <h3 className="font-heading font-extrabold text-2xl text-[#0F172A] mb-3">
                       Message sent!
                     </h3>
                     <p className="text-[#374151] max-w-sm leading-relaxed mb-8">
@@ -327,7 +327,7 @@ export default function ContactContent() {
                     className="p-8 sm:p-10"
                   >
                     <div className="mb-8">
-                      <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#0F172A] mb-2">
+                      <h2 className="font-heading font-extrabold text-2xl text-[#0F172A] mb-2">
                         Connect with Us Today
                       </h2>
                       <p className="text-[#374151] text-sm">
@@ -467,7 +467,7 @@ export default function ContactContent() {
       {/* ── Bottom FAQ strip ── */}
       <section className="py-16 bg-white border-t border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-xl text-[#0F172A] mb-10 text-center">
+          <h2 className="font-heading font-extrabold text-xl text-[#0F172A] mb-10 text-center">
             Common Questions
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -482,7 +482,7 @@ export default function ContactContent() {
                 <div className="w-10 h-10 rounded-xl bg-[#2563EB]/10 flex items-center justify-center mb-4">
                   <f.icon size={18} className="text-[#2563EB]" />
                 </div>
-                <p className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-sm mb-2 leading-snug">{f.q}</p>
+                <p className="font-heading font-bold text-[#0F172A] text-sm mb-2 leading-snug">{f.q}</p>
                 <p className="text-[#374151] text-xs leading-relaxed">{f.a}</p>
               </motion.div>
             ))}

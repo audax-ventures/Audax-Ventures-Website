@@ -24,7 +24,7 @@ export default function ImpactHighlights() {
         >
           <div>
             <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-4">Real Solutions. Real Results.</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
               Impact Across Industries
             </h2>
           </div>
@@ -60,14 +60,14 @@ export default function ImpactHighlights() {
                 </div>
 
                 <div className="p-6 flex flex-col flex-1">
-                  <h3 className="font-[var(--font-outfit)] font-extrabold text-lg text-[#0F172A] mb-2">
+                  <h3 className="font-heading font-extrabold text-lg text-[#0F172A] mb-2">
                     {h.title}
                   </h3>
                   <p className="text-[#374151] text-sm leading-relaxed mb-5 flex-1">{h.description}</p>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#0F172A] leading-none">{h.stat}</p>
+                      <p className="font-heading font-extrabold text-2xl text-[#0F172A] leading-none">{h.stat}</p>
                       <p className="text-[#9CA3AF] text-xs mt-1">{h.statLabel}</p>
                     </div>
                     <Link

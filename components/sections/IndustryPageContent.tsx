@@ -82,7 +82,7 @@ function CountUpStat({ stat, label, accentHex }: { stat: string; label: string; 
   return (
     <div ref={ref} className="text-center">
       <div
-        className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl mb-1.5 tabular-nums"
+        className="font-heading font-extrabold text-3xl sm:text-4xl mb-1.5 tabular-nums"
         style={{ color: accentHex }}
       >
         {displayed}
@@ -133,7 +133,7 @@ function ChallengeSolutionSection({
             </div>
             <div>
               <p
-                className="font-[var(--font-outfit)] font-bold text-sm mb-1"
+                className="font-heading font-bold text-sm mb-1"
                 style={{ color: accentHex }}
               >
                 {solutions[i].title}
@@ -159,7 +159,7 @@ function ChallengeSolutionSection({
                 {sol.icon}
               </div>
               <div>
-                <p className="font-[var(--font-outfit)] font-bold text-sm mb-1 text-[#1A1A2E]">{sol.title}</p>
+                <p className="font-heading font-bold text-sm mb-1 text-[#1A1A2E]">{sol.title}</p>
                 <p className="text-[#374151] text-xs leading-relaxed">{sol.description}</p>
               </div>
             </div>
@@ -203,7 +203,7 @@ function SolutionsExplorer({
           />
           <div className="relative">
             <div className="text-4xl mb-5">{featured.icon}</div>
-            <h3 className="font-[var(--font-outfit)] font-extrabold text-2xl mb-3 leading-snug text-[#1A1A2E]">
+            <h3 className="font-heading font-extrabold text-2xl mb-3 leading-snug text-[#1A1A2E]">
               {featured.title}
             </h3>
             <p className="text-[#374151] leading-relaxed text-sm mb-8">{featured.description}</p>
@@ -239,7 +239,7 @@ function SolutionsExplorer({
           >
             <span className="text-xl flex-shrink-0">{sol.icon}</span>
             <span
-              className="font-[var(--font-outfit)] font-bold text-xs leading-snug"
+              className="font-heading font-bold text-xs leading-snug"
               style={{ color: active === i ? accentHex : "#1A1A2E" }}
             >
               {sol.title}
@@ -272,7 +272,7 @@ function FAQAccordion({ faq, accentHex }: { faq: IndustryData["faq"]; accentHex:
               className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
             >
               <span
-                className="font-[var(--font-outfit)] font-bold text-sm leading-snug transition-colors"
+                className="font-heading font-bold text-sm leading-snug transition-colors"
                 style={{ color: isOpen ? accentHex : "#1A1A2E" }}
               >
                 {item.q}
@@ -372,7 +372,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
             {industry.icon} {industry.title}
           </div>
 
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl mb-5 leading-tight max-w-3xl" style={{ color: accentHex }}>
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl mb-5 leading-tight max-w-3xl" style={{ color: accentHex }}>
             {industry.title}
           </h1>
           <p className="text-[#374151] text-lg leading-relaxed mb-10 max-w-2xl">{industry.heroSub}</p>
@@ -431,7 +431,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
               <div className="flex flex-col items-center justify-center gap-2 px-8 py-10 text-center bg-white">
                 <p className="text-[#9CA3AF] text-[10px] font-bold uppercase tracking-widest mb-1">Before</p>
                 <p
-                  className="font-[var(--font-outfit)] font-extrabold text-5xl sm:text-6xl text-[#9CA3AF]"
+                  className="font-heading font-extrabold text-5xl sm:text-6xl text-[#9CA3AF]"
                 >
                   {beforeAfter.before}
                 </p>
@@ -466,7 +466,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
                   After
                 </p>
                 <p
-                  className="font-[var(--font-outfit)] font-extrabold text-5xl sm:text-6xl"
+                  className="font-heading font-extrabold text-5xl sm:text-6xl"
                   style={{ color: accentHex }}
                 >
                   {beforeAfter.after}
@@ -498,7 +498,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
             <section id="overview" className="py-16 scroll-mt-24 relative">
               {/* Thread marker */}
               <div className="hidden lg:block absolute -left-4 top-14 -translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-[#2E5F8A]/50 z-10" />
-              <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#1A1A2E] mb-8">
+              <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#1A1A2E] mb-8">
                 The {industry.title} Software Challenge
               </h2>
               {industry.overview.split("\n\n").map((para, i) => (
@@ -516,7 +516,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
                 <p className="text-[10px] font-bold tracking-widest uppercase mb-2" style={{ color: accentHex }}>
                   Pain Points We Solve
                 </p>
-                <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#1A1A2E]">
+                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#1A1A2E]">
                   Challenge → Solution
                 </h2>
                 <p className="text-[#374151] text-sm mt-2">
@@ -538,7 +538,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
                 <p className="text-[10px] font-bold tracking-widest uppercase mb-2" style={{ color: accentHex }}>
                   What We Build
                 </p>
-                <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#1A1A2E]">
+                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#1A1A2E]">
                   {industry.title} Solutions We Deliver
                 </h2>
                 <p className="text-[#374151] text-sm mt-2">
@@ -556,7 +556,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
                 <p className="text-[10px] font-bold tracking-widest uppercase mb-2" style={{ color: accentHex }}>
                   Our Clients
                 </p>
-                <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#1A1A2E]">
+                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#1A1A2E]">
                   Who We Serve in {industry.title}
                 </h2>
               </div>
@@ -588,7 +588,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
               />
               <div className="relative">
                 <div className="text-4xl mb-4">{industry.icon}</div>
-                <h3 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#1A1A2E] mb-3">
+                <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#1A1A2E] mb-3">
                   Ready to Build for {industry.title}?
                 </h3>
                 <p className="text-[#374151] mb-7 max-w-md mx-auto text-sm leading-relaxed">
@@ -611,7 +611,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
               {/* Thread marker */}
               <div className="hidden lg:block absolute -left-4 top-14 -translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-[#2E5F8A]/50 z-10" />
               <div className="mb-10">
-                <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#1A1A2E]">
+                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#1A1A2E]">
                   Frequently Asked Questions
                 </h2>
               </div>
@@ -633,7 +633,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
                   <span className="text-2xl">{industry.icon}</span>
                   <div>
                     <p className="text-[#374151] text-[10px] uppercase tracking-widest font-semibold">Industry</p>
-                    <h3 className="font-[var(--font-outfit)] font-extrabold text-base leading-snug text-[#1A1A2E]">
+                    <h3 className="font-heading font-extrabold text-base leading-snug text-[#1A1A2E]">
                       {industry.title}
                     </h3>
                   </div>
@@ -643,7 +643,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
                     <div key={h.label} className="flex items-start justify-between gap-3">
                       <span className="text-[#374151] text-xs leading-tight flex-1">{h.label}</span>
                       <span
-                        className="font-[var(--font-outfit)] font-bold text-sm flex-shrink-0"
+                        className="font-heading font-bold text-sm flex-shrink-0"
                         style={{ color: accentHex }}
                       >
                         {h.stat}
@@ -709,7 +709,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
       {relatedIndustries.length > 0 && (
         <section className="py-16 bg-[#F8F9FA] border-t border-gray-100">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-[var(--font-outfit)] font-bold text-xl text-[#1A1A2E] mb-8 text-center">
+            <h2 className="font-heading font-bold text-xl text-[#1A1A2E] mb-8 text-center">
               Other Industries We Serve
             </h2>
             <div className="grid sm:grid-cols-3 gap-5">
@@ -721,7 +721,7 @@ export default function IndustryPageContent({ industry, relatedIndustries }: Pro
                 >
                   <span className="text-2xl flex-shrink-0">{ind.icon}</span>
                   <div>
-                    <p className="font-[var(--font-outfit)] font-bold text-sm text-[#1A1A2E] mb-1 group-hover:text-[#2E5F8A] transition-colors">
+                    <p className="font-heading font-bold text-sm text-[#1A1A2E] mb-1 group-hover:text-[#2E5F8A] transition-colors">
                       {ind.title}
                     </p>
                     <p className="text-xs text-[#374151] leading-snug line-clamp-2">{ind.tagline}</p>

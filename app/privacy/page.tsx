@@ -10,7 +10,7 @@ export default function PrivacyPage() {
   return (
     <section className="pt-32 pb-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl text-[#1A1A2E] mb-6">Privacy Policy</h1>
+        <h1 className="font-heading font-extrabold text-4xl text-[#1A1A2E] mb-6">Privacy Policy</h1>
         <p className="text-[#374151] mb-8">Last updated: [confirm publish date]</p>
         <div className="prose prose-lg text-[#374151]">
           <p>
@@ -20,7 +20,7 @@ export default function PrivacyPage() {
             website and as a client engaging our services.
           </p>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">PIPEDA Compliance</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">PIPEDA Compliance</h2>
           <p>
             Audax Ventures collects, uses, and discloses personal information in accordance with the Personal
             Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy legislation.
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
             keep it accurate, secure, and accessible to you on request.
           </p>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">Information We Collect</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">Information We Collect</h2>
           <p>We collect information in the following ways:</p>
           <ul>
             <li><strong>Information you provide directly</strong> — your name, email address, company name, phone number, budget range, and project details when you fill out our contact form, book a strategy call, or otherwise correspond with us.</li>
@@ -38,7 +38,7 @@ export default function PrivacyPage() {
             <li><strong>Client engagement data</strong> — information exchanged during active projects, governed additionally by the Master Services Agreement (MSA) and Statement of Work (SOW) for that engagement.</li>
           </ul>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">How We Use Your Information</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">How We Use Your Information</h2>
           <p>We use the information we collect to:</p>
           <ul>
             <li>Respond to your inquiries and schedule strategy calls</li>
@@ -49,7 +49,7 @@ export default function PrivacyPage() {
           </ul>
           <p>We do not sell your personal information, and we do not use it for purposes unrelated to those listed above without asking first.</p>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">Data Storage &amp; Canadian Residency</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">Data Storage &amp; Canadian Residency</h2>
           <p>
             As a Canadian company, we prioritize keeping personal information within Canada wherever practical.
             Website and application infrastructure we build for clients is hosted in [confirm hosting region — e.g.,
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
             commitments, and we list them below.
           </p>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">Third-Party Services</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">Third-Party Services</h2>
           <p>This website uses the following third-party services, each governed by its own privacy policy:</p>
           <ul>
             <li><strong>Google Analytics (GA4)</strong> — website usage analytics</li>
@@ -73,7 +73,7 @@ export default function PrivacyPage() {
             <li><strong>Vercel</strong> — website hosting</li>
           </ul>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">Data Retention</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">Data Retention</h2>
           <p>
             We retain contact and inquiry information for as long as reasonably necessary to respond to your inquiry
             or maintain our business relationship with you, and client engagement data for the period specified in
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
             request earlier deletion at any time — see &ldquo;Your Rights&rdquo; below.
           </p>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">Your Rights</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">Your Rights</h2>
           <p>Under PIPEDA, you have the right to:</p>
           <ul>
             <li>Know what personal information we hold about you and why</li>
@@ -92,7 +92,7 @@ export default function PrivacyPage() {
           </ul>
           <p>To exercise any of these rights, contact us at privacy@audaxventures.ca. We will respond within a reasonable timeframe.</p>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">Security</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">Security</h2>
           <p>
             We use industry-standard technical and organizational measures — including encryption in transit,
             access controls, and least-privilege practices — to protect personal information against unauthorized
@@ -100,14 +100,14 @@ export default function PrivacyPage() {
             we cannot guarantee absolute security.
           </p>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">Changes to This Policy</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">Changes to This Policy</h2>
           <p>
             We may update this Privacy Policy from time to time to reflect changes in our practices or for legal
             reasons. We&apos;ll update the &ldquo;Last updated&rdquo; date above when we do, and for material changes
             we&apos;ll take reasonable steps to notify active clients directly.
           </p>
 
-          <h2 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mt-8 mb-3">Contact Us</h2>
+          <h2 className="font-heading font-bold text-[#1A1A2E] mt-8 mb-3">Contact Us</h2>
           <p>
             If you have questions about this Privacy Policy or want to exercise your privacy rights, contact us at
             privacy@audaxventures.ca.

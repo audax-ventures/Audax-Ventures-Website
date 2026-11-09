@@ -119,7 +119,7 @@ export default function MVPCalculatorClient() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <p className="text-xs tracking-widest uppercase text-[#2E5F8A] font-semibold mb-3">Free Tool</p>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#1A1A2E] mb-4">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-[#1A1A2E] mb-4">
             MVP Cost Calculator
           </h1>
           <p className="text-[#374151]">Answer 5 questions to get your estimated project range.</p>
@@ -156,7 +156,7 @@ export default function MVPCalculatorClient() {
               {/* Step 0: Product Type */}
               {step === 0 && (
                 <div>
-                  <h2 className="font-[var(--font-outfit)] font-bold text-xl text-[#1A1A2E] mb-6">What type of product are you building?</h2>
+                  <h2 className="font-heading font-bold text-xl text-[#1A1A2E] mb-6">What type of product are you building?</h2>
                   <div className="grid grid-cols-2 gap-4">
                     {productTypes.map((p) => (
                       <button
@@ -179,7 +179,7 @@ export default function MVPCalculatorClient() {
               {/* Step 1: Features */}
               {step === 1 && (
                 <div>
-                  <h2 className="font-[var(--font-outfit)] font-bold text-xl text-[#1A1A2E] mb-6">Which features do you need?</h2>
+                  <h2 className="font-heading font-bold text-xl text-[#1A1A2E] mb-6">Which features do you need?</h2>
                   <div className="space-y-2">
                     {featureOptions.map((f) => (
                       <button
@@ -214,7 +214,7 @@ export default function MVPCalculatorClient() {
               {/* Step 2: Stage */}
               {step === 2 && (
                 <div>
-                  <h2 className="font-[var(--font-outfit)] font-bold text-xl text-[#1A1A2E] mb-6">What stage are you at?</h2>
+                  <h2 className="font-heading font-bold text-xl text-[#1A1A2E] mb-6">What stage are you at?</h2>
                   <div className="space-y-3">
                     {stages.map((s) => (
                       <button
@@ -239,7 +239,7 @@ export default function MVPCalculatorClient() {
               {/* Step 3: Timeline */}
               {step === 3 && (
                 <div>
-                  <h2 className="font-[var(--font-outfit)] font-bold text-xl text-[#1A1A2E] mb-6">What&apos;s your preferred timeline?</h2>
+                  <h2 className="font-heading font-bold text-xl text-[#1A1A2E] mb-6">What&apos;s your preferred timeline?</h2>
                   <div className="space-y-3">
                     {timelines.map((t) => (
                       <button
@@ -263,7 +263,7 @@ export default function MVPCalculatorClient() {
               {/* Step 4: Budget */}
               {step === 4 && (
                 <div>
-                  <h2 className="font-[var(--font-outfit)] font-bold text-xl text-[#1A1A2E] mb-6">What&apos;s your budget range?</h2>
+                  <h2 className="font-heading font-bold text-xl text-[#1A1A2E] mb-6">What&apos;s your budget range?</h2>
                   <div className="grid grid-cols-2 gap-3">
                     {budgets.map((b) => (
                       <button
@@ -288,12 +288,12 @@ export default function MVPCalculatorClient() {
                   <div className="w-16 h-16 rounded-full bg-[#2E5F8A] flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 className="text-white" size={32} />
                   </div>
-                  <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#1A1A2E] mb-3">
+                  <h2 className="font-heading font-extrabold text-2xl text-[#1A1A2E] mb-3">
                     Your Estimated Range
                   </h2>
                   <div className="bg-white rounded-2xl p-6 mb-6 border border-gray-100">
                     <p className="text-[#374151] text-sm mb-2">Based on your selections:</p>
-                    <p className="font-[var(--font-outfit)] font-extrabold text-4xl text-[#2E5F8A]">
+                    <p className="font-heading font-extrabold text-4xl text-[#2E5F8A]">
                       ${(estimate.low / 1000).toFixed(0)}K – ${(estimate.high / 1000).toFixed(0)}K CAD
                     </p>
                     <p className="text-[#374151] text-xs mt-2">
@@ -302,7 +302,7 @@ export default function MVPCalculatorClient() {
                   </div>
                   <div className="bg-[#2E5F8A]/5 rounded-2xl p-5 mb-6 border border-[#2E5F8A]/20">
                     <p className="text-sm font-semibold text-[#1A1A2E] mb-1">Recommended Program:</p>
-                    <p className="text-[#2E5F8A] font-[var(--font-outfit)] font-bold text-lg">{recommendation}</p>
+                    <p className="text-[#2E5F8A] font-heading font-bold text-lg">{recommendation}</p>
                     <Link
                       href="https://www.audaxventures.io"
                       target="_blank"

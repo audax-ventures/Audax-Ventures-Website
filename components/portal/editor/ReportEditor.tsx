@@ -187,7 +187,7 @@ export default function ReportEditor(props: Props) {
               disabled={locked}
               onChange={(e) => edit({ title: e.target.value })}
               aria-label="Report title"
-              className="-mx-2 w-[calc(100%+1rem)] rounded-lg border border-transparent bg-transparent px-2 py-1 font-[var(--font-outfit)] text-[1.65rem] font-semibold tracking-tight text-[#0F2341] transition-colors hover:border-[#E4E9F0] focus:border-[#2E5F8A] focus:outline-none focus:ring-4 focus:ring-[#2E5F8A]/10 disabled:hover:border-transparent"
+              className="-mx-2 w-[calc(100%+1rem)] rounded-lg border border-transparent bg-transparent px-2 py-1 font-heading text-[1.65rem] font-semibold tracking-tight text-[#0F2341] transition-colors hover:border-[#E4E9F0] focus:border-[#2E5F8A] focus:outline-none focus:ring-4 focus:ring-[#2E5F8A]/10 disabled:hover:border-transparent"
             />
             <div className="mt-3 flex flex-wrap items-end gap-3">
               <label className="block">

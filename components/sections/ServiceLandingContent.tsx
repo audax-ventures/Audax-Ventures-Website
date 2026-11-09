@@ -70,7 +70,7 @@ export default function ServiceLandingContent({ data }: { data: ServicePageData 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.08 }}
-            className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4 leading-tight"
+            className="font-heading font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4 leading-tight"
           >
             {data.hero.headline}
           </motion.h1>
@@ -79,7 +79,7 @@ export default function ServiceLandingContent({ data }: { data: ServicePageData 
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.14 }}
-            className="font-[var(--font-outfit)] font-bold text-xl sm:text-2xl mb-6"
+            className="font-heading font-bold text-xl sm:text-2xl mb-6"
             style={{ color: accent }}
           >
             {data.hero.subhead}
@@ -123,7 +123,7 @@ export default function ServiceLandingContent({ data }: { data: ServicePageData 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
             <SectionEyebrow icon={AlertTriangle} label="The Challenge" accent={accent} />
-            <h2 className={`font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-6 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
+            <h2 className={`font-heading font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-6 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
               {data.challenge.headline}
             </h2>
             <div className="space-y-4">
@@ -140,7 +140,7 @@ export default function ServiceLandingContent({ data }: { data: ServicePageData 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn className="max-w-2xl mb-12">
             <SectionEyebrow icon={Layers} label="How We Help" accent={accent} />
-            <h2 className={`font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-5 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
+            <h2 className={`font-heading font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-5 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
               {data.howWeHelp.headline}
             </h2>
             <p className="text-[#374151] leading-relaxed">{data.howWeHelp.intro}</p>
@@ -165,7 +165,7 @@ export default function ServiceLandingContent({ data }: { data: ServicePageData 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn className="max-w-2xl mb-14">
             <SectionEyebrow icon={Compass} label="Our Approach" accent={accent} />
-            <h2 className={`font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-5 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
+            <h2 className={`font-heading font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-5 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
               {data.approach.headline}
             </h2>
             {data.approach.intro.map((p, i) => (
@@ -179,12 +179,12 @@ export default function ServiceLandingContent({ data }: { data: ServicePageData 
               {data.approach.steps.map((s, i) => (
                 <FadeIn key={s.title} delay={i * 0.08}>
                   <div
-                    className="relative z-10 w-12 h-12 rounded-full bg-white border-2 flex items-center justify-center mb-4 font-[var(--font-outfit)] font-extrabold text-sm"
+                    className="relative z-10 w-12 h-12 rounded-full bg-white border-2 flex items-center justify-center mb-4 font-heading font-extrabold text-sm"
                     style={{ borderColor: `${accent}4D`, color: accent }}
                   >
                     {i + 1}
                   </div>
-                  <h3 className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-base mb-2">{s.title}</h3>
+                  <h3 className="font-heading font-bold text-[#0F172A] text-base mb-2">{s.title}</h3>
                   <p className="text-[#374151] text-sm leading-relaxed">{s.description}</p>
                 </FadeIn>
               ))}
@@ -234,7 +234,7 @@ export default function ServiceLandingContent({ data }: { data: ServicePageData 
               </div>
             </div>
             <p className="text-xs font-bold tracking-widest uppercase mb-5" style={{ color: accent }}>Why Audax</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-2 leading-snug">
+            <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-2 leading-snug">
               {data.whyAudax.headline}
             </h2>
             <HeaderAccentUnderline color={accent} className="mb-6" />
@@ -273,7 +273,7 @@ export default function ServiceLandingContent({ data }: { data: ServicePageData 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn className="mb-10">
             <SectionEyebrow icon={HelpCircle} label="FAQ" accent={accent} />
-            <h2 className={`font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#0F172A] ${headerAccentClass}`} style={{ borderColor: accent }}>
+            <h2 className={`font-heading font-extrabold text-2xl sm:text-3xl text-[#0F172A] ${headerAccentClass}`} style={{ borderColor: accent }}>
               Frequently Asked Questions
             </h2>
           </FadeIn>
@@ -287,7 +287,7 @@ export default function ServiceLandingContent({ data }: { data: ServicePageData 
                     onClick={() => setOpenFaq(isOpen ? null : i)}
                     className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
                   >
-                    <span className="font-[var(--font-outfit)] font-bold text-sm text-[#0F172A] leading-snug">{f.q}</span>
+                    <span className="font-heading font-bold text-sm text-[#0F172A] leading-snug">{f.q}</span>
                     <span
                       className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors"
                       style={isOpen ? { backgroundColor: accent, color: "#fff" } : { backgroundColor: "#F3F4F6", color: "#374151" }}

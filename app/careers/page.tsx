@@ -15,7 +15,7 @@ export default function CareersPage() {
       <section className="pt-32 pb-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Careers</p>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4">
             Careers at Audax Ventures
           </h1>
           <p className="text-[#374151] text-lg">
@@ -37,7 +37,7 @@ export default function CareersPage() {
                   <span className="inline-flex items-center self-start px-3 py-1 rounded-full bg-[#2563EB]/10 text-[#2563EB] text-xs font-bold uppercase tracking-widest mb-4">
                     {job.badgeLabel ?? "Open Role"}
                   </span>
-                  <h2 className="font-[var(--font-outfit)] font-extrabold text-xl text-[#0F172A] mb-3 leading-snug group-hover:text-[#2563EB] transition-colors">
+                  <h2 className="font-heading font-extrabold text-xl text-[#0F172A] mb-3 leading-snug group-hover:text-[#2563EB] transition-colors">
                     {job.title}
                   </h2>
                   <p className="text-[#374151] text-sm leading-relaxed mb-6 flex-1">{job.excerpt}</p>
@@ -49,7 +49,7 @@ export default function CareersPage() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#0F172A] mb-3">
+              <h2 className="font-heading font-extrabold text-2xl text-[#0F172A] mb-3">
                 No Open Positions Right Now
               </h2>
               <p className="text-[#374151] text-lg">

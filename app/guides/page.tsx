@@ -17,7 +17,7 @@ export default function GuidesPage() {
       <section className="pt-32 pb-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-14">
           <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Resources</p>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4">
             Guides
           </h1>
           <p className="text-[#374151] text-lg max-w-xl mx-auto">
@@ -38,7 +38,7 @@ export default function GuidesPage() {
                 <div className="w-10 h-10 rounded-xl bg-[#2563EB]/10 flex items-center justify-center mb-4">
                   <BookOpen size={18} className="text-[#2563EB]" />
                 </div>
-                <h3 className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-base leading-snug mb-2 group-hover:text-[#2563EB] transition-colors flex-1">
+                <h3 className="font-heading font-bold text-[#0F172A] text-base leading-snug mb-2 group-hover:text-[#2563EB] transition-colors flex-1">
                   {g.title}
                 </h3>
                 <div className="flex items-center justify-between mt-3">

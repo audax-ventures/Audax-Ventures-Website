@@ -40,7 +40,7 @@ export default function FirstNinetyDaysSection({
         <FadeIn className="max-w-4xl mb-14">
           <SectionEyebrow icon={Calendar} label={data.eyebrow} accent={accent} />
           <p className="text-sm font-semibold mb-4 text-pretty" style={{ color: accent }}>{data.permanentNote}</p>
-          <h2 className={`font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-4 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
+          <h2 className={`font-heading font-extrabold text-2xl sm:text-3xl text-[#0F172A] mb-4 leading-snug ${headerAccentClass}`} style={{ borderColor: accent }}>
             {data.heading}
           </h2>
           <p className="text-[#374151] leading-relaxed text-pretty">{data.subhead}</p>
@@ -66,7 +66,7 @@ export default function FirstNinetyDaysSection({
                     style={{ backgroundColor: isActive ? `${sAccent}0D` : undefined }}
                   >
                     <div
-                      className="relative z-10 w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 border-2 font-[var(--font-outfit)] font-extrabold text-sm transition-all duration-300"
+                      className="relative z-10 w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 border-2 font-heading font-extrabold text-sm transition-all duration-300"
                       style={{
                         backgroundColor: isActive ? sAccent : "#FFFFFF",
                         borderColor: isActive ? sAccent : "#E5E7EB",
@@ -82,7 +82,7 @@ export default function FirstNinetyDaysSection({
                       >
                         {s.range}
                       </p>
-                      <p className={`font-[var(--font-outfit)] font-bold text-base leading-snug transition-colors duration-300 ${isActive ? "text-[#0F172A]" : "text-[#B0B5BF] group-hover:text-[#374151]"}`}>
+                      <p className={`font-heading font-bold text-base leading-snug transition-colors duration-300 ${isActive ? "text-[#0F172A]" : "text-[#B0B5BF] group-hover:text-[#374151]"}`}>
                         {s.title}
                       </p>
                     </div>
@@ -108,7 +108,7 @@ export default function FirstNinetyDaysSection({
               />
               <span
                 aria-hidden
-                className="pointer-events-none select-none absolute -top-6 right-4 font-[var(--font-outfit)] font-extrabold text-[160px] leading-none"
+                className="pointer-events-none select-none absolute -top-6 right-4 font-heading font-extrabold text-[160px] leading-none"
                 style={{ color: stageAccent, opacity: 0.05 }}
               >
                 0{active + 1}
@@ -117,11 +117,11 @@ export default function FirstNinetyDaysSection({
               <div className="relative max-w-2xl">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${stageAccent}14` }}>
-                    <span className="font-[var(--font-outfit)] font-extrabold text-sm" style={{ color: stageAccent }}>{active + 1}</span>
+                    <span className="font-heading font-extrabold text-sm" style={{ color: stageAccent }}>{active + 1}</span>
                   </div>
                   <div>
                     <p className="text-xs font-bold uppercase tracking-widest" style={{ color: stageAccent }}>{stage.range}</p>
-                    <h3 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#0F172A]">{stage.title}</h3>
+                    <h3 className="font-heading font-extrabold text-2xl text-[#0F172A]">{stage.title}</h3>
                   </div>
                 </div>
                 <p className="text-[#374151] leading-relaxed mb-8">{stage.description}</p>

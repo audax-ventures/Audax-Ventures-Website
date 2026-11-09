@@ -68,7 +68,7 @@ export default function CaseStudyContent({ study, otherStudies }: { study: CaseS
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.08 }}
-            className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A] mb-6 leading-tight"
+            className="font-heading font-extrabold text-3xl sm:text-4xl text-[#0F172A] mb-6 leading-tight"
           >
             {study.title}
           </motion.h1>
@@ -134,7 +134,7 @@ export default function CaseStudyContent({ study, otherStudies }: { study: CaseS
               {study.approach.map((step, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div
-                    className="mt-0.5 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 font-[var(--font-outfit)] font-bold text-xs"
+                    className="mt-0.5 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 font-heading font-bold text-xs"
                     style={{ backgroundColor: `${accent}14`, color: accent }}
                   >
                     {i + 1}
@@ -165,7 +165,7 @@ export default function CaseStudyContent({ study, otherStudies }: { study: CaseS
                   transition={{ delay: i * 0.08 }}
                   className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 text-center"
                 >
-                  <p className="font-[var(--font-outfit)] font-extrabold text-2xl sm:text-3xl mb-2 leading-none" style={{ color: accent }}>
+                  <p className="font-heading font-extrabold text-2xl sm:text-3xl mb-2 leading-none" style={{ color: accent }}>
                     {r.stat}
                   </p>
                   <p className="text-[#374151] text-sm leading-snug">{r.label}</p>
@@ -210,7 +210,7 @@ export default function CaseStudyContent({ study, otherStudies }: { study: CaseS
             <div className="relative">
               <Quote size={28} className="text-white/30 mb-5" />
               <p className="text-xs tracking-widest uppercase font-semibold mb-4" style={{ color: "#60A5FA" }}>Key Takeaway</p>
-              <p className="text-white text-lg sm:text-xl leading-relaxed font-[var(--font-outfit)] font-medium">
+              <p className="text-white text-lg sm:text-xl leading-relaxed font-heading font-medium">
                 {study.keyTakeaway}
               </p>
             </div>
@@ -222,7 +222,7 @@ export default function CaseStudyContent({ study, otherStudies }: { study: CaseS
       {otherStudies.length > 0 && (
         <section className="py-16 bg-[#F8F9FA]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#0F172A] mb-8">More Success Stories</h2>
+            <h2 className="font-heading font-extrabold text-2xl text-[#0F172A] mb-8">More Success Stories</h2>
             <div className="grid sm:grid-cols-3 gap-6">
               {otherStudies.map((c) => (
                 <Link
@@ -233,7 +233,7 @@ export default function CaseStudyContent({ study, otherStudies }: { study: CaseS
                   <p className="text-xs font-semibold text-[#2563EB] bg-blue-50 inline-flex px-2.5 py-0.5 rounded-full mb-3">
                     {c.industry}
                   </p>
-                  <h3 className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-base leading-snug group-hover:text-[#2563EB] transition-colors">
+                  <h3 className="font-heading font-bold text-[#0F172A] text-base leading-snug group-hover:text-[#2563EB] transition-colors">
                     {c.title}
                   </h3>
                 </Link>

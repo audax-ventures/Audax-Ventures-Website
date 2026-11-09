@@ -66,7 +66,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/portal/log
       {/* Sign-in */}
       <div className="flex flex-1 items-start justify-center px-4 py-10 sm:px-6 lg:items-center lg:py-12">
         <div className="w-full max-w-md rounded-3xl border border-slate-200/70 bg-white p-7 shadow-[0_24px_60px_-20px_rgba(20,33,58,0.18)] sm:p-10">
-          <h1 className="font-[var(--font-outfit)] text-2xl font-semibold tracking-tight text-[#0F2341] sm:text-[1.7rem]">
+          <h1 className="font-heading text-2xl font-semibold tracking-tight text-[#0F2341] sm:text-[1.7rem]">
             Welcome to the Audax Portal
           </h1>
           <p className="mt-2 text-sm text-[#5A6478]">Sign-in below</p>

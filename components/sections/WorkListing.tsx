@@ -59,7 +59,7 @@ export default function WorkListing() {
                 )}
               </div>
 
-              <h3 className="font-[var(--font-outfit)] font-extrabold text-lg text-[#0F172A] mb-3 leading-snug group-hover:text-[#2563EB] transition-colors">
+              <h3 className="font-heading font-extrabold text-lg text-[#0F172A] mb-3 leading-snug group-hover:text-[#2563EB] transition-colors">
                 {c.title}
               </h3>
 

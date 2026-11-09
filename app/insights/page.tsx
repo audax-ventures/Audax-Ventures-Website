@@ -16,7 +16,7 @@ export default function InsightsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-3">Resources</p>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-[#0F172A] mb-4">
             News & Tech Insights
           </h1>
           <p className="text-[#374151] text-lg max-w-xl mx-auto">
@@ -52,7 +52,7 @@ export default function InsightsPage() {
                 )}
                 <span className="text-xs font-semibold text-[#2563EB] bg-blue-50 px-2.5 py-0.5 rounded-full">{post.category}</span>
               </div>
-              <h3 className="font-[var(--font-outfit)] font-bold text-[#0F172A] text-lg leading-snug mb-3 group-hover:text-[#2563EB] transition-colors line-clamp-2">
+              <h3 className="font-heading font-bold text-[#0F172A] text-lg leading-snug mb-3 group-hover:text-[#2563EB] transition-colors line-clamp-2">
                 {post.title}
               </h3>
               <p className="text-[#374151] text-sm leading-relaxed line-clamp-3 mb-6 flex-1">{post.excerpt}</p>

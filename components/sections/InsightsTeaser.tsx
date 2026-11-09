@@ -23,7 +23,7 @@ export default function InsightsTeaser() {
         >
           <div>
             <p className="text-xs tracking-widest uppercase text-[#2E5F8A] font-semibold mb-4">Insights</p>
-            <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A1A2E]">
               AI Leadership &amp; Software Insights
             </h2>
           </div>
@@ -51,7 +51,7 @@ export default function InsightsTeaser() {
                 <span className="text-xs font-semibold text-[#2E5F8A] bg-blue-50 px-2.5 py-0.5 rounded-full">
                   {a.category}
                 </span>
-                <h3 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] text-base leading-snug mt-4 mb-2 group-hover:text-[#2E5F8A] transition-colors">
+                <h3 className="font-heading font-bold text-[#1A1A2E] text-base leading-snug mt-4 mb-2 group-hover:text-[#2E5F8A] transition-colors">
                   {a.title}
                 </h3>
                 <p className="text-[#374151] text-sm leading-relaxed">{a.excerpt}</p>

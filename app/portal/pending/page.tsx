@@ -18,7 +18,7 @@ export default async function PendingPage() {
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 ring-8 ring-amber-50/50">
           <Clock3 className="h-5 w-5" />
         </span>
-        <h1 className="mt-5 font-[var(--font-outfit)] text-xl font-semibold text-[#0F2341]">Almost there</h1>
+        <h1 className="mt-5 font-heading text-xl font-semibold text-[#0F2341]">Almost there</h1>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">
           You&apos;re signed in as <strong className="text-slate-800">{user.email}</strong>, but an admin still needs to turn on
           your access. Ask them to open <em>Team</em> in the portal and switch you on.

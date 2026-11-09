@@ -126,7 +126,7 @@ export default function ProcessContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#1A1A2E] mb-6"
+            className="font-heading font-extrabold text-4xl sm:text-5xl text-[#1A1A2E] mb-6"
           >
             Our Development Process
           </motion.h1>
@@ -163,7 +163,7 @@ export default function ProcessContent() {
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-3 mb-4">
                       <span className="text-[#374151] text-sm font-mono">Phase {phase.number}</span>
-                      <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#1A1A2E]">{phase.title}</h2>
+                      <h2 className="font-heading font-extrabold text-2xl text-[#1A1A2E]">{phase.title}</h2>
                       <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F8F9FA] border border-gray-200 text-xs text-[#374151]">
                         <Clock size={12} />
                         {phase.duration}
@@ -196,7 +196,7 @@ export default function ProcessContent() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-[var(--font-outfit)] font-extrabold text-3xl text-[#1A1A2E] mb-10 text-center"
+            className="font-heading font-extrabold text-3xl text-[#1A1A2E] mb-10 text-center"
           >
             Process FAQ
           </motion.h2>
@@ -210,7 +210,7 @@ export default function ProcessContent() {
                 transition={{ delay: i * 0.05 }}
                 className="bg-[#F8F9FA] rounded-2xl p-6"
               >
-                <h3 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mb-2">{f.q}</h3>
+                <h3 className="font-heading font-bold text-[#1A1A2E] mb-2">{f.q}</h3>
                 <p className="text-[#374151] text-sm leading-relaxed">{f.a}</p>
               </motion.div>
             ))}

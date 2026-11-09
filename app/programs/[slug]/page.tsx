@@ -84,7 +84,7 @@ export default async function ProgramPage({ params }: Props) {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#2E5F8A]/10 text-[#2E5F8A] text-xs font-semibold mb-6 uppercase tracking-widest">
             Program
           </div>
-          <h1 className="font-[var(--font-outfit)] font-extrabold text-4xl sm:text-5xl text-[#1A1A2E] mb-5 leading-tight">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-[#1A1A2E] mb-5 leading-tight">
             {program.heroTitle}
           </h1>
           <p className="text-[#374151] text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
@@ -119,7 +119,7 @@ export default async function ProgramPage({ params }: Props) {
       {/* ── Phases ── */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl text-[#1A1A2E] mb-12 text-center">
+          <h2 className="font-heading font-extrabold text-3xl text-[#1A1A2E] mb-12 text-center">
             The Program Phases
           </h2>
           <div className="space-y-8">
@@ -132,14 +132,14 @@ export default async function ProgramPage({ params }: Props) {
                   <div className="flex-shrink-0 text-center md:text-left">
                     <div className="inline-flex flex-col items-center">
                       <span className="text-4xl mb-2">{phase.icon}</span>
-                      <span className="font-[var(--font-outfit)] font-extrabold text-3xl text-[#2E5F8A]/20">
+                      <span className="font-heading font-extrabold text-3xl text-[#2E5F8A]/20">
                         0{phase.number}
                       </span>
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-3 mb-3">
-                      <h3 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#1A1A2E]">
+                      <h3 className="font-heading font-extrabold text-2xl text-[#1A1A2E]">
                         Phase {phase.number}: {phase.name}
                       </h3>
                       <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F8F9FA] border border-gray-200 text-xs text-[#374151]">
@@ -181,7 +181,7 @@ export default async function ProgramPage({ params }: Props) {
       {/* ── Who It's For ── */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl text-[#1A1A2E] mb-8 text-center">
+          <h2 className="font-heading font-extrabold text-3xl text-[#1A1A2E] mb-8 text-center">
             Who This Program Is For
           </h2>
           <div className="space-y-3">
@@ -198,7 +198,7 @@ export default async function ProgramPage({ params }: Props) {
       {/* ── Differentiators ── */}
       <section className="py-14 bg-[#F8F9FA]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-2xl text-[#1A1A2E] mb-8 text-center">
+          <h2 className="font-heading font-extrabold text-2xl text-[#1A1A2E] mb-8 text-center">
             What Makes This Different
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -215,13 +215,13 @@ export default async function ProgramPage({ params }: Props) {
       {/* ── FAQ ── */}
       <section className="py-16 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl text-[#1A1A2E] mb-10 text-center">
+          <h2 className="font-heading font-extrabold text-3xl text-[#1A1A2E] mb-10 text-center">
             Frequently Asked Questions
           </h2>
           <div className="space-y-4">
             {program.faq.map((f) => (
               <div key={f.q} className="bg-[#F8F9FA] rounded-2xl p-6 hover:shadow-sm transition-shadow">
-                <h3 className="font-[var(--font-outfit)] font-bold text-[#1A1A2E] mb-2">{f.q}</h3>
+                <h3 className="font-heading font-bold text-[#1A1A2E] mb-2">{f.q}</h3>
                 <p className="text-[#374151] text-sm leading-relaxed">{f.a}</p>
               </div>
             ))}
@@ -233,7 +233,7 @@ export default async function ProgramPage({ params }: Props) {
       <section className="py-14 bg-[#F8F9FA]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-[10px] font-bold tracking-widest uppercase text-[#374151] mb-3">Also Available</p>
-          <h2 className="font-[var(--font-outfit)] font-bold text-xl text-[#1A1A2E] mb-4">
+          <h2 className="font-heading font-bold text-xl text-[#1A1A2E] mb-4">
             Explore Our Other Program
           </h2>
           <Link

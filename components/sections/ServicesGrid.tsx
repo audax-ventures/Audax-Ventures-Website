@@ -70,7 +70,7 @@ export default function ServicesGrid() {
           className="mb-14"
         >
           <p className="text-xs tracking-widest uppercase text-[#2563EB] font-semibold mb-4">What We Do</p>
-          <h2 className="font-[var(--font-outfit)] font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#0F172A]">
             End-to-End AI Leadership &amp; Execution
           </h2>
         </motion.div>
@@ -92,7 +92,7 @@ export default function ServicesGrid() {
               <p className="text-xs tracking-widest uppercase text-[#2563EB] font-bold mb-2">
                 {p.phase}
               </p>
-              <h3 className="font-[var(--font-outfit)] font-extrabold text-xl text-[#0F172A] mb-2">
+              <h3 className="font-heading font-extrabold text-xl text-[#0F172A] mb-2">
                 {p.title}
               </h3>
               <p className="text-[#374151] text-sm leading-relaxed mb-6">
