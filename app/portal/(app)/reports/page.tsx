@@ -107,7 +107,7 @@ export default async function ReportsPage({ searchParams }: PageProps<"/portal/r
           </select>
           <select name="template" defaultValue={templateId} aria-label="Report type" className={inputClass}>
             <option value="">All report types</option>
-            {templates.map((t) => (
+            {[...templates].sort((a, b) => (clientMap.get(a.client_id)?.name ?? "").localeCompare(clientMap.get(b.client_id)?.name ?? "")).map((t) => (
               <option key={t.id} value={t.id}>
                 {clientMap.get(t.client_id)?.name} · {t.name}
               </option>

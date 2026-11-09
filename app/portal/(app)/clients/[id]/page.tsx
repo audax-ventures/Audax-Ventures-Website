@@ -8,7 +8,7 @@ import { starterTemplates } from "@/lib/portal/starter-templates";
 import { Card, CardHeader, ClientLogo, EmptyState, IconBadge, LinkButton, PageHeader, Pill } from "@/components/portal/ui";
 import ClientForm from "@/components/portal/ClientForm";
 import ReportTable from "@/components/portal/ReportTable";
-import { ArchiveClientButton, NewTemplateButton } from "@/components/portal/ClientActions";
+import { ArchiveClientButton, NewTemplateButton, TemplateOrderButtons } from "@/components/portal/ClientActions";
 
 export const metadata = { title: "Client" };
 
@@ -58,14 +58,17 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
           <CardHeader
             icon={LayoutTemplate}
             title="Report templates"
-            description="The layout of each report type. Changes apply to new reports."
+            description="Use the arrows to set the order they appear in across the portal."
             actions={<NewTemplateButton clientId={client.id} starters={starters} />}
           />
           {active.length ? (
             <ul className="divide-y divide-[#EEF1F5]">
-              {active.map((t) => (
+              {active.map((t, i) => (
                 <li key={t.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
                   <span className="flex min-w-0 items-center gap-3">
+                    {active.length > 1 ? (
+                      <TemplateOrderButtons templateId={t.id} name={t.name} isFirst={i === 0} isLast={i === active.length - 1} />
+                    ) : null}
                     <IconBadge icon={FileText} tone="slate" size="sm" />
                     <span className="min-w-0">
                     <span className="block truncate text-sm font-semibold text-[#0F2341]">{t.name}</span>

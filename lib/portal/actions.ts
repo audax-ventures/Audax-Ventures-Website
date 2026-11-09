@@ -520,3 +520,32 @@ export async function sendTestReminder(profileId: string): Promise<ActionResult<
     return fail(e);
   }
 }
+
+/** Move a report template up or down in its client's list. */
+export async function moveTemplate(id: string, direction: -1 | 1): Promise<ActionResult> {
+  try {
+    const { supabase } = await memberOrThrow();
+    const { listTemplates, getTemplate } = await import("./data");
+    const tpl = await getTemplate(supabase, id);
+    if (!tpl) throw new Error("Template not found.");
+    if (tpl.sort_order === undefined) {
+      throw new Error("Reordering needs one database update first: run supabase/portal-migration-003-template-order.sql in Supabase.");
+    }
+    const list = await listTemplates(supabase, { clientId: tpl.client_id });
+    const i = list.findIndex((t) => t.id === id);
+    const j = i + direction;
+    if (i < 0 || j < 0 || j >= list.length) return { ok: true };
+    [list[i], list[j]] = [list[j], list[i]];
+    // Renumber the whole list so the order is always clean (1, 2, 3…).
+    for (const [pos, t] of list.entries()) {
+      if (t.sort_order !== pos + 1) {
+        const { error } = await supabase.from("portal_templates").update({ sort_order: pos + 1 }).eq("id", t.id);
+        if (error) throw new Error(error.message);
+      }
+    }
+    revalidatePath("/portal", "layout");
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}

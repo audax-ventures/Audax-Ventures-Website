@@ -110,9 +110,12 @@ create table if not exists public.portal_templates (
   cadence text not null default 'weekly' check (cadence in ('weekly', 'monthly', 'custom')),
   schema jsonb not null default '{"periodLabel":"Reporting period","sections":[]}'::jsonb,
   archived boolean not null default false,
+  sort_order integer not null default 100,   -- order shown in lists (lower first)
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+-- For databases set up before sort_order existed:
+alter table public.portal_templates add column if not exists sort_order integer not null default 100;
 
 create table if not exists public.portal_reports (
   id uuid primary key default gen_random_uuid(),
