@@ -41,11 +41,6 @@ const ACTIVITY_TEXT: Record<string, string> = {
   template_updated: "updated the template of",
 };
 
-function greeting() {
-  const hour = Number(new Date().toLocaleString("en-CA", { hour: "numeric", hour12: false, timeZone: "America/Winnipeg" }));
-  return hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
-}
-
 export default async function DashboardPage() {
   const { supabase, profile, user } = await requireMember();
   const isAdmin = profile.role === "admin";
@@ -73,13 +68,15 @@ export default async function DashboardPage() {
   for (const r of reports) if (!lastByTemplate.has(r.template_id)) lastByTemplate.set(r.template_id, r);
 
   const attention = isAdmin ? [...inReview, ...approvedUnsent] : myDrafts;
+  const name = displayName(profile).split(" ")[0];
+  const firstName = name.charAt(0).toUpperCase() + name.slice(1);
   const today = new Date().toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric", timeZone: "America/Winnipeg" });
 
   return (
     <>
       <PageHeader
         eyebrow={today}
-        title={`${greeting()}, ${displayName(profile).split(" ")[0]}`}
+        title={`Hello, ${firstName}!`}
         description="Here's where your client reporting stands today."
       />
 
@@ -101,10 +98,12 @@ export default async function DashboardPage() {
       <section className="mb-8">
         <div className="mb-3 flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-[0.95rem] font-semibold text-[#0F2341]">Start a report</h2>
-            <p className="text-xs text-slate-500">The next period is picked for you, and it pre-fills from the last report.</p>
+            <h2 className="font-heading text-xl font-bold text-[#0B1B33]">Start a report</h2>
+            <p className="mt-0.5 text-sm text-slate-600">The next period is picked for you, and it pre-fills from the last report.</p>
           </div>
-          <Link href="/portal/templates" className="text-xs font-medium text-[#2E5F8A] hover:underline">Manage templates</Link>
+          <Link href="/portal/templates" className="group inline-flex items-center gap-1 whitespace-nowrap text-sm font-semibold text-[#1F5A99] hover:text-[#0F2341]">
+            Manage templates <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
         </div>
         {templates.length === 0 ? (
           <Card>
@@ -128,7 +127,7 @@ export default async function DashboardPage() {
                   href={`/portal/reports/new?template=${t.id}`}
                   className="group rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2E5F8A]/15"
                 >
-                  <Card className="h-full p-5 transition-all group-hover:-translate-y-px group-hover:border-[#C9D5E6] group-hover:shadow-md">
+                  <Card className="h-full p-5 transition-all group-hover:-translate-y-0.5 group-hover:shadow-[0_1px_2px_rgba(15,35,65,0.05),0_18px_40px_-16px_rgba(15,35,65,0.28)]">
                     <div className="flex items-start gap-3">
                       <ClientLogo src={client.logo_data} name={client.name} size={44} />
                       <div className="min-w-0 flex-1">
@@ -137,12 +136,12 @@ export default async function DashboardPage() {
                       </div>
                       <Pill>{t.cadence === "custom" ? "Custom" : t.cadence}</Pill>
                     </div>
-                    <div className="mt-4 flex items-center justify-between border-t border-[#EEF1F5] pt-3.5 text-xs">
+                    <div className="mt-4 flex items-center justify-between border-t border-[#E8EEF5] pt-3.5 text-sm">
                       <span className="text-slate-500">
-                        Next: <span className="font-medium text-slate-700">{formatPeriod(next.start, next.end)}</span>
+                        Next: <span className="font-semibold text-[#0B1B33]">{formatPeriod(next.start, next.end)}</span>
                       </span>
-                      <span className="flex items-center gap-1 font-semibold text-[#2E5F8A] opacity-70 transition-opacity group-hover:opacity-100">
-                        Start <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                      <span className="flex items-center gap-1 text-sm font-semibold text-[#1F5A99]">
+                        Start <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                       </span>
                     </div>
                   </Card>
@@ -159,7 +158,7 @@ export default async function DashboardPage() {
             icon={isAdmin ? Inbox : FilePen}
             title={isAdmin ? "Needs your attention" : "Your drafts"}
             description={isAdmin ? "Reports to review, and approved reports still to send." : "Reports you've started but not submitted yet."}
-            actions={<Link href="/portal/reports" className="text-xs font-medium text-[#2E5F8A] hover:underline">All reports</Link>}
+            actions={<Link href="/portal/reports" className="group inline-flex items-center gap-1 whitespace-nowrap text-sm font-semibold text-[#1F5A99] hover:text-[#0F2341]">All reports <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></Link>}
           />
           {attention.length ? (
             <ul className="divide-y divide-[#EEF1F5]">
