@@ -22,8 +22,8 @@ export function NewTemplateButton({
         <Plus className="h-3.5 w-3.5" /> New template
       </Button>
       {open ? (
-        <div className="absolute right-0 z-20 mt-2 w-80 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
-          <p className="px-2 pb-1 pt-1 text-xs font-medium text-slate-500">Start from</p>
+        <div className="absolute right-0 z-20 mt-2 w-80 rounded-2xl border border-[#E4E9F0] bg-white p-2 shadow-xl">
+          <p className="px-2.5 pb-1.5 pt-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-400">Start from</p>
           {starters.map((s) => (
             <button
               key={s.key}
@@ -34,9 +34,9 @@ export function NewTemplateButton({
                   if (res && !res.ok) setError(res.error);
                 })
               }
-              className="block w-full rounded-lg px-2 py-2 text-left hover:bg-slate-50 disabled:opacity-50"
+              className="block w-full rounded-xl px-2.5 py-2.5 text-left transition-colors hover:bg-[#F6F8FB] disabled:opacity-50"
             >
-              <span className="block text-sm font-medium text-slate-900">{s.name}</span>
+              <span className="block text-sm font-semibold text-[#0F2341]">{s.name}</span>
               <span className="block text-xs text-slate-500">{s.description}</span>
             </button>
           ))}

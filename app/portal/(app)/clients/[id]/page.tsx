@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Building2, FileText, LayoutTemplate, Plus } from "lucide-react";
 import { requireMember } from "@/lib/portal/auth";
 import { updateClientAction } from "@/lib/portal/actions";
 import { getClient, listReports, listTemplates, profileMap } from "@/lib/portal/data";
 import { starterTemplates } from "@/lib/portal/starter-templates";
-import { Card, CardHeader, ClientLogo, EmptyState, LinkButton, PageHeader } from "@/components/portal/ui";
+import { Card, CardHeader, ClientLogo, EmptyState, IconBadge, LinkButton, PageHeader, Pill } from "@/components/portal/ui";
 import ClientForm from "@/components/portal/ClientForm";
 import ReportTable from "@/components/portal/ReportTable";
 import { ArchiveClientButton, NewTemplateButton } from "@/components/portal/ClientActions";
@@ -31,9 +31,16 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
       <PageHeader
         back={{ href: "/portal/clients", label: "Clients" }}
         title={
-          <span className="flex items-center gap-3">
-            <ClientLogo src={client.logo_data} name={client.name} size={40} />
-            {client.name}
+          <span className="flex items-center gap-4">
+            <ClientLogo src={client.logo_data} name={client.name} size={56} />
+            <span>
+              {client.name}
+              <span className="mt-1 flex items-center gap-2 text-sm font-normal text-slate-500">
+                <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: client.brand_color }} aria-hidden />
+                {client.contact_name ? `${client.contact_name}${client.contact_email ? ` · ${client.contact_email}` : ""}` : "Client"}
+                {client.archived ? <Pill>Archived</Pill> : null}
+              </span>
+            </span>
           </span>
         }
         actions={
@@ -46,22 +53,26 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
         }
       />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 [&>*]:min-w-0">
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2 [&>*]:min-w-0">
         <Card>
           <CardHeader
+            icon={LayoutTemplate}
             title="Report templates"
             description="The layout of each report type. Changes apply to new reports."
             actions={<NewTemplateButton clientId={client.id} starters={starters} />}
           />
           {active.length ? (
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-[#EEF1F5]">
               {active.map((t) => (
-                <li key={t.id} className="flex items-center justify-between gap-3 px-5 py-3">
-                  <span>
-                    <span className="block text-sm font-medium">{t.name}</span>
+                <li key={t.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
+                  <span className="flex min-w-0 items-center gap-3">
+                    <IconBadge icon={FileText} tone="slate" size="sm" />
+                    <span className="min-w-0">
+                    <span className="block truncate text-sm font-semibold text-[#0F2341]">{t.name}</span>
                     <span className="block text-xs text-slate-500">
                       {t.cadence === "custom" ? "Custom dates" : t.cadence === "weekly" ? "Weekly" : "Monthly"} ·{" "}
                       {t.schema.sections.length} sections
+                    </span>
                     </span>
                   </span>
                   <span className="flex gap-1">
@@ -72,10 +83,10 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
               ))}
             </ul>
           ) : (
-            <EmptyState title="No templates yet" description="Create one from scratch or from a ready-made layout." />
+            <EmptyState icon={LayoutTemplate} title="No templates yet" description="Create one from scratch or from a ready-made layout." />
           )}
           {archived.length ? (
-            <p className="border-t border-slate-100 px-5 py-3 text-xs text-slate-500">
+            <p className="border-t border-[#EEF1F5] px-5 py-3 text-xs text-slate-500">
               Archived:{" "}
               {archived.map((t, i) => (
                 <span key={t.id}>
@@ -88,13 +99,14 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
         </Card>
 
         <Card>
-          <CardHeader title="Client details" />
+          <CardHeader icon={Building2} title="Client details" description="Logo and colour appear on every PDF." />
           <ClientForm client={client} action={updateClientAction.bind(null, client.id)} submitLabel="Save changes" />
         </Card>
       </div>
 
       <Card className="mt-6">
         <CardHeader
+          icon={FileText}
           title="Recent reports"
           actions={<Link href={`/portal/reports?client=${client.id}`} className="text-xs font-medium text-[#2E5F8A]">All reports →</Link>}
         />
@@ -107,7 +119,7 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
             showClient={false}
           />
         ) : (
-          <EmptyState title="No reports yet" />
+          <EmptyState icon={FileText} title="No reports yet" description="Reports for this client will be listed here." />
         )}
       </Card>
     </>

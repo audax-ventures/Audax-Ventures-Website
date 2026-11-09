@@ -20,15 +20,15 @@ export default function ClientForm({
   const [removeLogo, setRemoveLogo] = useState(false);
 
   return (
-    <form action={formAction} className="space-y-5 p-5">
+    <form action={formAction} className="space-y-6 p-5 sm:p-6">
       <Field label="Client name">
         <input name="name" required defaultValue={client?.name} className={inputClass} />
       </Field>
 
-      <div className="grid gap-5 sm:grid-cols-[1fr_auto]">
+      <div className="grid gap-6">
         <Field label="Logo" hint="PNG with a transparent background looks best. Shown at the top of every report.">
           <div className="flex items-center gap-3">
-            <ClientLogo src={removeLogo ? null : preview} name={client?.name ?? "?"} size={52} />
+            <ClientLogo src={removeLogo ? null : preview} name={client?.name ?? "?"} size={60} />
             <input
               type="file"
               name="logo"
@@ -40,7 +40,7 @@ export default function ClientForm({
                   setRemoveLogo(false);
                 }
               }}
-              className="block w-full text-sm text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-slate-700 hover:file:bg-slate-200"
+              className="block w-full text-sm text-slate-600 file:mr-3 file:cursor-pointer file:rounded-lg file:border file:border-[#D9E0EA] file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-slate-700 hover:file:bg-slate-50"
             />
           </div>
           {client?.logo_data ? (
@@ -56,7 +56,7 @@ export default function ClientForm({
               type="color"
               value={color}
               onChange={(e) => setColor(e.target.value)}
-              className="h-9 w-12 cursor-pointer rounded border border-slate-300 bg-white p-0.5"
+              className="h-10 w-12 cursor-pointer rounded-xl border border-[#D5DCE6] bg-white p-1"
             />
             <input
               name="brand_color"
@@ -81,7 +81,7 @@ export default function ClientForm({
       </Field>
 
       <ErrorNote message={state && !state.ok ? state.error : null} />
-      <div className="flex items-center justify-end gap-3">
+      <div className="flex items-center justify-end gap-3 border-t border-[#EEF1F5] pt-5">
         {state?.ok ? <span className="text-sm text-emerald-700">Saved</span> : null}
         <Button type="submit" disabled={pending}>
           {pending ? "Saving…" : submitLabel}
