@@ -86,6 +86,8 @@ export interface TableSection extends SectionBase {
 export interface AdsSection extends SectionBase {
   type: "ads";
   channels: AdChannel[];
+  /** Show spend and impressions charts for recent periods on the PDF (on unless set to false). */
+  trendCharts?: boolean;
 }
 
 export interface BudgetSection extends SectionBase {

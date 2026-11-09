@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { displayName, requireMember } from "@/lib/portal/auth";
 import { listClients, listReports, listTemplates, profileMap } from "@/lib/portal/data";
-import { formatPeriod, formatShortDate, suggestPeriod } from "@/lib/portal/compute";
+import { formatPeriod, formatShortDate, nextReportState, todayInWinnipeg, type NextState } from "@/lib/portal/compute";
 import type { ReportActivity } from "@/lib/portal/types";
 import {
   Avatar,
@@ -69,17 +69,11 @@ export default async function DashboardPage() {
 
   // What's next for each report template: a report already in progress, one that's
   // due (its period has ended), or one whose period hasn't finished yet.
-  const todayIso = new Date().toLocaleDateString("en-CA", { timeZone: "America/Winnipeg" });
-  const order = { due: 0, progress: 1, upcoming: 2 } as const;
+  const todayIso = todayInWinnipeg();
+  const order: Record<NextState, number> = { due: 0, progress: 1, upcoming: 2 };
   const upcoming = templates
     .filter((t) => clientMap.has(t.client_id))
-    .map((t) => {
-      const last = lastByTemplate.get(t.id);
-      const inProgress = last && (last.status === "draft" || last.status === "in_review") ? last : null;
-      const period = inProgress ? { start: inProgress.period_start, end: inProgress.period_end } : suggestPeriod(t.cadence, last?.period_end ?? null);
-      const state: keyof typeof order = inProgress ? "progress" : period.end < todayIso ? "due" : "upcoming";
-      return { template: t, client: clientMap.get(t.client_id)!, inProgress, period, state };
-    })
+    .map((t) => ({ template: t, client: clientMap.get(t.client_id)!, ...nextReportState(t.cadence, lastByTemplate.get(t.id), todayIso) }))
     .sort((a, b) => order[a.state] - order[b.state] || a.period.end.localeCompare(b.period.end));
 
   const attention = isAdmin ? [...inReview, ...approvedUnsent] : myDrafts;

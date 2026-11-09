@@ -192,6 +192,10 @@ function AdsSettings({ section, onChange }: { section: AdsSection; onChange: (s:
         <Plus className="h-3.5 w-3.5" /> Add channel
       </Button>
       <p className="mt-2 text-xs text-slate-500">Each ad has a description, daily budget, spend, impressions and the last column above.</p>
+      <label className="mt-3 flex items-center gap-2 text-sm text-slate-700">
+        <input type="checkbox" checked={section.trendCharts !== false} onChange={(e) => onChange({ ...section, trendCharts: e.target.checked })} />
+        Show trend charts on the PDF (ad spend and impressions over the last 6 periods)
+      </label>
     </div>
   );
 }

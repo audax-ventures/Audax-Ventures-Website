@@ -43,6 +43,7 @@ const section = z.discriminatedUnion("type", [
   z.object({
     ...base,
     type: z.literal("ads"),
+    trendCharts: z.boolean().optional(),
     channels: z.array(z.object({ id, name: label, metricLabel: label })).min(1, "Add at least one ad channel."),
   }),
   z.object({

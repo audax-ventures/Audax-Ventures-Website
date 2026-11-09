@@ -215,6 +215,148 @@ function cardsPerRow(n: number) {
   return 4;
 }
 
+// ----- Trend charts -----
+
+// Categorical colours for ad channels, in a fixed order (validated for colour-blind readers).
+const SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"];
+
+const MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function periodShortLabel(start: string, cadence: ReportContext["cadence"]) {
+  const [, m, d] = start.split("-").map(Number);
+  return cadence === "monthly" ? MONTHS_SHORT[m - 1] : `${MONTHS_SHORT[m - 1]} ${d}`;
+}
+
+interface BarColumn {
+  label: string;
+  segments: { value: number; color: string }[];
+  total: number;
+  current: boolean;
+}
+
+function BarChart({
+  title,
+  columns,
+  format,
+  legend,
+  s,
+  k,
+}: {
+  title: string;
+  columns: BarColumn[];
+  format: (n: number) => string;
+  legend?: { label: string; color: string }[];
+  s: Styles;
+  k: number;
+}) {
+  const h = 62 * k;
+  const max = Math.max(...columns.map((c) => c.total), 1);
+  const barW = Math.min(22, 18 * k + 4);
+  const fs = Math.max(5.5, 6.2 * k);
+  return (
+    <View style={{ flex: 1, borderWidth: 0.75, borderColor: RULE, borderRadius: 5, paddingVertical: 7 * k, paddingHorizontal: 9 * k }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 6 * k }}>
+        <Text style={[s.cardLabel, { color: INK, fontWeight: 600 }]}>{title}</Text>
+        {legend && legend.length > 1 ? (
+          <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "flex-end", maxWidth: "62%" }}>
+            {legend.map((l) => (
+              <View key={l.label} style={{ flexDirection: "row", alignItems: "center", marginLeft: 6 * k }}>
+                <View style={{ width: 5.5 * k, height: 5.5 * k, borderRadius: 1.5, backgroundColor: l.color, marginRight: 2.5 * k }} />
+                <Text style={{ fontSize: fs, color: MUTED }}>{l.label}</Text>
+              </View>
+            ))}
+          </View>
+        ) : null}
+      </View>
+      <View style={{ flexDirection: "row", alignItems: "flex-end", height: h + 10 * k, borderBottomWidth: 0.75, borderBottomColor: "#C9D1DC" }}>
+        {columns.map((c, i) => {
+          const barH = (c.total / max) * h;
+          const visible = c.segments.filter((seg) => seg.value > 0);
+          return (
+            <View key={i} style={{ flex: 1, alignItems: "center", justifyContent: "flex-end", height: "100%" }}>
+              <Text style={{ fontSize: fs, color: c.current ? INK : MUTED, fontWeight: c.current ? 700 : 400, marginBottom: 2 * k }}>
+                {c.total > 0 ? format(c.total) : ""}
+              </Text>
+              <View style={{ width: barW, height: Math.max(barH, c.total > 0 ? 1 : 0), flexDirection: "column-reverse" }}>
+                {visible.map((seg, j) => {
+                  const top = j === visible.length - 1;
+                  return (
+                    <View
+                      key={j}
+                      style={{
+                        height: Math.max(0.5, (seg.value / c.total) * barH - (j > 0 ? 1.2 : 0)),
+                        marginTop: top ? 0 : 1.2,
+                        backgroundColor: seg.color,
+                        borderTopLeftRadius: top ? 2.5 : 0,
+                        borderTopRightRadius: top ? 2.5 : 0,
+                        opacity: c.current ? 1 : 0.85,
+                      }}
+                    />
+                  );
+                })}
+              </View>
+            </View>
+          );
+        })}
+      </View>
+      <View style={{ flexDirection: "row", marginTop: 3 * k }}>
+        {columns.map((c, i) => (
+          <Text key={i} style={{ flex: 1, textAlign: "center", fontSize: fs, color: c.current ? INK : MUTED, fontWeight: c.current ? 700 : 400 }}>
+            {c.label}
+          </Text>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+/** Whole-dollar amounts for chart labels: $2,955 or $12.4K. */
+function chartMoney(n: number) {
+  return n >= 10000 ? `$${formatCompact(n)}` : `$${Math.round(n).toLocaleString("en-CA")}`;
+}
+
+function AdsTrendCharts({ section, ctx, color, s, k }: BlockProps<AdsSection>) {
+  // Earlier reports with this ad section, plus this one: up to the last 6 periods.
+  const periods = [
+    ...ctx.history.map((h) => ({ start: h.period_start, end: h.period_end, schema: h.schema, data: h.data, current: false })),
+    { start: ctx.periodStart, end: ctx.periodEnd, schema: ctx.schema, data: ctx.data, current: true },
+  ]
+    .filter((p) => p.schema.sections.some((sec) => sec.id === section.id && sec.type === "ads"))
+    .slice(-6);
+  if (periods.length < 2) return null;
+
+  const channelColor = new Map(section.channels.map((c, i) => [c.id, SERIES[i % SERIES.length]]));
+  const spendCols: BarColumn[] = [];
+  const impCols: BarColumn[] = [];
+  for (const p of periods) {
+    const days = daysInPeriod(p.start, p.end);
+    const data = p.data[section.id] as AdsData | undefined;
+    const segments = section.channels.map((c) => ({
+      value: adChannelTotals(section, data, c.id, days).spend,
+      color: channelColor.get(c.id)!,
+    }));
+    const label = periodShortLabel(p.start, ctx.cadence);
+    spendCols.push({ label, segments, total: segments.reduce((t, x) => t + x.value, 0), current: p.current });
+    const imp = adsSummary(section, data, days).impressions;
+    impCols.push({ label, segments: [{ value: imp, color }], total: imp, current: p.current });
+  }
+  const span = ctx.cadence === "monthly" ? `last ${periods.length} months` : `last ${periods.length} reports`;
+  return (
+    <View style={{ flexDirection: "row", marginTop: 8 * k }} wrap={false}>
+      <BarChart
+        title={`Ad spend · ${span}`}
+        columns={spendCols}
+        format={chartMoney}
+        legend={section.channels.map((c) => ({ label: c.name.replace(/ Ads$/, ""), color: channelColor.get(c.id)! }))}
+        s={s}
+        k={k}
+      />
+      <View style={{ width: 8 * k }} />
+      <BarChart title={`Impressions · ${span}`} columns={impCols} format={formatCompact} s={s} k={k} />
+    </View>
+  );
+}
+
 // ----- Sections -----
 
 interface BlockProps<T> {
@@ -391,6 +533,7 @@ function AdsBlock({ section, ctx, color, s, k }: BlockProps<AdsSection>) {
           })}
         </View>
       )}
+      {section.trendCharts !== false ? <AdsTrendCharts section={section} ctx={ctx} color={color} s={s} k={k} /> : null}
     </View>
   );
 }
