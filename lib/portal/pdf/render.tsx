@@ -28,7 +28,27 @@ function setup() {
   setupDone = true;
 }
 
-export async function renderReportPdf(props: Omit<ReportDocumentProps, "audaxLogo">): Promise<Buffer> {
+/** Number of pages in a PDF made by react-pdf (each page is a "/Type /Page" object). */
+function countPages(pdf: Buffer): number {
+  const matches = pdf.toString("latin1").match(/\/Type\s*\/Page(?![s\w])/g);
+  return matches ? matches.length : 1;
+}
+
+/**
+ * Densities tried in order. Reports fit on one page at normal spacing when they
+ * can; otherwise spacing and type tighten step by step, down to a size that is
+ * still comfortable to read. Anything longer than that goes onto a second page.
+ */
+const DENSITIES = [1, 0.93, 0.87, 0.82, 0.78];
+
+export async function renderReportPdf(props: Omit<ReportDocumentProps, "audaxLogo" | "density">): Promise<Buffer> {
   setup();
-  return renderToBuffer(<ReportDocument {...props} audaxLogo={audaxLogo} />);
+  let first: Buffer | null = null;
+  for (const density of DENSITIES) {
+    const pdf = await renderToBuffer(<ReportDocument {...props} audaxLogo={audaxLogo} density={density} />);
+    if (!first) first = pdf;
+    if (countPages(pdf) === 1) return pdf;
+  }
+  // Too long for one page even when tightened: use normal spacing across pages.
+  return first!;
 }

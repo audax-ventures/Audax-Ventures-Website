@@ -10,6 +10,12 @@ import ReportTable from "@/components/portal/ReportTable";
 export const metadata = { title: "Reports" };
 
 const STATUSES = Object.keys(STATUS_LABELS) as ReportStatus[];
+const TAB_DOT: Record<ReportStatus, string> = {
+  draft: "bg-slate-500",
+  in_review: "bg-amber-500",
+  approved: "bg-emerald-500",
+  sent: "bg-sky-500",
+};
 
 export default async function ReportsPage({ searchParams }: PageProps<"/portal/reports">) {
   const { supabase } = await requireMember();
@@ -61,7 +67,7 @@ export default async function ReportsPage({ searchParams }: PageProps<"/portal/r
     <>
       <PageHeader
         title="Reports"
-        description="Every report your team has made, newest first."
+        description="Create & view all of your client reports"
       />
 
       <Card>
@@ -79,6 +85,7 @@ export default async function ReportsPage({ searchParams }: PageProps<"/portal/r
                   active ? "border-[#0F2341] text-[#0F2341]" : "border-transparent text-slate-500 hover:text-[#0F2341]",
                 )}
               >
+                {t.key ? <span className={cn("h-2 w-2 rounded-full", TAB_DOT[t.key])} aria-hidden /> : null}
                 {t.label}
                 <span className={cn("rounded-full px-2 text-[11px] font-semibold leading-5", active ? "bg-[#0F2341] text-white" : "bg-slate-100 text-slate-500")}>
                   {t.count}
