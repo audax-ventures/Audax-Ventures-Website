@@ -6,7 +6,7 @@ import { createSupabaseBrowserClient } from "@/lib/portal/supabase/client";
 import { ErrorNote } from "@/components/portal/ui";
 
 const fieldClass =
-  "block w-full rounded-xl border border-slate-300 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#2E5F8A] focus:outline-none focus:ring-4 focus:ring-[#2E5F8A]/10";
+  "block w-full rounded-xl border border-[#D6DCE4] bg-white py-3.5 pl-11 pr-4 text-[0.95rem] text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#2E5F8A] focus:outline-none focus:ring-4 focus:ring-[#2E5F8A]/10";
 
 export default function LoginForm({ next }: { next?: string }) {
   const [email, setEmail] = useState("");
@@ -31,9 +31,9 @@ export default function LoginForm({ next }: { next?: string }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form onSubmit={onSubmit} className="space-y-6">
       <div>
-        <label htmlFor="email" className="mb-1.5 block text-sm font-semibold text-slate-800">
+        <label htmlFor="email" className="mb-2 block text-sm font-semibold text-[#0B1B33]">
           Email
         </label>
         <div className="relative">
@@ -52,7 +52,7 @@ export default function LoginForm({ next }: { next?: string }) {
       </div>
 
       <div>
-        <label htmlFor="password" className="mb-1.5 block text-sm font-semibold text-slate-800">
+        <label htmlFor="password" className="mb-2 block text-sm font-semibold text-[#0B1B33]">
           Password
         </label>
         <div className="relative">
@@ -83,12 +83,13 @@ export default function LoginForm({ next }: { next?: string }) {
       <button
         type="submit"
         disabled={busy}
-        className="w-full rounded-xl bg-[#0F2341] py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#1A3A5C] disabled:cursor-not-allowed disabled:bg-slate-400"
+        className="w-full rounded-xl bg-[#0B1B33] py-3.5 text-[0.95rem] font-semibold text-white shadow-[0_8px_20px_-8px_rgba(11,27,51,0.55)] transition-colors hover:bg-[#1A3A5C] disabled:cursor-not-allowed disabled:bg-slate-400"
       >
         {busy ? "Signing in…" : "Sign in"}
       </button>
 
-      <p className="text-center text-xs text-slate-500">Forgot your password? Ask your admin to reset it.</p>
+      <div className="h-px bg-[#E4E0DA]" aria-hidden />
+      <p className="text-center text-sm text-[#3E5878]">Forgot your password? Ask your admin to reset it.</p>
     </form>
   );
 }
