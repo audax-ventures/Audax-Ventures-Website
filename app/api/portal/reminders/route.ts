@@ -32,16 +32,22 @@ export async function GET(request: Request) {
 
   const { data, error } = await db
     .from("portal_reminders")
-    .select("id, profile_id, template_id, weekday, month_day, enabled, last_sent_on, profile:portal_profiles(email, full_name, active)")
+    .select("id, profile_id, template_id, weekday, month_day, enabled, last_sent_on, profile:portal_profiles(*)")
     .eq("enabled", true);
   if (error) return Response.json({ ok: false, error: error.message }, { status: 500 });
 
   // Group today's reminders by person.
-  type Row = ReminderRow & { profile: { email: string; full_name: string | null; active: boolean } | { email: string; full_name: string | null; active: boolean }[] | null };
+  type P = { email: string; full_name: string | null; active: boolean; role: string; restricted?: boolean };
+  type Row = ReminderRow & { profile: P | P[] | null };
+
+  // People limited to selected reports are only reminded about reports they can see.
+  const { data: accessRows } = await db.from("portal_template_access").select("profile_id, template_id");
+  const allowed = new Set((accessRows ?? []).map((a) => `${a.profile_id}:${a.template_id}`));
   const byPerson = new Map<string, { email: string; name: string; reminders: Row[] }>();
   for (const r of (data ?? []) as Row[]) {
     const profile = Array.isArray(r.profile) ? r.profile[0] : r.profile;
     if (!profile?.active || !profile.email) continue;
+    if (profile.role !== "admin" && profile.restricted && !allowed.has(`${r.profile_id}:${r.template_id}`)) continue;
     if (r.last_sent_on === today || !isScheduledFor(r, today)) continue;
     const entry = byPerson.get(r.profile_id) ?? { email: profile.email, name: firstName(profile.full_name, profile.email), reminders: [] };
     entry.reminders.push(r);

@@ -1,4 +1,4 @@
-import { requireMember } from "@/lib/portal/auth";
+import { canManage, requireMember } from "@/lib/portal/auth";
 import { signOut } from "@/lib/portal/actions";
 import PortalShell from "@/components/portal/PortalShell";
 
@@ -12,6 +12,7 @@ export default async function PortalAppLayout({ children }: { children: React.Re
   return (
     <PortalShell
       isAdmin={isAdmin}
+      canManage={canManage(profile)}
       reviewCount={count ?? 0}
       signOutAction={signOut}
     >

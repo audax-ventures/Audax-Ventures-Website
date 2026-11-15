@@ -9,7 +9,7 @@ import {
   LayoutTemplate,
   Send,
 } from "lucide-react";
-import { displayName, requireMember } from "@/lib/portal/auth";
+import { canManage, displayName, requireMember } from "@/lib/portal/auth";
 import { compareTemplates, listClients, listReports, listTemplates, profileMap } from "@/lib/portal/data";
 import { formatPeriod, formatShortDate, nextReportState, todayInWinnipeg } from "@/lib/portal/compute";
 import type { ReportActivity } from "@/lib/portal/types";
@@ -111,9 +111,11 @@ export default async function DashboardPage() {
             <h2 className="font-heading text-xl font-bold text-[#0B1B33]">Upcoming Reports</h2>
             <p className="mt-0.5 text-sm text-slate-600">Complete your next upcoming report</p>
           </div>
-          <Link href="/portal/templates" className="group inline-flex items-center gap-1 whitespace-nowrap text-sm font-semibold text-[#1F5A99] hover:text-[#0F2341]">
-            Manage templates <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
+          {canManage(profile) ? (
+            <Link href="/portal/templates" className="group inline-flex items-center gap-1 whitespace-nowrap text-sm font-semibold text-[#1F5A99] hover:text-[#0F2341]">
+              Manage templates <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          ) : null}
         </div>
         {upcoming.length === 0 ? (
           <Card>
@@ -121,7 +123,7 @@ export default async function DashboardPage() {
               icon={LayoutTemplate}
               title="No report templates yet"
               description="Add a client and give them a report template to get started."
-              action={<LinkButton href="/portal/clients" variant="secondary">Go to clients</LinkButton>}
+              action={canManage(profile) ? <LinkButton href="/portal/clients" variant="secondary">Go to clients</LinkButton> : undefined}
             />
           </Card>
         ) : (

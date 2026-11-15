@@ -45,6 +45,24 @@ export async function adminOrThrow() {
   return session;
 }
 
+/** Admins, and team members who aren't limited to selected reports, can manage clients and templates. */
+export function canManage(profile: Pick<Profile, "role" | "restricted">): boolean {
+  return profile.role === "admin" || !profile.restricted;
+}
+
+/** For pages that manage clients and templates: send people limited to selected reports back to the dashboard. */
+export async function requireManager() {
+  const session = await requireMember();
+  if (!canManage(session.profile)) redirect("/portal");
+  return session;
+}
+
+export async function managerOrThrow() {
+  const session = await memberOrThrow();
+  if (!canManage(session.profile)) throw new Error("You don't have access to manage clients and templates. Ask an admin.");
+  return session;
+}
+
 export function displayName(p: Pick<Profile, "full_name" | "email"> | null | undefined): string {
   if (!p) return "Someone";
   return p.full_name?.trim() || p.email.split("@")[0];

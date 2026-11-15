@@ -1,4 +1,4 @@
-import { requireMember } from "@/lib/portal/auth";
+import { requireManager } from "@/lib/portal/auth";
 import { createClientAction } from "@/lib/portal/actions";
 import { Card, PageHeader } from "@/components/portal/ui";
 import ClientForm from "@/components/portal/ClientForm";
@@ -6,7 +6,7 @@ import ClientForm from "@/components/portal/ClientForm";
 export const metadata = { title: "Add client" };
 
 export default async function NewClientPage() {
-  await requireMember();
+  await requireManager();
   return (
     <>
       <PageHeader title="Add client" back={{ href: "/portal/clients", label: "Clients" }} />

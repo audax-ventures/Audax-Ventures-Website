@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { ArrowRight, Building2, FileText, LayoutTemplate } from "lucide-react";
-import { requireMember } from "@/lib/portal/auth";
+import { requireManager } from "@/lib/portal/auth";
 import { listClients, listTemplates } from "@/lib/portal/data";
 import { Card, CardHeader, ClientLogo, EmptyState, IconBadge, LinkButton, PageHeader, Pill } from "@/components/portal/ui";
 
 export const metadata = { title: "Templates" };
 
 export default async function TemplatesPage() {
-  const { supabase } = await requireMember();
+  const { supabase } = await requireManager();
   const [clients, templates] = await Promise.all([listClients(supabase), listTemplates(supabase)]);
   return (
     <>

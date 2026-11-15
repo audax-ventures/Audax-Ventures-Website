@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Building2, FileText, LayoutTemplate, Plus } from "lucide-react";
-import { requireMember } from "@/lib/portal/auth";
+import { canManage, requireMember } from "@/lib/portal/auth";
 import { updateClientAction } from "@/lib/portal/actions";
 import { getClient, listReports, listTemplates, profileMap } from "@/lib/portal/data";
 import { starterTemplates } from "@/lib/portal/starter-templates";
@@ -14,7 +14,8 @@ export const metadata = { title: "Client" };
 
 export default async function ClientPage({ params }: PageProps<"/portal/clients/[id]">) {
   const { id } = await params;
-  const { supabase } = await requireMember();
+  const { supabase, profile } = await requireMember();
+  const manage = canManage(profile);
   const client = await getClient(supabase, id);
   if (!client) notFound();
   const [templates, reports, people] = await Promise.all([
@@ -45,7 +46,7 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
         }
         actions={
           <>
-            <ArchiveClientButton clientId={client.id} archived={client.archived} />
+            {manage ? <ArchiveClientButton clientId={client.id} archived={client.archived} /> : null}
             <LinkButton href={`/portal/reports/new?client=${client.id}`}>
               <Plus className="h-4 w-4" /> New report
             </LinkButton>
@@ -58,15 +59,15 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
           <CardHeader
             icon={LayoutTemplate}
             title="Report templates"
-            description="Use the arrows to set the order they appear in across the portal."
-            actions={<NewTemplateButton clientId={client.id} starters={starters} />}
+            description={manage ? "Use the arrows to set the order they appear in across the portal." : "The reports you can work on for this client."}
+            actions={manage ? <NewTemplateButton clientId={client.id} starters={starters} /> : undefined}
           />
           {active.length ? (
             <ul className="divide-y divide-[#EEF1F5]">
               {active.map((t, i) => (
                 <li key={t.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
                   <span className="flex min-w-0 items-center gap-3">
-                    {active.length > 1 ? (
+                    {manage && active.length > 1 ? (
                       <TemplateOrderButtons templateId={t.id} name={t.name} isFirst={i === 0} isLast={i === active.length - 1} />
                     ) : null}
                     <IconBadge icon={FileText} tone="slate" size="sm" />
@@ -80,7 +81,7 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
                   </span>
                   <span className="flex gap-1">
                     <LinkButton href={`/portal/reports/new?template=${t.id}`} variant="ghost" size="sm">New report</LinkButton>
-                    <LinkButton href={`/portal/templates/${t.id}`} variant="secondary" size="sm">Edit</LinkButton>
+                    {manage ? <LinkButton href={`/portal/templates/${t.id}`} variant="secondary" size="sm">Edit</LinkButton> : null}
                   </span>
                 </li>
               ))}
@@ -88,7 +89,7 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
           ) : (
             <EmptyState icon={LayoutTemplate} title="No templates yet" description="Create one from scratch or from a ready-made layout." />
           )}
-          {archived.length ? (
+          {manage && archived.length ? (
             <p className="border-t border-[#EEF1F5] px-5 py-3 text-xs text-slate-500">
               Archived:{" "}
               {archived.map((t, i) => (
@@ -101,10 +102,12 @@ export default async function ClientPage({ params }: PageProps<"/portal/clients/
           ) : null}
         </Card>
 
-        <Card>
-          <CardHeader icon={Building2} title="Client details" description="Logo and colour appear on every PDF." />
-          <ClientForm client={client} action={updateClientAction.bind(null, client.id)} submitLabel="Save changes" />
-        </Card>
+        {manage ? (
+          <Card>
+            <CardHeader icon={Building2} title="Client details" description="Logo and colour appear on every PDF." />
+            <ClientForm client={client} action={updateClientAction.bind(null, client.id)} submitLabel="Save changes" />
+          </Card>
+        ) : null}
       </div>
 
       <Card className="mt-6">

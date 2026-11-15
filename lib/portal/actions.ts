@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import sharp from "sharp";
-import { adminOrThrow, memberOrThrow } from "./auth";
+import { adminOrThrow, managerOrThrow, memberOrThrow } from "./auth";
 import { carryOverData, normalizeData } from "./compute";
 import {
   buildReportContext,
@@ -109,7 +109,7 @@ function clientFields(form: FormData) {
 export async function createClientAction(_: unknown, form: FormData): Promise<ActionResult> {
   let id: string;
   try {
-    const { supabase } = await memberOrThrow();
+    const { supabase } = await managerOrThrow();
     const logo = await logoFromForm(form);
     const { data, error } = await supabase
       .from("portal_clients")
@@ -127,7 +127,7 @@ export async function createClientAction(_: unknown, form: FormData): Promise<Ac
 
 export async function updateClientAction(id: string, _: unknown, form: FormData): Promise<ActionResult> {
   try {
-    const { supabase } = await memberOrThrow();
+    const { supabase } = await managerOrThrow();
     const logo = await logoFromForm(form);
     const update: Record<string, unknown> = clientFields(form);
     if (logo !== undefined) update.logo_data = logo;
@@ -142,7 +142,7 @@ export async function updateClientAction(id: string, _: unknown, form: FormData)
 
 export async function setClientArchived(id: string, archived: boolean): Promise<ActionResult> {
   try {
-    const { supabase } = await memberOrThrow();
+    const { supabase } = await managerOrThrow();
     const { error } = await supabase.from("portal_clients").update({ archived }).eq("id", id);
     if (error) throw new Error(error.message);
     revalidatePath("/portal", "layout");
@@ -159,7 +159,7 @@ export async function setClientArchived(id: string, archived: boolean): Promise<
 export async function createTemplate(clientId: string, starterKey: string): Promise<ActionResult> {
   let id: string;
   try {
-    const { supabase } = await memberOrThrow();
+    const { supabase } = await managerOrThrow();
     const starter = starterTemplates(new Date().getFullYear()).find((t) => t.key === starterKey);
     if (!starter) throw new Error("Unknown starting point.");
     const { data, error } = await supabase
@@ -181,7 +181,7 @@ export async function saveTemplate(
   input: { name: string; cadence: Cadence; schema: TemplateSchema },
 ): Promise<ActionResult> {
   try {
-    const { supabase } = await memberOrThrow();
+    const { supabase } = await managerOrThrow();
     const name = input.name.trim();
     if (!name) throw new Error("Template name is required.");
     const schema = validateSchema(input.schema);
@@ -200,7 +200,7 @@ export async function saveTemplate(
 export async function duplicateTemplate(id: string, targetClientId: string): Promise<ActionResult> {
   let newId: string;
   try {
-    const { supabase } = await memberOrThrow();
+    const { supabase } = await managerOrThrow();
     const tpl = await getTemplate(supabase, id);
     if (!tpl) throw new Error("Template not found.");
     const sameClient = tpl.client_id === targetClientId;
@@ -225,7 +225,7 @@ export async function duplicateTemplate(id: string, targetClientId: string): Pro
 
 export async function setTemplateArchived(id: string, archived: boolean): Promise<ActionResult> {
   try {
-    const { supabase } = await memberOrThrow();
+    const { supabase } = await managerOrThrow();
     const { error } = await supabase.from("portal_templates").update({ archived }).eq("id", id);
     if (error) throw new Error(error.message);
     revalidatePath("/portal", "layout");
@@ -528,7 +528,7 @@ export async function sendTestReminder(profileId: string): Promise<ActionResult<
 /** Move a report template up or down in its client's list. */
 export async function moveTemplate(id: string, direction: -1 | 1): Promise<ActionResult> {
   try {
-    const { supabase } = await memberOrThrow();
+    const { supabase } = await managerOrThrow();
     const { listTemplates, getTemplate } = await import("./data");
     const tpl = await getTemplate(supabase, id);
     if (!tpl) throw new Error("Template not found.");
@@ -620,6 +620,44 @@ export async function sendTestReviewEmail(profileId: string): Promise<ActionResu
       ),
     );
     return { ok: true, to: person.email };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+// ============================================================
+// Per-person access to reports (admin)
+// ============================================================
+
+function accessSetupError(message: string) {
+  return message.includes("restricted") || message.includes("portal_template_access")
+    ? "Report access needs one database update first: run supabase/portal-migration-005-report-access.sql in Supabase."
+    : message;
+}
+
+/** Switch a team member between all clients and reports, and only the reports ticked for them. */
+export async function setReportAccessMode(profileId: string, restricted: boolean): Promise<ActionResult> {
+  try {
+    const { supabase } = await adminOrThrow();
+    const { error } = await supabase.from("portal_profiles").update({ restricted }).eq("id", profileId);
+    if (error) throw new Error(accessSetupError(error.message));
+    revalidatePath("/portal", "layout");
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/** Tick or untick one report template for a team member. */
+export async function setTemplateAccess(profileId: string, templateId: string, allowed: boolean): Promise<ActionResult> {
+  try {
+    const { supabase } = await adminOrThrow();
+    const { error } = allowed
+      ? await supabase.from("portal_template_access").upsert({ profile_id: profileId, template_id: templateId }, { onConflict: "profile_id,template_id" })
+      : await supabase.from("portal_template_access").delete().eq("profile_id", profileId).eq("template_id", templateId);
+    if (error) throw new Error(accessSetupError(error.message));
+    revalidatePath("/portal", "layout");
+    return { ok: true };
   } catch (e) {
     return fail(e);
   }

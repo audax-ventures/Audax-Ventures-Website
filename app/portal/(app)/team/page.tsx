@@ -8,11 +8,12 @@ export const metadata = { title: "Team" };
 
 export default async function TeamPage() {
   const { supabase, user } = await requireAdmin();
-  const [people, templates, clients, remindersRes] = await Promise.all([
+  const [people, templates, clients, remindersRes, accessRes] = await Promise.all([
     listProfiles(supabase),
     listTemplates(supabase),
     listClients(supabase),
     supabase.from("portal_reminders").select("id, profile_id, template_id, weekday, month_day, enabled, last_sent_on"),
+    supabase.from("portal_template_access").select("profile_id, template_id"),
   ]);
   const clientNames = new Map(clients.map((c) => [c.id, c.name]));
   const reportTypes = templates
@@ -24,7 +25,7 @@ export default async function TeamPage() {
   const active = people.filter((p) => p.active).length;
   return (
     <>
-      <PageHeader title="Team" description="Who can sign in, who can approve reports, and who gets email reminders." />
+      <PageHeader title="Team" description="Who can sign in, which reports they can see, and who gets email reminders." />
       <div className="space-y-6">
         <Card>
           <CardHeader icon={Users} title="People" description={`${active} of ${people.length} can sign in`} />
@@ -34,6 +35,8 @@ export default async function TeamPage() {
             reportTypes={reportTypes}
             reminders={remindersRes.data ?? []}
             remindersReady={remindersReady}
+            access={accessRes.data ?? []}
+            accessReady={!accessRes.error}
           />
         </Card>
         <Card>

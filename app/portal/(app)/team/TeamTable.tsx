@@ -3,7 +3,7 @@
 import { Fragment, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { BellRing, ChevronDown, Mail } from "lucide-react";
-import { saveReminder, sendTestReminder, sendTestReviewEmail, updateMember } from "@/lib/portal/actions";
+import { saveReminder, sendTestReminder, sendTestReviewEmail, setReportAccessMode, setTemplateAccess, updateMember } from "@/lib/portal/actions";
 import type { Cadence, Profile, Role } from "@/lib/portal/types";
 import { cn } from "@/lib/utils";
 import { Avatar, Button, ErrorNote, thClass } from "@/components/portal/ui";
@@ -141,18 +141,133 @@ function ReminderPanel({
   );
 }
 
+function AccessPanel({
+  person,
+  reportTypes,
+  allowed,
+  accessReady,
+}: {
+  person: Profile;
+  reportTypes: ReportType[];
+  allowed: Set<string>;
+  accessReady: boolean;
+}) {
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const restricted = Boolean(person.restricted);
+  const name = person.full_name || person.email;
+
+  function run(fn: () => Promise<{ ok: boolean; error?: string }>) {
+    setError(null);
+    startTransition(async () => {
+      const res = await fn();
+      if (!res.ok) setError(res.error ?? "Something went wrong.");
+      router.refresh();
+    });
+  }
+
+  if (person.role === "admin") {
+    return (
+      <div className="bg-gradient-to-b from-[#F6F9FD] to-white px-5 py-5">
+        <h4 className="text-sm font-semibold text-[#0B1B33]">Report access</h4>
+        <p className="mt-1 text-sm text-slate-600">Admins always see every client and report.</p>
+      </div>
+    );
+  }
+
+  const clients = [...new Set(reportTypes.map((t) => t.clientName))];
+  return (
+    <div className="space-y-3 bg-gradient-to-b from-[#F6F9FD] to-white px-5 py-5">
+      <h4 className="text-sm font-semibold text-[#0B1B33]">Report access</h4>
+      {!accessReady ? (
+        <p className="rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-2.5 text-sm text-amber-900">
+          Report access needs one database update first. Run <code>supabase/portal-migration-005-report-access.sql</code> in the Supabase SQL Editor.
+        </p>
+      ) : (
+        <>
+          <div role="radiogroup" aria-label={`Report access for ${name}`} className="grid gap-2 sm:grid-cols-2">
+            {[
+              { value: false, title: "All clients and reports", text: "Sees everything, and can add clients and templates." },
+              { value: true, title: "Only selected reports", text: "Sees only the reports ticked below. Can't add clients or templates." },
+            ].map((o) => {
+              const active = restricted === o.value;
+              return (
+                <button
+                  key={String(o.value)}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  disabled={pending}
+                  onClick={() => !active && run(() => setReportAccessMode(person.id, o.value))}
+                  className={cn(
+                    "flex items-start gap-3 rounded-xl border bg-white p-3.5 text-left transition-all disabled:opacity-60",
+                    active ? "border-[#2E5F8A] ring-4 ring-[#2E5F8A]/10" : "border-[#E4E9F0] hover:border-[#C9D5E6]",
+                  )}
+                >
+                  <span className={cn("mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2", active ? "border-[#2E5F8A]" : "border-slate-300")}>
+                    {active ? <span className="h-2 w-2 rounded-full bg-[#2E5F8A]" /> : null}
+                  </span>
+                  <span>
+                    <span className="block text-sm font-semibold text-[#0B1B33]">{o.title}</span>
+                    <span className="block text-xs text-slate-500">{o.text}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          {restricted ? (
+            <div className="space-y-3 rounded-xl border border-[#E4E9F0] bg-white p-4">
+              {allowed.size === 0 ? (
+                <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-900">Nothing is ticked yet, so {name} can&apos;t see any reports. Tick at least one.</p>
+              ) : null}
+              {clients.map((client) => (
+                <div key={client}>
+                  <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-400">{client}</p>
+                  <div className="space-y-1">
+                    {reportTypes
+                      .filter((t) => t.clientName === client)
+                      .map((t) => (
+                        <label key={t.id} className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1.5 text-sm hover:bg-[#F6F8FB]">
+                          <input
+                            type="checkbox"
+                            checked={allowed.has(t.id)}
+                            disabled={pending}
+                            onChange={(e) => run(() => setTemplateAccess(person.id, t.id, e.target.checked))}
+                            className="h-4 w-4 accent-[#2E5F8A]"
+                          />
+                          <span className="font-medium text-[#0B1B33]">{t.name}</span>
+                          <span className="text-xs capitalize text-slate-400">{t.cadence === "custom" ? "custom dates" : t.cadence}</span>
+                        </label>
+                      ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </>
+      )}
+      <ErrorNote message={error} />
+    </div>
+  );
+}
+
 export default function TeamTable({
   people,
   currentUserId,
   reportTypes,
   reminders,
   remindersReady,
+  access,
+  accessReady,
 }: {
   people: Profile[];
   currentUserId: string;
   reportTypes: ReportType[];
   reminders: Reminder[];
   remindersReady: boolean;
+  access: { profile_id: string; template_id: string }[];
+  accessReady: boolean;
 }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -196,14 +311,18 @@ export default function TeamTable({
               <th className={thClass}>Role</th>
               <th className={thClass}>Access</th>
               <th className={thClass} title="Admins: email me when a report is submitted for review">Review emails</th>
-              <th className={`${thClass} pr-5`}>Reminders</th>
+              <th className={`${thClass} pr-5`}>Reports &amp; reminders</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#EEF1F5]">
             {people.map((p) => {
               const me = p.id === currentUserId;
               const name = p.full_name || p.email;
-              const mine = reminders.filter((r) => r.profile_id === p.id);
+              const allowed = new Set(access.filter((a) => a.profile_id === p.id).map((a) => a.template_id));
+              const restricted = p.role !== "admin" && Boolean(p.restricted);
+              // Reminders only make sense for reports the person can see.
+              const visibleTypes = restricted ? reportTypes.filter((t) => allowed.has(t.id)) : reportTypes;
+              const mine = reminders.filter((r) => r.profile_id === p.id && visibleTypes.some((t) => t.id === r.template_id));
               const isOpen = open === p.id;
               return (
                 <Fragment key={p.id}>
@@ -283,13 +402,15 @@ export default function TeamTable({
                       <button
                         type="button"
                         onClick={() => setOpen(isOpen ? null : p.id)}
-                        disabled={!remindersReady || !p.active}
+                        disabled={!p.active}
                         aria-expanded={isOpen}
                         className="inline-flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm text-slate-600 transition-colors hover:bg-[#EEF4FB] hover:text-[#0B1B33] disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         <BellRing className={cn("h-4 w-4", mine.length ? "text-[#2E6FB8]" : "text-slate-400")} />
-                        <span className="max-w-[220px] truncate">
-                          {mine.length === 0 ? "Off" : mine.length === 1 ? `On · ${scheduleText(mine[0])}` : `${mine.length} reminders`}
+                        <span className="max-w-[240px] truncate">
+                          {restricted ? `${allowed.size} of ${reportTypes.length} reports` : "All reports"}
+                          <span className="text-slate-400"> · </span>
+                          {mine.length === 0 ? "Reminders off" : mine.length === 1 ? `Reminder ${scheduleText(mine[0])}` : `${mine.length} reminders`}
                         </span>
                         <ChevronDown className={cn("h-4 w-4 text-slate-400 transition-transform", isOpen && "rotate-180")} />
                       </button>
@@ -298,7 +419,15 @@ export default function TeamTable({
                   {isOpen ? (
                     <tr>
                       <td colSpan={5} className="p-0">
-                        <ReminderPanel person={p} reportTypes={reportTypes} reminders={mine} />
+                        <AccessPanel person={p} reportTypes={reportTypes} allowed={allowed} accessReady={accessReady} />
+                        <div className="mx-5 h-px bg-gradient-to-r from-slate-300/80 via-slate-200/80 to-transparent" aria-hidden />
+                        {remindersReady ? (
+                          <ReminderPanel person={p} reportTypes={visibleTypes} reminders={mine} />
+                        ) : (
+                          <p className="m-5 rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-2.5 text-sm text-amber-900">
+                            Email reminders need one database update first. Run <code>supabase/portal-migration-002-reminders.sql</code> in the Supabase SQL Editor.
+                          </p>
+                        )}
                       </td>
                     </tr>
                   ) : null}
