@@ -55,7 +55,7 @@ function emailShell(opts: {
         <tr><td style="background:#0F2341;background-image:linear-gradient(135deg,#0B1B33 0%,#123660 100%);border-radius:18px 18px 0 0;padding:26px 32px">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
             <td><img src="${base}/email/audax-logo-white.png" width="136" height="44" alt="Audax Ventures" style="display:block;border:0;outline:none;text-decoration:none;height:44px;width:136px"></td>
-            <td align="right" style="font-family:${FONT};font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#9DB6D8">Team Portal</td>
+            <td align="right" style="font-family:${FONT};font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#9DB6D8">Reporting Portal</td>
           </tr></table>
         </td></tr>
         <tr><td style="background:#2E6FB8;height:3px;font-size:0;line-height:0">&nbsp;</td></tr>
@@ -165,7 +165,7 @@ export function buildReminderEmail(firstName: string, items: DueItem[], opts: { 
     footerReason: "You're getting this because report reminders are turned on for you in the Audax Portal.<br>An admin can change them on the Team page.",
   });
   const text = [
-    "AUDAX VENTURES · TEAM PORTAL",
+    "AUDAX VENTURES · REPORTING PORTAL",
     "",
     `Hi ${firstName},`,
     "",
@@ -222,7 +222,7 @@ export function buildReviewEmail(firstName: string, it: ReviewItem, opts: { test
     footerReason: "You're getting this because review emails are turned on for you in the Audax Portal.<br>You can turn them off on the Team page.",
   });
   const text = [
-    "AUDAX VENTURES · TEAM PORTAL",
+    "AUDAX VENTURES · REPORTING PORTAL",
     "",
     `Hi ${firstName},`,
     "",

@@ -58,7 +58,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/portal/log
           />
           <span className="mt-8 hidden h-px w-16 bg-[#2E5F8A]/50 lg:block" />
           <p className="mt-5 text-base font-medium tracking-wide text-[#5A6478] lg:mt-8 lg:text-xl">
-            Audax Ventures Team Portal
+            Audax Ventures Reporting Portal
           </p>
         </div>
       </div>
