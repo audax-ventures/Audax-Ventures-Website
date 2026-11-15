@@ -9,7 +9,6 @@ import {
   daysInPeriod,
   formatCompact,
   formatCurrency,
-  formatDate,
   formatDelta,
   formatPeriod,
   formatValue,
@@ -39,6 +38,7 @@ export interface ReportDocumentProps {
   brandColor: string;
   title: string;
   status: string;
+  /** No longer printed on the PDF; kept so existing callers don't need changing. */
   preparedOn: string; // YYYY-MM-DD
   audaxLogo: string | null;
   ctx: ReportContext;
@@ -88,9 +88,6 @@ function makeStyles(k: number) {
     clientName: { fontSize: f(7.5), fontWeight: 700, letterSpacing: 1.2, textTransform: "uppercase" },
     title: { fontSize: f(17), fontWeight: 700, marginTop: p(2), lineHeight: 1.15 },
     period: { fontSize: f(8.5), color: MUTED, marginTop: p(3) },
-    headerMeta: { alignItems: "flex-end" },
-    metaLabel: { fontSize: f(6), color: FAINT, textTransform: "uppercase", letterSpacing: 0.8 },
-    metaValue: { fontSize: f(7.5), color: MUTED, marginTop: 2 },
     accent: { height: 2.5, borderRadius: 2, marginBottom: p(14) },
 
     section: { marginBottom: p(13) },
@@ -662,10 +659,6 @@ export function ReportDocument(props: ReportDocumentProps) {
               {ctx.schema.periodLabel ? `${ctx.schema.periodLabel}: ` : ""}
               {formatPeriod(ctx.periodStart, ctx.periodEnd)}
             </Text>
-          </View>
-          <View style={s.headerMeta}>
-            <Text style={s.metaLabel}>Prepared</Text>
-            <Text style={s.metaValue}>{formatDate(props.preparedOn)}</Text>
           </View>
         </View>
         <View style={[s.accent, { backgroundColor: color }]} />
