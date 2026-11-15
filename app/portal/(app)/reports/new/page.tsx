@@ -1,4 +1,4 @@
-import { requireMember } from "@/lib/portal/auth";
+import { canManage, requireMember } from "@/lib/portal/auth";
 import { listClients, listTemplates, latestReportForTemplate } from "@/lib/portal/data";
 import { formatPeriod, suggestPeriod } from "@/lib/portal/compute";
 import { LayoutTemplate } from "lucide-react";
@@ -8,7 +8,7 @@ import NewReportForm, { type TemplateOption } from "./NewReportForm";
 export const metadata = { title: "New report" };
 
 export default async function NewReportPage({ searchParams }: PageProps<"/portal/reports/new">) {
-  const { supabase } = await requireMember();
+  const { supabase, profile } = await requireMember();
   const { template, client } = await searchParams;
   const [clients, templates] = await Promise.all([listClients(supabase), listTemplates(supabase)]);
   const clientMap = new Map(clients.map((c) => [c.id, c]));
@@ -56,7 +56,7 @@ export default async function NewReportPage({ searchParams }: PageProps<"/portal
           />
         </Card>
       ) : (
-        <NewReportForm options={options} initialId={initial.id} />
+        <NewReportForm options={options} initialId={initial.id} canManage={canManage(profile)} />
       )}
     </>
   );

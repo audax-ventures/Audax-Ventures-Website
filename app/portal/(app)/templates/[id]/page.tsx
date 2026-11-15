@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { requireMember } from "@/lib/portal/auth";
+import { requireManager } from "@/lib/portal/auth";
 import { getClient, getTemplate, listClients } from "@/lib/portal/data";
 import { PageHeader } from "@/components/portal/ui";
 import TemplateBuilder from "@/components/portal/TemplateBuilder";
@@ -8,7 +8,7 @@ export const metadata = { title: "Edit template" };
 
 export default async function TemplatePage({ params }: PageProps<"/portal/templates/[id]">) {
   const { id } = await params;
-  const { supabase } = await requireMember();
+  const { supabase } = await requireManager();
   const template = await getTemplate(supabase, id);
   if (!template) notFound();
   const [client, clients, { count }] = await Promise.all([

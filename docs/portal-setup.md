@@ -83,3 +83,12 @@ When someone submits a report for review, every admin with **Review emails** swi
 gets a branded email with a button to the report. The person who submitted it isn't emailed.
 Run `supabase/portal-migration-004-review-emails.sql` in the Supabase SQL Editor to be able to switch
 it off per admin (until then, every admin gets them). Uses the same `RESEND_API_KEY` as the contact form.
+
+## Report access per team member (set up once)
+
+Run `supabase/portal-migration-005-report-access.sql` in the Supabase SQL Editor (already included
+in `portal-setup.sql` for new projects). Then on the Team page, open **Reports & reminders** next to
+a team member and choose **All clients and reports** or **Only selected reports** (tick the reports
+they can see). Admins always see everything. People limited to selected reports only see those
+reports and their clients, can't add or edit clients or templates, and are only reminded about
+reports they can see. The database enforces this, so hidden reports can't be opened by link either.

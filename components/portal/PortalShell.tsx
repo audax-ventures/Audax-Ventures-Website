@@ -23,6 +23,8 @@ import { buttonClass } from "./ui";
 
 interface Props {
   isAdmin: boolean;
+  /** Can add and edit clients and templates. */
+  canManage: boolean;
   reviewCount: number;
   signOutAction: () => Promise<void>;
   children: React.ReactNode;
@@ -72,7 +74,7 @@ function SidebarWaves() {
   );
 }
 
-export default function PortalShell({ isAdmin, reviewCount, signOutAction, children }: Props) {
+export default function PortalShell({ isAdmin, canManage, reviewCount, signOutAction, children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -96,7 +98,7 @@ export default function PortalShell({ isAdmin, reviewCount, signOutAction, child
     { href: "/portal", label: "Dashboard", icon: LayoutDashboard, exact: true, badge: 0 },
     { href: "/portal/reports", label: "Reports", icon: FileText, exact: false, badge: reviewCount },
     { href: "/portal/clients", label: "Clients", icon: Building2, exact: false, badge: 0 },
-    { href: "/portal/templates", label: "Templates", icon: LayoutTemplate, exact: false, badge: 0 },
+    ...(canManage ? [{ href: "/portal/templates", label: "Templates", icon: LayoutTemplate, exact: false, badge: 0 }] : []),
     ...(isAdmin ? [{ href: "/portal/team", label: "Team", icon: Users, exact: false, badge: 0 }] : []),
     { href: "/portal/account", label: "Account settings", icon: Settings, exact: false, badge: 0 },
   ];

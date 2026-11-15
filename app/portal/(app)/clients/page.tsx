@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Building2, FileText, LayoutTemplate, Plus } from "lucide-react";
-import { requireMember } from "@/lib/portal/auth";
+import { canManage, requireMember } from "@/lib/portal/auth";
 import { listClients, listReports, listTemplates } from "@/lib/portal/data";
 import { formatPeriod } from "@/lib/portal/compute";
 import { Card, ClientLogo, EmptyState, LinkButton, PageHeader, Pill } from "@/components/portal/ui";
@@ -8,7 +8,8 @@ import { Card, ClientLogo, EmptyState, LinkButton, PageHeader, Pill } from "@/co
 export const metadata = { title: "Clients" };
 
 export default async function ClientsPage({ searchParams }: PageProps<"/portal/clients">) {
-  const { supabase } = await requireMember();
+  const { supabase, profile } = await requireMember();
+  const manage = canManage(profile);
   const { archived } = await searchParams;
   const showArchived = archived === "1";
   const [clients, templates, reports] = await Promise.all([
@@ -29,9 +30,11 @@ export default async function ClientsPage({ searchParams }: PageProps<"/portal/c
         title="Clients"
         description="Each client has their own logo, brand colour and report templates."
         actions={
+          manage && (
           <LinkButton href="/portal/clients/new">
             <Plus className="h-4 w-4" /> Add client
           </LinkButton>
+          )
         }
       />
       {clients.length === 0 ? (
@@ -40,7 +43,7 @@ export default async function ClientsPage({ searchParams }: PageProps<"/portal/c
             icon={Building2}
             title="No clients yet"
             description="Add a client to set up their branding and report templates."
-            action={<LinkButton href="/portal/clients/new">Add your first client</LinkButton>}
+            action={manage ? <LinkButton href="/portal/clients/new">Add your first client</LinkButton> : undefined}
           />
         </Card>
       ) : (

@@ -183,6 +183,8 @@ export interface Profile {
   active: boolean;
   /** Admins: email me when a report is submitted for review. Missing until migration 004 is run (treated as on). */
   notify_on_submit?: boolean;
+  /** Only sees the report templates ticked for them. Missing until migration 005 is run (treated as false). */
+  restricted?: boolean;
   created_at: string;
 }
 

@@ -33,7 +33,7 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
   );
 }
 
-export default function NewReportForm({ options, initialId }: { options: TemplateOption[]; initialId: string }) {
+export default function NewReportForm({ options, initialId, canManage = true }: { options: TemplateOption[]; initialId: string; canManage?: boolean }) {
   const [templateId, setTemplateId] = useState(initialId);
   const selected = options.find((o) => o.id === templateId) ?? options[0];
   const clients = [...new Map(options.map((o) => [o.clientId, { id: o.clientId, name: o.clientName, logo: o.clientLogo }])).values()].sort((a, b) =>
@@ -137,9 +137,11 @@ export default function NewReportForm({ options, initialId }: { options: Templat
                     ? <>Copies these sections from the last report: <span className="font-medium text-slate-700">{selected.carrySections.join(", ")}</span>. For ad campaigns, only the ads and daily budgets are copied; results start blank so nothing old slips through.</>
                     : "This template doesn't copy any sections yet, so the report starts empty."}
               </span>
-              <a href={`/portal/templates/${selected.id}`} className="mt-1.5 inline-block text-xs font-medium text-[#1F5A99] hover:underline">
-                Choose which sections carry over →
-              </a>
+              {canManage ? (
+                <a href={`/portal/templates/${selected.id}`} className="mt-1.5 inline-block text-xs font-medium text-[#1F5A99] hover:underline">
+                  Choose which sections carry over →
+                </a>
+              ) : null}
             </span>
           </label>
         </Step>
