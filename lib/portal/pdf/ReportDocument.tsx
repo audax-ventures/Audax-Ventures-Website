@@ -507,9 +507,11 @@ function AdsBlock({ section, ctx, color, s, k }: BlockProps<AdsSection>) {
             return (
               <View key={c.id} wrap={false}>
                 <View style={[s.groupRow, { backgroundColor: tint(color, 0.96) }]}>
-                  <Text style={[s.td, { flex: 2.7, fontWeight: 700, color }]}>
-                    {c.name}
-                    {metricLabels.length > 1 ? <Text style={{ fontWeight: 400, color: MUTED }}>{`  ·  results = ${c.metricLabel.toLowerCase()}`}</Text> : null}
+                  <Text style={[s.td, { flex: 2.7, fontWeight: 700, color }]}>{c.name}</Text>
+                  <Text style={[s.td, { flex: 3 }]} />
+                  {/* What "results" means for this channel, right above its numbers. */}
+                  <Text style={[s.td, { flex: 1.1, textAlign: "right", color: FAINT }]}>
+                    {metricLabels.length > 1 ? c.metricLabel : ""}
                   </Text>
                 </View>
                 {rows.map((r) => (
