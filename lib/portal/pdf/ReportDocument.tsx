@@ -504,19 +504,12 @@ function AdsBlock({ section, ctx, color, s, k }: BlockProps<AdsSection>) {
           <TableHeader cols={cols} bg={tint(color, 0.9)} s={s} />
           {channels.map((c) => {
             const rows = data?.channels?.[c.id]?.rows ?? [];
-            const totals = adChannelTotals(section, data, c.id, days);
             return (
               <View key={c.id} wrap={false}>
                 <View style={[s.groupRow, { backgroundColor: tint(color, 0.96) }]}>
                   <Text style={[s.td, { flex: 2.7, fontWeight: 700, color }]}>
                     {c.name}
                     {metricLabels.length > 1 ? <Text style={{ fontWeight: 400, color: MUTED }}>{`  ·  results = ${c.metricLabel.toLowerCase()}`}</Text> : null}
-                  </Text>
-                  <Text style={[s.td, { flex: 1 }]} />
-                  <Text style={[s.td, { flex: 1, textAlign: "right", fontWeight: 600 }]}>{formatCurrency(totals.spend)}</Text>
-                  <Text style={[s.td, { flex: 1, textAlign: "right", fontWeight: 600 }]}>{formatValue(totals.impressions, "number")}</Text>
-                  <Text style={[s.td, { flex: 1.1, textAlign: "right", fontWeight: 600 }]}>
-                    {formatValue(totals.metric, "number")}
                   </Text>
                 </View>
                 {rows.map((r) => (
