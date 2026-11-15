@@ -117,7 +117,7 @@ export default function PortalShell({ isAdmin, reviewCount, signOutAction, child
           className="h-auto w-[172px] brightness-0 invert"
           priority
         />
-        <span className="mt-2.5 block pl-[3px] text-[10.5px] font-semibold uppercase tracking-[0.24em] text-white/60">Team Portal</span>
+        <span className="mt-2.5 block pl-[3px] text-[10.5px] font-semibold uppercase tracking-[0.24em] text-white/60">Reporting Portal</span>
       </Link>
       <div className="relative mx-6 mb-4 h-px bg-gradient-to-r from-white/20 via-white/10 to-transparent" aria-hidden />
 
