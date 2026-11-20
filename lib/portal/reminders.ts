@@ -2,7 +2,9 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { formatPeriod, nextReportState } from "./compute";
-import { portalBaseUrl, type DueItem, type EmailContent } from "./emails";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { LOGO_CID, LOGO_FILE, portalBaseUrl, type DueItem, type EmailContent } from "./emails";
 
 export { buildReminderEmail, buildReviewEmail, portalBaseUrl, type DueItem } from "./emails";
 import type { Cadence, ReportStatus } from "./types";
@@ -68,11 +70,36 @@ export async function dueItemsForTemplates(
   return items;
 }
 
+let logoBytes: Buffer | null | undefined;
+
+/** The white logo, read once from disk. Null if the file can't be found. */
+function emailLogo(): Buffer | null {
+  if (logoBytes === undefined) {
+    try {
+      logoBytes = readFileSync(path.join(process.cwd(), LOGO_FILE));
+    } catch {
+      logoBytes = null;
+    }
+  }
+  return logoBytes;
+}
+
 export async function sendEmail(to: string, email: EmailContent) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new Error("Email isn't set up: RESEND_API_KEY is missing in Vercel.");
   const resend = new Resend(apiKey);
-  const { error } = await resend.emails.send({ from: FROM_ADDRESS, to, subject: email.subject, html: email.html, text: email.text });
+  // Attach the logo inside the email (shown via cid:). If the file is missing for some
+  // reason, fall back to loading it from the website instead.
+  const logo = emailLogo();
+  const html = logo ? email.html : email.html.replaceAll(`cid:${LOGO_CID}`, `${portalBaseUrl()}/email/audax-logo-white.png`);
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
+    to,
+    subject: email.subject,
+    html,
+    text: email.text,
+    attachments: logo ? [{ filename: "audax-logo.png", content: logo, contentType: "image/png", contentId: LOGO_CID }] : undefined,
+  });
   if (error) throw new Error(error.message);
 }
 

@@ -18,6 +18,13 @@ export function escapeHtml(v: string) {
     .replace(/[^\x00-\x7F]/g, (c) => `&#${c.codePointAt(0)};`);
 }
 
+/**
+ * The logo is attached to each email and shown with a cid: link, so it appears even when
+ * an email app blocks pictures from websites (Apple Mail, Outlook). See sendEmail().
+ */
+export const LOGO_CID = "audax-logo";
+export const LOGO_FILE = "public/email/audax-logo-white.png";
+
 const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 
 export interface EmailContent {
@@ -54,7 +61,7 @@ function emailShell(opts: {
         <!-- Header -->
         <tr><td style="background:#0F2341;background-image:linear-gradient(135deg,#0B1B33 0%,#123660 100%);border-radius:18px 18px 0 0;padding:26px 32px">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-            <td><img src="${base}/email/audax-logo-white.png" width="136" height="44" alt="Audax Ventures" style="display:block;border:0;outline:none;text-decoration:none;height:44px;width:136px"></td>
+            <td><img src="cid:${LOGO_CID}" width="136" height="44" alt="AUDAX VENTURES" style="display:block;border:0;outline:none;text-decoration:none;height:44px;width:136px;color:#FFFFFF;font-family:${FONT};font-size:18px;font-weight:700;letter-spacing:2px;line-height:44px"></td>
             <td align="right" style="font-family:${FONT};font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#9DB6D8">Reporting Portal</td>
           </tr></table>
         </td></tr>
