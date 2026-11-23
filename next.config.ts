@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Report portal: the PDF renderer reads its fonts and the Audax logo from disk.
   outputFileTracingIncludes: {
-    "/portal/**": ["./lib/portal/pdf/fonts/**/*", "./public/audax-logo.png"],
+    "/portal/**": ["./lib/portal/pdf/fonts/**/*", "./public/audax-logo.png", "./public/email/audax-logo-white.png"],
+    "/api/portal/**": ["./public/email/audax-logo-white.png"],
   },
   experimental: {
     // Client logo uploads go through a server action.
