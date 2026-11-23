@@ -26,8 +26,8 @@ export const weeklySocialTemplate: StarterTemplate = {
         fields: [
           { id: "fb_posts", label: "Facebook Posts", format: "number" },
           { id: "ig_posts", label: "Instagram Posts", format: "number" },
-          { id: "fb_views", label: "Facebook Post Views", format: "compact", compare: true },
-          { id: "ig_views", label: "Instagram Post Views", format: "compact", compare: true },
+          { id: "fb_views", label: "Facebook Post Views", format: "number", compare: true },
+          { id: "ig_views", label: "Instagram Post Views", format: "number", compare: true },
           { id: "fb_followers", label: "Facebook Followers", format: "number", compare: true, trend: true },
           { id: "ig_followers", label: "Instagram Followers", format: "number", compare: true, trend: true },
         ],
