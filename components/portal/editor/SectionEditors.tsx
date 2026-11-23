@@ -183,6 +183,81 @@ function PasteBox({ onPaste, onClose, columns }: { onPaste: (text: string) => vo
   );
 }
 
+// ----- Per-platform numbers -----
+// When a row's dropdown choice names more than one platform ("Instagram & Facebook"),
+// number cells get one box per platform and the cell itself holds their sum. Only the
+// sum is on the PDF; the parts are kept in the row as "<column>__<platform>".
+
+function splitsByPlatform(format: ValueFormat) {
+  return format === "number" || format === "compact";
+}
+
+/** The platforms a row covers, from its first dropdown whose choice lists several ("A & B"). */
+function rowPlatforms(section: TableSection, row: TableRow): string[] {
+  for (const c of section.columns) {
+    if (!c.options?.length) continue;
+    const parts = (row.cells[c.id] ?? "")
+      .split(/\s*(?:&|\+|,|\/|\band\b)\s*/i)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    if (parts.length > 1) return parts;
+  }
+  return [];
+}
+
+const partKey = (columnId: string, platform: string) => `${columnId}__${platform}`;
+
+function PlatformSplit({
+  label,
+  row,
+  platforms,
+  cells,
+  columnId,
+  format,
+  disabled,
+  onChange,
+}: {
+  label: string;
+  row: number;
+  platforms: string[];
+  cells: Record<string, string>;
+  columnId: string;
+  format: ValueFormat;
+  disabled?: boolean;
+  onChange: (cells: Record<string, string>) => void;
+}) {
+  function setPart(platform: string, value: string) {
+    const next = { ...cells, [partKey(columnId, platform)]: value };
+    const nums = platforms.map((p) => toNum(next[partKey(columnId, p)]));
+    const any = nums.some((n) => n !== null);
+    const sum = nums.reduce<number>((s, n) => s + (n ?? 0), 0);
+    onChange({ [partKey(columnId, platform)]: value, [columnId]: any ? String(Math.round(sum * 100) / 100) : "" });
+  }
+  const total = cells[columnId] ?? "";
+  return (
+    <div className="space-y-1.5">
+      {platforms.map((p) => (
+        <label key={p} className="flex items-center gap-2">
+          <span className="w-[4.25rem] shrink-0 truncate text-[11px] font-medium text-slate-500" title={p}>{p}</span>
+          <input
+            aria-label={`${label}, ${p}, row ${row}`}
+            inputMode="decimal"
+            value={cells[partKey(columnId, p)] ?? ""}
+            disabled={disabled}
+            placeholder={placeholderFor(format)}
+            onChange={(e) => setPart(p, e.target.value)}
+            className={cn(cellInput, "py-1.5 text-right")}
+          />
+        </label>
+      ))}
+      <div className="flex items-center justify-between gap-2 border-t border-slate-200 pt-1.5 text-xs">
+        <span className="font-medium text-slate-500">Total</span>
+        <span className="font-semibold text-slate-900">{total ? formatValue(total, format) : "—"}</span>
+      </div>
+    </div>
+  );
+}
+
 export function TableEditor({
   section,
   data,
@@ -199,6 +274,8 @@ export function TableEditor({
   const setRows = (next: TableRow[]) => onChange({ rows: next });
   const setCell = (rowId: string, colId: string, value: string) =>
     setRows(rows.map((r) => (r.id === rowId ? { ...r, cells: { ...r.cells, [colId]: value } } : r)));
+  const setCells = (rowId: string, cells: Record<string, string>) =>
+    setRows(rows.map((r) => (r.id === rowId ? { ...r, cells: { ...r.cells, ...cells } } : r)));
   const addRow = () => setRows([...rows, { id: newId(), cells: {} }]);
   const hasTotals = section.columns.some((c) => c.total);
 
@@ -242,8 +319,9 @@ export function TableEditor({
                 ) : null}
                 {section.columns.map((c) => {
                   const value = r.cells[c.id] ?? "";
+                  const platforms = rowPlatforms(section, r);
                   return (
-                    <td key={c.id} className={cn("py-1.5 pr-2", c.format === "text" ? "min-w-[180px]" : "min-w-[110px]")}>
+                    <td key={c.id} className={cn("py-1.5 pr-2", c.format === "text" ? "min-w-[180px]" : platforms.length > 1 && splitsByPlatform(c.format) ? "min-w-[190px]" : "min-w-[110px]")}>
                       {c.options?.length ? (
                         <select value={value} aria-label={`${c.label}, row ${i + 1}`} disabled={disabled} onChange={(e) => setCell(r.id, c.id, e.target.value)} className={cellInput}>
                           <option value="">—</option>
@@ -251,6 +329,17 @@ export function TableEditor({
                             <option key={o} value={o}>{o}</option>
                           ))}
                         </select>
+                      ) : platforms.length > 1 && splitsByPlatform(c.format) ? (
+                        <PlatformSplit
+                          label={c.label}
+                          row={i + 1}
+                          platforms={platforms}
+                          cells={r.cells}
+                          columnId={c.id}
+                          format={c.format}
+                          disabled={disabled}
+                          onChange={(cells) => setCells(r.id, cells)}
+                        />
                       ) : (
                         <input
                           aria-label={`${c.label}, row ${i + 1}`}
